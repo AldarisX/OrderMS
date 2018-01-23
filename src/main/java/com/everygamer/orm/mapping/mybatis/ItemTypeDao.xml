@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.orm.dao.ItemTypeDao">
+    <insert id="addItemType">
+        INSERT INTO item_type (name, exData, insDate) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
+    </insert>
+    <update id="delItemType">
+        UPDATE item_type
+        SET isAlive = 0, delDate = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
+    <update id="updateItemType">
+        UPDATE item_type
+        SET name = #{param2}, exData = #{param3}, item_type.upDate = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
+    <select id="getItemTypeById" resultType="com.everygamer.bean.ItemType">
+        SELECT
+            id,
+            `name`,
+            insDate,
+            exData
+        FROM item_type
+        WHERE id = #{param1} AND isAlive = 1
+    </select>
+    <select id="getAllItemType" resultType="com.everygamer.bean.ItemType">
+        SELECT
+            id,
+            `name`,
+            insDate,
+            exData
+        FROM item_type
+        WHERE isAlive = 1
+    </select>
+    <select id="isItemExist" resultType="java.lang.Boolean">
+        SELECT count(id)
+        FROM item_type
+        WHERE `name` = #{param1} AND isAlive = 1
+    </select>
+    <select id="getItemTypeByName" resultType="com.everygamer.bean.ItemType">
+        SELECT
+            id,
+            `name`,
+            insDate,
+            exData
+        FROM item_type
+        WHERE `name` = #{param1} AND isAlive = 1
+    </select>
+    <select id="getExData" resultType="java.lang.String">
+        SELECT exData
+        FROM item_type
+        WHERE id = #{param1}
+    </select>
+</mapper>

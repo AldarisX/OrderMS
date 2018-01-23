@@ -1,0 +1,31 @@
+/*body {*/
+/*margin: 0;*/
+/*padding: 0;*/
+/*}*/
+
+ul {
+    padding: 0;
+}
+
+.clearfix {
+    clear: both;
+}
+
+#head_nav {
+    list-style: none;
+    height: 20px;
+}
+
+#head_nav li {
+    float: left;
+    margin-right: 20px;
+}
+
+#head_nav li .selected {
+    color: #ff6a6c;
+}
+
+#head_nav li a {
+    text-decoration: none;
+    color: #000;
+}

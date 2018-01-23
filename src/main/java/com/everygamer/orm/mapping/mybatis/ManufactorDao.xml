@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.orm.dao.ManufactorDao">
+    <insert id="addManufactor">
+        INSERT INTO manufactor (name, itemType, insDate) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
+    </insert>
+    <update id="delManufactor">
+        UPDATE manufactor
+        SET isAlive = 0, delDate = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
+
+    <select id="getAllManufactor" resultType="com.everygamer.bean.Manufactor">
+        SELECT
+            manufactor.id,
+            manufactor.name,
+            item_type.name AS itemType,
+            manufactor.insDate
+        FROM manufactor
+            LEFT JOIN item_type ON manufactor.itemType = item_type.id
+        WHERE manufactor.isAlive = 1
+        GROUP BY manufactor.name
+    </select>
+    <select id="getAllManufactorByItemType" resultType="com.everygamer.bean.Manufactor">
+        SELECT
+            manufactor.id,
+            manufactor.name,
+            item_type.name AS itemType,
+            manufactor.insDate
+        FROM manufactor
+            LEFT JOIN item_type ON manufactor.itemType = item_type.id
+        WHERE itemType = #{param1} AND manufactor.isAlive = 1
+        GROUP BY `name`
+    </select>
+    <select id="getAllManufactorByName" resultType="com.everygamer.bean.Manufactor">
+        SELECT
+            manufactor.id,
+            manufactor.name,
+            item_type.name     AS itemType,
+            manufactor.insDate AS insDate
+        FROM manufactor
+            LEFT JOIN item_type ON manufactor.itemType = item_type.id
+        WHERE manufactor.name = #{param} AND manufactor.isAlive = 1
+    </select>
+    <select id="getManufactor" resultType="com.everygamer.bean.Manufactor">
+        SELECT
+            manufactor.id,
+            manufactor.name,
+            item_type.name     AS itemType,
+            manufactor.insDate AS insDate
+        FROM manufactor
+            LEFT JOIN item_type ON manufactor.itemType = item_type.id
+        WHERE manufactor.name = #{param1} AND manufactor.itemType = #{param2} AND manufactor.isAlive = 1
+    </select>
+</mapper>

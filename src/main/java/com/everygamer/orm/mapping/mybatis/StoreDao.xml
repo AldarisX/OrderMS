@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.orm.dao.StoreDao">
+
+    <select id="searchStore" resultType="com.everygamer.bean.BaseItem">
+        SELECT
+        statis.name,
+        item_type.name AS itemType,
+        manu.name AS manufactor,
+        <choose>
+            <when test="exData==null">
+                SUM(statis.count) AS count,
+                SUM(statis.price) AS price,
+                statis.upDate
+                FROM item_list_statistics AS statis, item_type, manufactor AS manu
+                WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id AND statis.itemType=#{type}
+                <if test="kw!=null">
+                    AND statis.name LIKE #{kw}
+                </if>
+                <if test="manu!=null">
+                    AND statis.manufactor=#{manu}
+                </if>
+                GROUP BY statis.name,statis.manufactor
+                ORDER BY statis.upDate DESC,statis.id
+            </when>
+            <otherwise>
+                statis.count,
+                statis.price,
+                statis.exData,
+                statis.upDate
+                FROM item_list_statistics AS statis, item_type, manufactor AS manu
+                WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id AND statis.itemType=#{type}
+                <if test="kw!=null">
+                    AND statis.name LIKE #{kw}
+                </if>
+                <if test="manu!=null">
+                    AND statis.manufactor=#{manu}
+                </if>
+                <foreach collection="exData" index="key" item="val">
+                    AND JSON_EXTRACT(statis.exData,CONCAT("$.",#{key})) = #{val}
+                </foreach>
+                ORDER BY statis.upDate DESC,statis.id
+            </otherwise>
+        </choose>
+    </select>
+    <select id="listStore" resultType="com.everygamer.bean.BaseItem">
+        SELECT
+        item.id,
+        item.name,
+        item_type.name AS itemType,
+        manu.name AS manufactor,
+        item.count,
+        item.price,
+        item.exData,
+        item.desc,
+        item.insDate
+        FROM item_list AS item, item_type, manufactor AS manu
+        WHERE item.itemType=item_type.id AND item.manufactor=manu.id
+        <if test="type!=null">
+            AND item.itemType=#{type}
+        </if>
+        <if test="kw!=null">
+            AND item.name LIKE #{kw}
+        </if>
+        <if test="manu!=null">
+            AND manu.name=#{manu}
+        </if>
+        <if test="exData!=null">
+            <foreach collection="exData" index="key" item="val">
+                AND JSON_EXTRACT(item.exData,CONCAT("$.",#{key})) = #{val}
+            </foreach>
+        </if>
+        <choose>
+            <when test="startTime!=null and endTime!=null">
+                AND item.insDate BETWEEN #{startTime} AND #{endTime}
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="startTime!=null">
+                        AND item.insDate &gt;= #{startTime}
+                    </when>
+                    <otherwise>
+                        <choose>
+                            <when test="endTime!=null">
+                                AND item.insDate &lt;= #{endTime}
+                            </when>
+                        </choose>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        ORDER BY item.insDate DESC
+    </select>
+</mapper>

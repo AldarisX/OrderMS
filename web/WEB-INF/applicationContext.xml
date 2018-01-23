@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--MyBatis的DataSource-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3307/orderms?useSSL=true"/>
+        <property name="username" value="root"/>
+        <property name="password" value="aldaris"/>
+
+        <property name="initialSize" value="10"/>
+        <property name="maxTotal" value="50"/>
+        <property name="maxIdle" value="20"/>
+        <property name="minIdle" value="15"/>
+        <property name="defaultAutoCommit" value="true"/>
+    </bean>
+
+    <!--配置SqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations" value="classpath*:com/everygamer/orm/mapping/mybatis/*.xml"/>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 事务注解 -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <!-- 设置MybatisDaoSupport抽象类-->
+    <bean id="mybatisDaoSupport" class="org.mybatis.spring.support.SqlSessionDaoSupport" abstract="true">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- 配置自动扫描的包 -->
+    <bean id="daoProcessor" class="com.everygamer.orm.dao.DaoPostProcessor"/>
+    <context:component-scan base-package="com.everygamer.orm.dao"/>
+    <context:component-scan base-package="com.everygamer.service"/>
+
+    <!-- 用于持有ApplicationContext,可以使用SpringContextHolder.getBean('xxxx')的静态方法得到spring bean对象 -->
+    <bean class="org.springframework.context.SpringContextHolder" lazy-init="false"/>
+</beans>

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "index",
+    "dpName": "主页",
+    "mapper": "index.html",
+    "url": "index.jsp",
+    "isHeadNav": true
+  },
+  {
+    "name": "store",
+    "dpName": "入库",
+    "mapper": "store.html",
+    "url": "store.jsp",
+    "isHeadNav": true
+  },
+  {
+    "name": "storeList",
+    "dpName": "库存数据",
+    "mapper": "store_list.html",
+    "url": "store_list.jsp",
+    "isHeadNav": true
+  },
+  {
+    "name": "itemType",
+    "dpName": "物品类型",
+    "mapper": "item_type.html",
+    "url": "item_type.jsp",
+    "isHeadNav": true
+  },
+  {
+    "name": "manuType",
+    "dpName": "厂商",
+    "mapper": "manu_type.html",
+    "url": "manu_type.jsp",
+    "isHeadNav": true
+  }
+]
