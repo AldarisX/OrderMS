@@ -64,7 +64,7 @@ public class StoreService {
         return new int[]{cRows, xRows};
     }
 
-    public PageInfo<BaseItem> searchStore(int type, String kw, Integer manu, String exData, int page, int pageSize) {
+    public PageInfo<BaseItem> searchStore(Integer type, String kw, Integer manu, String exData, int page, int pageSize) {
         HashMap<String, Object> exDataList = null;
         if (exData != null) {
             exDataList = getJsonSQL(exData);

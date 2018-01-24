@@ -13,7 +13,10 @@
                 SUM(statis.price) AS price,
                 statis.upDate
                 FROM item_list_statistics AS statis, item_type, manufactor AS manu
-                WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id AND statis.itemType=#{type}
+                WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id
+                <if test="type!=null">
+                    AND statis.itemType=#{type}
+                </if>
                 <if test="kw!=null">
                     AND statis.name LIKE #{kw}
                 </if>

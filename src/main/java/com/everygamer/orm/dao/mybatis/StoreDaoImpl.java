@@ -22,7 +22,7 @@ public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
     }
 
     @Override
-    public List<BaseItem> searchStore(int type, String kw, Integer manu, Map<String, Object> exData) {
+    public List<BaseItem> searchStore(Integer type, String kw, Integer manu, Map<String, Object> exData) {
         if ("".equals(kw) || kw == null) {
             kw = null;
         } else {
