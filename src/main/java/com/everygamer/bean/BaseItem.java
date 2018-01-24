@@ -9,6 +9,7 @@ public class BaseItem {
     private String manufactor;
     private String model;
     private int count;
+    private int remain;
     private BigDecimal price;
     private String desc;
     private String exData;
@@ -63,6 +64,14 @@ public class BaseItem {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getRemain() {
+        return remain;
+    }
+
+    public void setRemain(int remain) {
+        this.remain = remain;
     }
 
     public BigDecimal getPrice() {

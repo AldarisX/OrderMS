@@ -31,6 +31,7 @@ CREATE TABLE `item_list` (
   `manufactor` INT(11)        NOT NULL,
   `model`      VARCHAR(64)             DEFAULT NULL,
   `count`      INT(11)        NOT NULL,
+  `remain`     INT(11)                 DEFAULT NULL,
   `price`      DECIMAL(32, 5) NOT NULL,
   `exData`     LONGTEXT CHARACTER SET utf8mb4
   COLLATE utf8mb4_bin                  DEFAULT NULL,
@@ -43,7 +44,7 @@ CREATE TABLE `item_list` (
   KEY `t_index` (`itemType`, `manufactor`, `name`, `upDate`, `insDate`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 500001
+  AUTO_INCREMENT = 100002
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -69,7 +70,30 @@ CREATE TABLE `item_list_statistics` (
   KEY `t_index` (`itemType`, `manufactor`, `name`, `upDate`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 1709
+  AUTO_INCREMENT = 2442
+  DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `item_out`
+--
+
+DROP TABLE IF EXISTS `item_out`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `item_out` (
+  `id`        INT(11)        NOT NULL AUTO_INCREMENT,
+  `item_list` INT(11)        NOT NULL,
+  `count`     INT(11)        NOT NULL,
+  `price`     DECIMAL(32, 5) NOT NULL,
+  `desc`      TEXT                    DEFAULT NULL,
+  `isAlive`   TINYINT(4)              DEFAULT 1,
+  `insDate`   INT(11)                 DEFAULT NULL,
+  `upDate`    INT(11)                 DEFAULT NULL,
+  `delDate`   INT(11)                 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -92,7 +116,7 @@ CREATE TABLE `item_type` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 4
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -114,7 +138,7 @@ CREATE TABLE `manufactor` (
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 13
+  AUTO_INCREMENT = 12
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -127,4 +151,4 @@ CREATE TABLE `manufactor` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-22 16:03:13
+-- Dump completed on 2018-01-24 13:04:43

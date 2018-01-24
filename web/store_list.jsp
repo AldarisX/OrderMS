@@ -105,7 +105,7 @@
                     $(".searchTips").css("display", "block");
                     $("#searchTip").append("一共找到" + data.count + "条记录，当前第" + nowPage + "页，共" + pages + "页");
 
-                    $("#storeList").append("<tr><td>ID</td><td>型号</td><td>类型</td><td>厂商</td><td>数量</td><td>单价</td><td>附加属性</td><td>备注</td><td>插入时间</td><td>操作</td></tr>");
+                    $("#storeList").append("<tr><td>ID</td><td>型号</td><td>类型</td><td>厂商</td><td>数量</td><td>剩余</td><td>单价</td><td>附加属性</td><td>备注</td><td>插入时间</td><td>操作</td></tr>");
                     for (let i = 0; i < data.data.length; i++) {
                         let item = data.data[i];
                         let exData = "";
@@ -115,7 +115,7 @@
                                 exData += exItem.desc + ":" + item.exData[exItem.name] + "<br/>";
                             }
                         }
-                        $("#storeList").append("<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.itemType + "</td><td>" + item.manufactor + "</td><td>" + item.count + "</td><td>" + item.price + "</td><td>" + exData + "</td><td>" + item.desc + "</td><td>" + formatUnixTime(item.insDate) + "</td><td><button onclick='delItem(" + item.id + ")'>删除</button></td></tr>");
+                        $("#storeList").append("<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.itemType + "</td><td>" + item.manufactor + "</td><td>" + item.count + "</td><td>" + item.remain + "</td><td>" + item.price + "</td><td>" + exData + "</td><td>" + item.desc + "</td><td>" + formatUnixTime(item.insDate) + "</td><td><button onclick='delItem(" + item.id + ")'>删除</button></td></tr>");
                     }
                 } else {
                     alert(data.msg);

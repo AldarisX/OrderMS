@@ -50,12 +50,13 @@
         item_type.name AS itemType,
         manu.name AS manufactor,
         item.count,
+        item.remain,
         item.price,
         item.exData,
         item.desc,
         item.insDate
         FROM item_list AS item, item_type, manufactor AS manu
-        WHERE item.itemType=item_type.id AND item.manufactor=manu.id
+        WHERE item.itemType=item_type.id AND item.manufactor=manu.id AND item.remain>0
         <if test="type!=null">
             AND item.itemType=#{type}
         </if>
