@@ -175,6 +175,9 @@
         function searchTypeChange() {
             nowPage = 1;
             $("#searchBtn").removeAttr("disabled");
+            $("#search_isExData").prop("checked", false);
+            search_isExDataChange();
+
             const itemTypeSel = $("#searchType").val();
             if (itemTypeSel === "") {
                 $("#searchManu").empty();
