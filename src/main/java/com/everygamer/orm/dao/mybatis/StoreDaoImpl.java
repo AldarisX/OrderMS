@@ -28,7 +28,6 @@ public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
         } else {
             kw = "%" + kw.replaceAll(" ", "%") + "%";
         }
-//        StoreDao dao = getSqlSession().getMapper(StoreDao.class);
         return dao.searchStore(type, kw, manu, exData);
     }
 
@@ -39,7 +38,6 @@ public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
         } else {
             kw = "%" + kw.replaceAll(" ", "%") + "%";
         }
-//        StoreDao dao = getSqlSession().getMapper(StoreDao.class);
         return dao.listStore(type, kw, manu, exData, startTime, endTime);
     }
 
