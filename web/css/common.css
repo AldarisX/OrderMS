@@ -21,6 +21,11 @@ ul {
     margin-right: 20px;
 }
 
+#head_nav li a:hover {
+    color: #ff6a6c;
+    -webkit-transition-duration: .2s;
+}
+
 #head_nav li .selected {
     color: #ff6a6c;
 }
