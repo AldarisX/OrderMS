@@ -110,10 +110,7 @@
                         let item = data.data[i];
                         let exData = "";
                         if (showExData) {
-                            for (let j = 0; j < nowExData.length; j++) {
-                                const exItem = nowExData[j];
-                                exData += exItem.desc + ":" + item.exData[exItem.name] + "<br/>";
-                            }
+                            exData = LwebJson.jsonToString(item.exData, nowExData, "</br>");
                         }
                         $("#storeList").append("<tr><td>" + item.id + "</td><td>" + item.name + "</td><td>" + item.itemType + "</td><td>" + item.manufactor + "</td><td>" + item.count + "</td><td>" + item.remain + "</td><td>" + item.price + "</td><td>" + exData + "</td><td>" + item.desc + "</td><td>" + formatUnixTime(item.insDate) + "</td><td><button onclick='delItem(" + item.id + ")'>删除</button></td></tr>");
                     }

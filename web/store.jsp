@@ -166,10 +166,7 @@
                         const item = data.data[i];
                         let exData = "";
                         if (showExData) {
-                            for (let j = 0; j < nowExData.length; j++) {
-                                const exItem = nowExData[j];
-                                exData += exItem.desc + ":" + item.exData[exItem.name] + "<br/>";
-                            }
+                            exData = LwebJson.jsonToString(item.exData, nowExData, "</br>");
                         }
                         $("<tr><td>" + item.name + "</td><td>" + item.itemType + "</td><td>" + item.manufactor + "</td><td>" + item.count + "</td><td>" + (item.price / item.count).toFixed(2) + "</td><td>" + exData + "</td><td>" + formatUnixTime(item.upDate) + "</td></tr>").appendTo("#itemList")
                     }
