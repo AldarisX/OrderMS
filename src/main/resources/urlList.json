@@ -21,6 +21,13 @@
     "isHeadNav": true
   },
   {
+    "name": "itemOut",
+    "dpName": "出库",
+    "mapper": "item_out.html",
+    "url": "item_out.jsp",
+    "isHeadNav": true
+  },
+  {
     "name": "itemType",
     "dpName": "物品类型",
     "mapper": "item_type.html",
