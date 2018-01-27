@@ -101,14 +101,19 @@
 
     //物品选择
     //参数写好后会调用父页面的selectItem(item, count, price)函数
-    function itemSelect(el) {
+    function itemSelect(item) {
         let count;
         while (true) {
             count = prompt("数量", 1);
             if (count == null) {
                 return;
-            } else if (!isNaN(parseInt(count))) {
+            }
+            else if (!isNaN(parseInt(count))) {
                 count = parseInt(count);
+                if (count > item.count) {
+                    alert("库存不足");
+                    continue;
+                }
                 break;
             }
         }
@@ -124,7 +129,7 @@
             }
         }
 
-        selectItem(el, count, price);
+        selectItem(item, count, price);
     }
 
     function btn_search() {
