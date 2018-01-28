@@ -12,7 +12,7 @@
                 SUM(statis.count) AS count,
                 SUM(statis.price) AS price,
                 statis.upDate
-                FROM item_list_statistics AS statis, item_type, manufactor AS manu
+                FROM item_list_statis AS statis, item_type, manufactor AS manu
                 WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id
                 <if test="type!=null">
                     AND statis.itemType=#{type}
