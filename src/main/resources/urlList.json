@@ -60,5 +60,12 @@
     "mapper": "select_item.html",
     "url": "select_item.jsp",
     "showInHead": false
+  },
+  {
+    "name": "storeSearch",
+    "dpName": "库存检索",
+    "mapper": "store_search.html",
+    "url": "store_search.jsp",
+    "showInHead": false
   }
 ]

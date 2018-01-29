@@ -28,7 +28,7 @@
             $("#itemTypeList").empty();
             $("#itemTypeList").append("<option selected='selected' disabled='disabled' value='selected'></option>");
 
-            $.get("/store_search.jsp", function (page) {
+            $.get("/store_search.html", function (page) {
                 $("#searchBlock").append(page);
                 pageLoad();
             });
