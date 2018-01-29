@@ -59,7 +59,7 @@
         item.desc,
         item.insDate
         FROM item_list AS item, item_type, manufactor AS manu
-        WHERE item.itemType=item_type.id AND item.manufactor=manu.id AND item.remain>0
+        WHERE item.itemType=item_type.id AND item.manufactor=manu.id
         <if test="type!=null">
             AND item.itemType=#{type}
         </if>
