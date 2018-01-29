@@ -123,8 +123,8 @@
             price = prompt("单价", 0);
             if (price == null) {
                 return;
-            } else if (!isNaN(parseInt(price))) {
-                price = parseInt(price);
+            } else if (!isNaN(parseFloat(price))) {
+                price = parseFloat(price);
                 break;
             }
         }

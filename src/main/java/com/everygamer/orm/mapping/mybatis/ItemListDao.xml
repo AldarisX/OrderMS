@@ -4,13 +4,18 @@
     <insert id="addItem">
         INSERT INTO item_list (`name`, itemType, manufactor, model, `count`, remain, price, exData, `desc`, insDate)
         VALUES
-        (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, #{param6}, #{param7}, #{param8},
+        (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param5}, #{param6}, #{param7}, #{param8},
              UNIX_TIMESTAMP())
     </insert>
     <update id="mergeExData">
         UPDATE item_list
         SET exData = JSON_MERGE(exData, #{param2}), `upDate` = UNIX_TIMESTAMP()
         WHERE itemType = #{param1}
+    </update>
+    <update id="splitItem">
+        UPDATE item_list
+        SET remain = remain - #{param2}
+        WHERE id = #{param1};
     </update>
     <delete id="delItem">
         UPDATE item_list
@@ -21,7 +26,7 @@
         SELECT
             item_list.id,
             item_list.name,
-            item_type.name                    AS itemType,
+        item_type.name AS itemType,
             item_list.model,
             item_list.count,
         item_list.remain,
@@ -43,5 +48,26 @@
         SELECT *
         FROM item_list
         WHERE id = #{param1}
+    </select>
+    <select id="getItemByCondition" resultType="com.everygamer.bean.BaseItem">
+        SELECT
+        item_list.id,
+        item_list.name,
+        item_type.name AS itemType,
+        item_list.model,
+        item_list.count,
+        item_list.remain,
+        item_list.price,
+        item_list.insDate,
+        item_list.`upDate`
+        FROM item_list
+        LEFT JOIN item_type ON item_list.itemType = item_type.id
+        WHERE item_list.name = #{param1} AND item_list.itemType = #{param2} AND item_list.manufactor = #{param3} AND
+        item_list.exData = #{param4} AND item_list.remain > 0 AND item_list.isAlive = 1 AND item_list.id NOT IN(0
+        <foreach collection="param5" index="index" item="item">
+            , #{item}
+        </foreach>
+        )
+        LIMIT 1
     </select>
 </mapper>

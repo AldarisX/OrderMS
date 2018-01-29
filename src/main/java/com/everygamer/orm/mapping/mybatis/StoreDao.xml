@@ -31,7 +31,7 @@
                 statis.price,
                 statis.exData,
                 statis.upDate
-                FROM item_list_statistics AS statis, item_type, manufactor AS manu
+                FROM item_list_statis AS statis, item_type, manufactor AS manu
                 WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id AND statis.itemType=#{type}
                 <if test="kw!=null">
                     AND statis.name LIKE #{kw}

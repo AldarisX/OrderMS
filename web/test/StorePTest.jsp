@@ -143,7 +143,7 @@
 
             String exData = exDataList.get(getRD(0, exDataList.size())).toString();
 
-            storeService.addItem(name, 2, manu, model, rdCount, BigDecimal.valueOf(rdPrice), exData, null);
+            storeService.addItem(name, 1, manu, model, rdCount, BigDecimal.valueOf(rdPrice), exData, null);
 //            storeService.addItem("RX480-6G", 5, 6, "RX480", rdCount, rdPrice);
         }
     }

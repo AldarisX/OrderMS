@@ -20,8 +20,8 @@ public class ItemListStatisticsDaoImpl extends SqlSessionDaoSupport implements I
     }
 
     @Override
-    public BaseItem isExist(String name, Integer itemType, Integer manu, String model, String exData) {
-        return dao.isExist(name, itemType, manu, model, exData);
+    public BaseItem isExist(String name, Integer itemType, Integer manu, String exData) {
+        return dao.isExist(name, itemType, manu, exData);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class ItemListStatisticsDaoImpl extends SqlSessionDaoSupport implements I
     }
 
     @Override
-    public int addStatis(String name, Integer itemType, Integer manu, String model, Integer num, BigDecimal price, String exData) {
-        int cRows = dao.addStatis(name, itemType, manu, model, num, price, exData);
+    public int addStatis(String name, Integer itemType, Integer manu, Integer num, BigDecimal price, String exData) {
+        int cRows = dao.addStatis(name, itemType, manu, num, price, exData);
         if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: addStatis");
         }
@@ -48,8 +48,8 @@ public class ItemListStatisticsDaoImpl extends SqlSessionDaoSupport implements I
     }
 
     @Override
-    public int splitItem(String name, Integer itemType, Integer manu, String model, Integer num, BigDecimal price, String exData) {
-        int cRows = dao.splitItem(name, itemType, manu, model, num, price, exData);
+    public int splitItem(String name, Integer itemType, Integer manu, Integer num, BigDecimal price, String exData) {
+        int cRows = dao.splitItem(name, itemType, manu, num, price, exData);
         if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: splitItem");
         }

@@ -98,4 +98,21 @@ public class ItemStoreControl extends BaseControl {
         }
         return result.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(params = "action=itemOut")
+    public String itemOut(String items, String desc) {
+        JSONObject result = new JSONObject();
+
+        try {
+            JSONArray itemsArray = JSONArray.fromObject(items);
+            storeService.itemOut(itemsArray, desc);
+            result.accumulate("result", true);
+        } catch (JSONException e) {
+            result.accumulate("result", false);
+            result.accumulate("msg", "JS异常");
+        }
+
+        return result.toString();
+    }
 }

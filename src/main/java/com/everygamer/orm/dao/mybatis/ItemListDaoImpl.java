@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository("ItemListDao")
@@ -36,6 +37,11 @@ public class ItemListDaoImpl extends SqlSessionDaoSupport implements ItemListDao
     }
 
     @Override
+    public BaseItem getItemByCondition(String name, int type, int manu, String exData, ArrayList<Integer> notIN) {
+        return dao.getItemByCondition(name, type, manu, exData, notIN);
+    }
+
+    @Override
     public int mergeExData(int itemType, String exData) {
         return dao.mergeExData(itemType, exData);
     }
@@ -54,6 +60,15 @@ public class ItemListDaoImpl extends SqlSessionDaoSupport implements ItemListDao
         int cRows = dao.delItem(id);
         if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: delItem");
+        }
+        return cRows;
+    }
+
+    @Override
+    public int splitItem(int id, int count) {
+        int cRows = dao.splitItem(id, count);
+        if (cRows != 1) {
+            throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: splitItem");
         }
         return cRows;
     }

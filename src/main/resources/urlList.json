@@ -40,5 +40,12 @@
     "mapper": "manu_type.html",
     "url": "manu_type.jsp",
     "isHeadNav": true
+  },
+  {
+    "name": "selectItem",
+    "dpName": "选择物品",
+    "mapper": "select_item.html",
+    "url": "select_item.jsp",
+    "isHeadNav": false
   }
 ]
