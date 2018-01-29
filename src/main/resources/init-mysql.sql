@@ -25,37 +25,52 @@ DROP TABLE IF EXISTS `item_list`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_list` (
-  `id`         INT(11)        NOT NULL AUTO_INCREMENT,
-  `name`       VARCHAR(65)    NOT NULL,
-  `itemType`   INT(11)        NOT NULL,
-  `manufactor` INT(11)        NOT NULL,
-  `model`      VARCHAR(64)             DEFAULT NULL,
-  `count`      INT(11)        NOT NULL,
-  `remain`     INT(11)                 DEFAULT NULL,
-  `price`      DECIMAL(32, 5) NOT NULL,
+  `id`         INT(11)        NOT NULL AUTO_INCREMENT
+  COMMENT '入库ID',
+  `name`       VARCHAR(65)    NOT NULL
+  COMMENT '型号',
+  `itemType`   INT(11)        NOT NULL
+  COMMENT '物品类型ID(逻辑映射)',
+  `manufactor` INT(11)        NOT NULL
+  COMMENT '厂商ID(逻辑映射)',
+  `model`      VARCHAR(64)             DEFAULT NULL
+  COMMENT '名称(留着备用)',
+  `count`      INT(11)        NOT NULL
+  COMMENT '入库数量',
+  `remain`     INT(11)                 DEFAULT NULL
+  COMMENT '剩余',
+  `price`      DECIMAL(32, 5) NOT NULL
+  COMMENT '进价',
   `exData`     LONGTEXT CHARACTER SET utf8mb4
-  COLLATE utf8mb4_bin                  DEFAULT NULL,
-  `desc`       TEXT                    DEFAULT NULL,
-  `isAlive`    TINYINT(4)              DEFAULT 1,
-  `insDate`    INT(11)                 DEFAULT NULL,
-  `delDate`    INT(11)                 DEFAULT NULL,
-  `upDate`     INT(11)                 DEFAULT NULL,
+  COLLATE utf8mb4_bin                  DEFAULT NULL
+  COMMENT '附加数据(JSON)',
+  `desc`       TEXT                    DEFAULT NULL
+  COMMENT '备注',
+  `isAlive`    TINYINT(4)              DEFAULT 1
+  COMMENT '是否删除',
+  `insDate`    INT(11)                 DEFAULT NULL
+  COMMENT '插入时间',
+  `delDate`    INT(11)                 DEFAULT NULL
+  COMMENT '删除时间',
+  `upDate`     INT(11)                 DEFAULT NULL
+  COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `t_index` (`itemType`, `manufactor`, `name`, `upDate`, `insDate`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 100002
-  DEFAULT CHARSET = utf8;
+  AUTO_INCREMENT = 100001
+  DEFAULT CHARSET = utf8
+  COMMENT ='入库记录表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `item_list_statistics`
+-- Table structure for table `item_list_statis`
 --
 
-DROP TABLE IF EXISTS `item_list_statistics`;
+DROP TABLE IF EXISTS `item_list_statis`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `item_list_statistics` (
+CREATE TABLE `item_list_statis` (
   `id`         INT(11)        NOT NULL AUTO_INCREMENT,
   `name`       VARCHAR(65)    NOT NULL,
   `itemType`   INT(11)        NOT NULL,
@@ -70,7 +85,7 @@ CREATE TABLE `item_list_statistics` (
   KEY `t_index` (`itemType`, `manufactor`, `name`, `upDate`)
 )
   ENGINE = InnoDB
-  AUTO_INCREMENT = 2442
+  AUTO_INCREMENT = 2441
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -82,18 +97,45 @@ DROP TABLE IF EXISTS `item_out`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_out` (
-  `id`        INT(11)        NOT NULL AUTO_INCREMENT,
-  `item_list` INT(11)        NOT NULL,
-  `count`     INT(11)        NOT NULL,
-  `price`     DECIMAL(32, 5) NOT NULL,
-  `desc`      TEXT                    DEFAULT NULL,
-  `isAlive`   TINYINT(4)              DEFAULT 1,
-  `insDate`   INT(11)                 DEFAULT NULL,
-  `upDate`    INT(11)                 DEFAULT NULL,
-  `delDate`   INT(11)                 DEFAULT NULL,
+  `id`               INT(11)        NOT NULL AUTO_INCREMENT,
+  `item_list_statis` INT(11)        NOT NULL,
+  `item_list`        LONGTEXT CHARACTER SET utf8mb4
+  COLLATE utf8mb4_bin               NOT NULL
+  COMMENT '映射到BaseItem.exData',
+  `count`            INT(11)        NOT NULL,
+  `price`            DECIMAL(32, 5) NOT NULL,
+  `desc`             TEXT                    DEFAULT NULL,
+  `isAlive`          TINYINT(4)              DEFAULT 1,
+  `insDate`          INT(11)                 DEFAULT NULL,
+  `upDate`           INT(11)                 DEFAULT NULL,
+  `delDate`          INT(11)                 DEFAULT NULL,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
+  AUTO_INCREMENT = 3
+  DEFAULT CHARSET = utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `item_out_statis`
+--
+
+DROP TABLE IF EXISTS `item_out_statis`;
+/*!40101 SET @saved_cs_client = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `item_out_statis` (
+  `id`               INT(11)        NOT NULL AUTO_INCREMENT,
+  `item_list_statis` INT(11)        NOT NULL,
+  `count`            INT(11)        NOT NULL,
+  `price`            DECIMAL(32, 5) NOT NULL,
+  `alive`            TINYINT(4)              DEFAULT 1,
+  `insDate`          INT(11)                 DEFAULT NULL,
+  `upDate`           INT(11)                 DEFAULT NULL,
+  `delDate`          INT(11)                 DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -105,19 +147,27 @@ DROP TABLE IF EXISTS `item_type`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_type` (
-  `id`      INT(11)    NOT NULL AUTO_INCREMENT,
-  `name`    VARCHAR(45)         DEFAULT NULL,
+  `id`      INT(11)    NOT NULL AUTO_INCREMENT
+  COMMENT '物品类型ID',
+  `name`    VARCHAR(45)         DEFAULT NULL
+  COMMENT '物品类型名',
   `exData`  LONGTEXT CHARACTER SET utf8mb4
-  COLLATE utf8mb4_bin           DEFAULT NULL,
-  `isAlive` TINYINT(4) NOT NULL DEFAULT 1,
-  `insDate` INT(11)             DEFAULT NULL,
-  `delDate` INT(11)             DEFAULT NULL,
-  `upDate`  INT(11)             DEFAULT NULL,
+  COLLATE utf8mb4_bin           DEFAULT NULL
+  COMMENT '附加数据(JSON)',
+  `isAlive` TINYINT(4) NOT NULL DEFAULT 1
+  COMMENT '时候删除',
+  `insDate` INT(11)             DEFAULT NULL
+  COMMENT '插入时间',
+  `delDate` INT(11)             DEFAULT NULL
+  COMMENT '删除时间',
+  `upDate`  INT(11)             DEFAULT NULL
+  COMMENT '更新时间',
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 3
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COMMENT ='物品类型表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,18 +178,26 @@ DROP TABLE IF EXISTS `manufactor`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `manufactor` (
-  `id`       INT(11) NOT NULL AUTO_INCREMENT,
-  `name`     VARCHAR(45)      DEFAULT NULL,
-  `itemType` INT(11)          DEFAULT -1,
-  `isAlive`  TINYINT(4)       DEFAULT 1,
-  `insDate`  INT(11)          DEFAULT NULL,
-  `delDate`  INT(11)          DEFAULT NULL,
-  `upDate`   INT(11)          DEFAULT NULL,
+  `id`       INT(11) NOT NULL AUTO_INCREMENT
+  COMMENT '厂商ID',
+  `name`     VARCHAR(45)      DEFAULT NULL
+  COMMENT '厂商名',
+  `itemType` INT(11)          DEFAULT -1
+  COMMENT '物品类型ID(逻辑映射)',
+  `isAlive`  TINYINT(4)       DEFAULT 1
+  COMMENT '是否删除',
+  `insDate`  INT(11)          DEFAULT NULL
+  COMMENT '插入时间',
+  `delDate`  INT(11)          DEFAULT NULL
+  COMMENT '删除时间',
+  `upDate`   INT(11)          DEFAULT NULL
+  COMMENT '更新时间',
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
   AUTO_INCREMENT = 12
-  DEFAULT CHARSET = utf8;
+  DEFAULT CHARSET = utf8
+  COMMENT ='厂商表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
 
@@ -151,4 +209,4 @@ CREATE TABLE `manufactor` (
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-24 13:04:43
+-- Dump completed on 2018-01-29 13:35:05

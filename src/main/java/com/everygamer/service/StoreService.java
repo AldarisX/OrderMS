@@ -95,75 +95,82 @@ public class StoreService {
             ItemType itemType = itemTypeDao.getItemTypeByName(item.getString("itemType"));
             //当前物品厂商
             Manufactor manu = manuDao.getManufactor(item.getString("manufactor"), itemType.getId());
-            //是否计数完成
-            boolean countDone = false;
-            //移除的数量
-            int checkCount = 0;
-            //选择的物品
-            ArrayList<BaseItem> selectItems = new ArrayList<>();
-            //被选择的入库记录的ID
-            ArrayList<Integer> selectIds = new ArrayList<>();
-            //从入库记录中选取
-            while (!countDone) {
-                BaseItem tarItem = itemListDao.getItemByCondition(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"), selectIds);
-                //添加到被选择的入库记录的ID中
-                selectIds.add(tarItem.getId());
-                //添加到被选择的物品中
-                selectItems.add(tarItem);
-                //移除物品的数量
-                checkCount += tarItem.getCount();
-
-                //如果已经移除够了
-                if (checkCount >= item.getInt("count")) {
-                    //让循环结束
-                    countDone = true;
-                }
-            }
-
-            //记到数据库中的 被选择的物品
-            JSONArray tarItems = new JSONArray();
-            //遍历被选择的物品(选择了多个 不含最后一个的情况)
-            for (int j = 0; j < selectItems.size() - 1; j++) {
-                BaseItem tarItem = selectItems.get(j);
-                //将物品从入库记录中扣除
-                itemListDao.splitItem(tarItem.getId(), tarItem.getCount());
-                //将物品从库存统计中扣除
-                itemListStatisDao.splitItem(tarItem.getName(), itemType.getId(), manu.getId(), tarItem.getCount(), tarItem.getPrice(), item.getString("exData"));
-                //出库的物品记录
-                JSONObject tarItemJson = new JSONObject();
-                tarItemJson.accumulate("id", tarItem.getId());
-                tarItemJson.accumulate("count", tarItem.getCount());
-                tarItems.add(tarItemJson);
-            }
-            //被选择的物品(第一个 或者最后一个的情况)
-            if (selectItems.size() >= 1) {
-                BaseItem tarItem = selectItems.get(selectItems.size() - 1);
-                //计算差值
-                int countDiff = tarItem.getCount() - (checkCount - item.getInt("count"));
-                if (countDiff > 0) {
-                    itemListDao.splitItem(tarItem.getId(), countDiff);
-                    itemListStatisDao.splitItem(tarItem.getName(), itemType.getId(), manu.getId(), countDiff, tarItem.getPrice(), item.getString("exData"));
-                } else if (countDiff == 0) {
-                    itemListDao.splitItem(tarItem.getId(), tarItem.getCount());
-                    itemListStatisDao.splitItem(tarItem.getName(), itemType.getId(), manu.getId(), tarItem.getCount(), tarItem.getPrice(), item.getString("exData"));
-                } else {
-                    //以免万一
-                    throw new DataCheckExpection("发生意外情况!!!!\n" + this.getClass().getName() + "\nitemOut");
-                }
-                JSONObject tarItemJson = new JSONObject();
-                tarItemJson.accumulate("id", tarItem.getId());
-                tarItemJson.accumulate("count", countDiff);
-                tarItems.add(tarItemJson);
-            }
-            //添加到出库记录
-            itemOutDao.itemOut(tarItems.toString(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")), desc);
-            BaseItem itemOutStatis = itemOutStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
-            //更新出库统计
-            if (itemOutStatis != null) {
-                itemOutStatisDao.updateStatis(itemOutStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+            //对应的库存统计统计
+            BaseItem itemStatis = itemListStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
+            //正常情况 库存肯定会有记录 如果找不到库存记录那么肯定为异常
+            if (itemStatis == null) {
+                throw new DataCheckExpection("数据异常，库存中没有对应记录\n" + this.getClass().getName() + "\nitemOut");
             } else {
-                BaseItem itemListStatis = itemListStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
-                itemOutStatisDao.addStatis(itemListStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+                //是否计数完成
+                boolean countDone = false;
+                //移除的数量
+                int checkCount = 0;
+                //选择的物品
+                ArrayList<BaseItem> selectItems = new ArrayList<>();
+                //被选择的入库记录的ID
+                ArrayList<Integer> selectIds = new ArrayList<>();
+                //从入库记录中选取
+                while (!countDone) {
+                    BaseItem tarItem = itemListDao.getItemByCondition(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"), selectIds);
+                    //添加到被选择的入库记录的ID中
+                    selectIds.add(tarItem.getId());
+                    //添加到被选择的物品中
+                    selectItems.add(tarItem);
+                    //移除物品的数量
+                    checkCount += tarItem.getCount();
+
+                    //如果已经移除够了
+                    if (checkCount >= item.getInt("count")) {
+                        //让循环结束
+                        countDone = true;
+                    }
+                }
+
+                //记到数据库中的 被选择的物品
+                JSONArray tarItems = new JSONArray();
+                //遍历被选择的物品(选择了多个 不含最后一个的情况)
+                for (int j = 0; j < selectItems.size() - 1; j++) {
+                    BaseItem tarItem = selectItems.get(j);
+                    //将物品从入库记录中扣除
+                    itemListDao.splitItem(tarItem.getId(), tarItem.getCount());
+                    //将物品从库存统计中扣除
+                    itemListStatisDao.splitItem(tarItem.getName(), itemType.getId(), manu.getId(), tarItem.getCount(), tarItem.getPrice(), item.getString("exData"));
+                    //出库的物品记录
+                    JSONObject tarItemJson = new JSONObject();
+                    tarItemJson.accumulate("id", tarItem.getId());
+                    tarItemJson.accumulate("count", tarItem.getCount());
+                    tarItems.add(tarItemJson);
+                }
+                //被选择的物品(第一个 或者最后一个的情况)
+                if (selectItems.size() >= 1) {
+                    BaseItem tarItem = selectItems.get(selectItems.size() - 1);
+                    //计算差值
+                    int countDiff = tarItem.getCount() - (checkCount - item.getInt("count"));
+                    if (countDiff > 0) {
+                        itemListDao.splitItem(tarItem.getId(), countDiff);
+                        itemListStatisDao.splitItem(tarItem.getName(), itemType.getId(), manu.getId(), countDiff, tarItem.getPrice(), item.getString("exData"));
+                    } else if (countDiff == 0) {
+                        itemListDao.splitItem(tarItem.getId(), tarItem.getCount());
+                        itemListStatisDao.splitItem(tarItem.getName(), itemType.getId(), manu.getId(), tarItem.getCount(), tarItem.getPrice(), item.getString("exData"));
+                    } else {
+                        //以免万一
+                        throw new DataCheckExpection("库存不足!!!!\n" + this.getClass().getName() + "\nitemOut");
+                    }
+                    JSONObject tarItemJson = new JSONObject();
+                    tarItemJson.accumulate("id", tarItem.getId());
+                    tarItemJson.accumulate("count", countDiff);
+                    tarItems.add(tarItemJson);
+                }
+                //添加到出库记录
+                itemOutDao.itemOut(itemStatis.getId(), tarItems.toString(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")), desc);
+                BaseItem itemOutStatis = itemOutStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
+                //更新出库统计
+                if (itemOutStatis != null) {
+                    itemOutStatisDao.updateStatis(itemOutStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+                } else {
+                    BaseItem itemListStatis = itemListStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
+                    itemOutStatisDao.addStatis(itemListStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+                }
             }
         }
     }
