@@ -4,48 +4,61 @@
     "dpName": "主页",
     "mapper": "index.html",
     "url": "index.jsp",
-    "isHeadNav": true
+    "showInHead": true
   },
   {
     "name": "store",
-    "dpName": "入库",
+    "dpName": "仓库管理",
     "mapper": "store.html",
     "url": "store.jsp",
-    "isHeadNav": true
-  },
-  {
-    "name": "storeList",
-    "dpName": "库存数据",
-    "mapper": "store_list.html",
-    "url": "store_list.jsp",
-    "isHeadNav": true
-  },
-  {
-    "name": "itemOut",
-    "dpName": "出库",
-    "mapper": "item_out.html",
-    "url": "item_out.jsp",
-    "isHeadNav": true
+    "showInHead": true,
+    "subHead": [
+      {
+        "name": "store",
+        "dpName": "入库",
+        "mapper": "store.html",
+        "url": "store.jsp"
+      },
+      {
+        "name": "storeList",
+        "dpName": "入库记录",
+        "mapper": "store_list.html",
+        "url": "store_list.jsp"
+      },
+      {
+        "name": "itemOut",
+        "dpName": "出库",
+        "mapper": "item_out.html",
+        "url": "item_out.jsp"
+      }
+    ]
   },
   {
     "name": "itemType",
-    "dpName": "物品类型",
+    "dpName": "系统数据",
     "mapper": "item_type.html",
     "url": "item_type.jsp",
-    "isHeadNav": true
-  },
-  {
-    "name": "manuType",
-    "dpName": "厂商",
-    "mapper": "manu_type.html",
-    "url": "manu_type.jsp",
-    "isHeadNav": true
+    "showInHead": true,
+    "subHead": [
+      {
+        "name": "itemType",
+        "dpName": "物品类型",
+        "mapper": "item_type.html",
+        "url": "item_type.jsp"
+      },
+      {
+        "name": "manuType",
+        "dpName": "厂商",
+        "mapper": "manu_type.html",
+        "url": "manu_type.jsp"
+      }
+    ]
   },
   {
     "name": "selectItem",
     "dpName": "选择物品",
     "mapper": "select_item.html",
     "url": "select_item.jsp",
-    "isHeadNav": false
+    "showInHead": false
   }
 ]
