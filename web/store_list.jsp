@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String mapper = request.getParameter("mapper");
-    String dpName = "库存数据";
+    String dpName = "入库记录";
     if (mapper != null) {
         dpName = request.getParameter("dpName");
         String path = SiteConfig.getInstance().getWarLoc() + mapper;
