@@ -76,6 +76,7 @@ public class OnStartUP extends HttpServlet {
                 break;
             }
         }
+        wConfig.addData("serverHost", "http://127.0.0.1:8080/");
         wConfig.addData("isDebug", isDebug);
 
         //如过是调试模式就启动静态页面处理器
@@ -83,9 +84,7 @@ public class OnStartUP extends HttpServlet {
             staticPageMaker();
     }
 
-    public void staticPageMaker() {
-        SiteConfig wConfig = SiteConfig.getInstance();
-        wConfig.addData("serverHost", "http://127.0.0.1:8080/");
+    private void staticPageMaker() {
         Timer makeHtmlTimer = new Timer();
         makeHtmlTimer.schedule(new TimerTask() {
             @Override
