@@ -52,7 +52,7 @@ public class ItemTypeControl extends BaseControl {
         JSONObject result = new JSONObject();
 
         if ("\"\"".equals(exData)) {
-            exData = "";
+            exData = null;
         }
 
         ItemType itemType = itemTypeService.getItemTypeByName(name);
