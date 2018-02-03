@@ -67,7 +67,6 @@ public class StoreService {
         } else {
             itemListStatisDao.addStatis(name, itemType, manu, num, price, exData);
         }
-
         return cRows;
     }
 
@@ -80,9 +79,13 @@ public class StoreService {
      */
     @Transactional
     public synchronized int[] delItem(int id) throws DBUpdateException {
+        //取得入库的数据
         BaseItem item = itemListDao.getItemById(id);
+        //从库存记录中删除
         int cRows = itemListDao.delItem(id);
+        //从库存统计中减去
         int xRows = itemListStatisDao.splitItem(item.getName(), Integer.parseInt(item.getItemType()), Integer.parseInt(item.getManufactor()), item.getCount(), item.getPrice(), item.getExData());
+        //可以不要返回值
         return new int[]{cRows, xRows};
     }
 
