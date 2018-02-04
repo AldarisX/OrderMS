@@ -59,7 +59,11 @@
                 items: JSON.stringify(selectedItem)
             }, function (data) {
                 if (data.result) {
-
+                    alert("操作成功");
+                    $("#itemStatis").text(" 一共选择了0个物品 共0元");
+                    $("#selectedItem table").empty();
+                    $("#selectedItem table").append("<tr><td>型号</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
+                    loadStore();
                 } else {
                     alert(data.msg);
                 }

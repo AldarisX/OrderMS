@@ -3,19 +3,19 @@
 <mapper namespace="com.everygamer.orm.dao.ItemOutStatisDao">
 
     <insert id="addStatis">
-        INSERT INTO item_out_statis (item_list_statis, `count`, price, `upDate`)
+        INSERT INTO item_out_statis (item_list_statis, "count", price, up_date)
         VALUES (#{param1}, #{param2}, #{param3} * #{param2}, UNIX_TIMESTAMP())
     </insert>
     <update id="updateStatis">
         UPDATE item_out_statis
-        SET `count` = `count` + #{param2}, price = price + (#{param3} * #{param2}), `upDate` = UNIX_TIMESTAMP()
+        SET "count" = "count" + #{param2}, price = price + (#{param3} * #{param2}), up_date = UNIX_TIMESTAMP()
         WHERE id = #{param1}
     </update>
     <select id="isExist" resultType="com.everygamer.bean.BaseItem">
         SELECT item.id
         FROM item_out_statis AS item, item_list_statis AS statis
-        WHERE item.item_list_statis = statis.id AND statis.name = #{param1} AND statis.itemType = #{param2} AND
+        WHERE item.item_list_statis = statis.id AND statis.name = #{param1} AND statis.item_type = #{param2} AND
               statis.manufactor = #{param3} AND
-              statis.exData = #{param4}
+        statis.ex_data = #{param4}
     </select>
 </mapper>

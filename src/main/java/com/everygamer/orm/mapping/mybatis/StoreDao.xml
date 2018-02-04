@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.everygamer.orm.dao.StoreDao">
+    <resultMap id="BaseItem" type="com.everygamer.bean.BaseItem">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="itemType" column="item_type"/>
+        <result property="manufactor" column="manufactor"/>
+        <result property="model" column="model"/>
+        <result property="count" column="count"/>
+        <result property="remain" column="remain"/>
+        <result property="price" column="price"/>
+        <result property="exData" column="ex_data"/>
+        <result property="desc" column="desc"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="delDate" column="del_date"/>
+        <result property="upDate" column="up_date"/>
+    </resultMap>
 
-    <select id="searchStore" resultType="com.everygamer.bean.BaseItem">
+    <select id="searchStore" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
         SELECT
         statis.name,
-        item_type.name AS itemType,
+        item_type.name AS item_type,
         manu.name AS manufactor,
         <choose>
             <when test="exData==null">
-                SUM(statis.count) AS count,
+                SUM(statis.count) AS "count",
                 SUM(statis.price) AS price,
-                statis.upDate
+                statis.up_date
                 FROM item_list_statis AS statis, item_type, manufactor AS manu
-                WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id
+                WHERE statis.item_type = item_type.id AND statis.manufactor = manu.id
                 <if test="type!=null">
-                    AND statis.itemType=#{type}
+                    AND statis.item_type=#{type}
                 </if>
                 <if test="kw!=null">
                     AND statis.name LIKE #{kw}
@@ -23,26 +39,27 @@
                 <if test="manu!=null">
                     AND statis.manufactor=#{manu}
                 </if>
-                GROUP BY statis.name,statis.manufactor
-                ORDER BY statis.upDate DESC,statis.id
+                GROUP BY statis.name, statis.manufactor, item_type.name, manu.name, statis.up_date, statis.id
+                ORDER BY statis.up_date DESC,statis.id
             </when>
             <otherwise>
                 statis.count,
                 statis.price,
-                statis.exData,
-                statis.upDate
+                statis.ex_data,
+                statis.up_date
                 FROM item_list_statis AS statis, item_type, manufactor AS manu
-                WHERE statis.itemType = item_type.id AND statis.manufactor = manu.id AND statis.itemType=#{type}
+                WHERE statis.item_type = item_type.id AND statis.manufactor = manu.id AND statis.item_type=#{type}
                 <if test="kw!=null">
                     AND statis.name LIKE #{kw}
                 </if>
                 <if test="manu!=null">
                     AND statis.manufactor=#{manu}
                 </if>
-                <foreach collection="exData" index="key" item="val">
-                    AND JSON_EXTRACT(statis.exData,CONCAT("$.",#{key})) = #{val}
-                </foreach>
-                ORDER BY statis.upDate DESC,statis.id
+                <!--<foreach collection="exData" index="key" item="val">-->
+                <!--AND JSON_EXTRACT(statis.ex_data,CONCAT("$.",#{key})) = #{val}-->
+                <!--</foreach>-->
+                AND statis.ex_data @>#{exData}::jsonb
+                ORDER BY statis.up_date DESC,statis.id
             </otherwise>
         </choose>
     </select>
@@ -50,18 +67,18 @@
         SELECT
         item.id,
         item.name,
-        item_type.name AS itemType,
+        item_type.name AS item_type,
         manu.name AS manufactor,
         item.count,
         item.remain,
         item.price,
-        item.exData,
+        item.ex_data,
         item.desc,
-        item.insDate
+        item.ins_date
         FROM item_list AS item, item_type, manufactor AS manu
-        WHERE item.itemType=item_type.id AND item.manufactor=manu.id
+        WHERE item.item_type=item_type.id AND item.manufactor=manu.id
         <if test="type!=null">
-            AND item.itemType=#{type}
+            AND item.item_type=#{type}
         </if>
         <if test="kw!=null">
             AND item.name LIKE #{kw}
@@ -70,29 +87,30 @@
             AND manu.name=#{manu}
         </if>
         <if test="exData!=null">
-            <foreach collection="exData" index="key" item="val">
-                AND JSON_EXTRACT(item.exData,CONCAT("$.",#{key})) = #{val}
-            </foreach>
+            <!--<foreach collection="exData" index="key" item="val">-->
+            <!--AND JSON_EXTRACT(item.ex_data,CONCAT("$.",#{key})) = #{val}-->
+            <!--</foreach>-->
+            AND item.ex_data @> #{exData}::jsonb
         </if>
         <choose>
             <when test="startTime!=null and endTime!=null">
-                AND item.insDate BETWEEN #{startTime} AND #{endTime}
+                AND item.ins_date BETWEEN #{startTime} AND #{endTime}
             </when>
             <otherwise>
                 <choose>
                     <when test="startTime!=null">
-                        AND item.insDate &gt;= #{startTime}
+                        AND item.ins_date &gt;= #{startTime}
                     </when>
                     <otherwise>
                         <choose>
                             <when test="endTime!=null">
-                                AND item.insDate &lt;= #{endTime}
+                                AND item.ins_date &lt;= #{endTime}
                             </when>
                         </choose>
                     </otherwise>
                 </choose>
             </otherwise>
         </choose>
-        ORDER BY item.insDate DESC
+        ORDER BY item.ins_date DESC
     </select>
 </mapper>

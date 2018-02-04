@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @Repository("StoreDao")
 @Scope("singleton")
@@ -22,7 +21,7 @@ public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
     }
 
     @Override
-    public List<BaseItem> searchStore(Integer type, String kw, Integer manu, Map<String, Object> exData) {
+    public List<BaseItem> searchStore(Integer type, String kw, Integer manu, String exData) {
         if ("".equals(kw) || kw == null) {
             kw = null;
         } else {
@@ -32,7 +31,7 @@ public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
     }
 
     @Override
-    public List<BaseItem> listStore(Integer type, String kw, String manu, Map<String, Object> exData, Integer startTime, Integer endTime) {
+    public List<BaseItem> listStore(Integer type, String kw, String manu, String exData, Integer startTime, Integer endTime) {
         if ("".equals(kw) || kw == null) {
             kw = null;
         } else {

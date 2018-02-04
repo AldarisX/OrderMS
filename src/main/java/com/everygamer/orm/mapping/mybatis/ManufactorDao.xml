@@ -1,55 +1,64 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.everygamer.orm.dao.ManufactorDao">
+    <resultMap id="Manu" type="com.everygamer.bean.Manufactor">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="itemType" column="item_type"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="delDate" column="del_date"/>
+        <result property="upDate" column="up_date"/>
+    </resultMap>
+
     <insert id="addManufactor">
-        INSERT INTO manufactor (name, itemType, insDate) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
+        INSERT INTO manufactor ("name", item_type, ins_date) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
     </insert>
     <update id="delManufactor">
         UPDATE manufactor
-        SET isAlive = 0, delDate = UNIX_TIMESTAMP()
+        SET is_alive = 0, del_date = UNIX_TIMESTAMP()
         WHERE id = #{param1}
     </update>
 
-    <select id="getAllManufactor" resultType="com.everygamer.bean.Manufactor">
+    <select id="getAllManufactor" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT
             manufactor.id,
             manufactor.name,
-            item_type.name AS itemType,
-            manufactor.insDate
+        item_type.name AS item_type,
+        manufactor.ins_date
         FROM manufactor
-            LEFT JOIN item_type ON manufactor.itemType = item_type.id
-        WHERE manufactor.isAlive = 1
-        GROUP BY manufactor.name
+        LEFT JOIN item_type ON manufactor.item_type = item_type.id
+        WHERE manufactor.is_alive = 1
+        GROUP BY manufactor.name, manufactor.id, item_type.name
     </select>
-    <select id="getAllManufactorByItemType" resultType="com.everygamer.bean.Manufactor">
+    <select id="getAllManufactorByItemType" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT
             manufactor.id,
             manufactor.name,
-            item_type.name AS itemType,
-            manufactor.insDate
+        item_type.name AS item_type,
+        manufactor.ins_date
         FROM manufactor
-            LEFT JOIN item_type ON manufactor.itemType = item_type.id
-        WHERE itemType = #{param1} AND manufactor.isAlive = 1
-        GROUP BY `name`
+        LEFT JOIN item_type ON manufactor.item_type = item_type.id
+        WHERE item_type = #{param1} AND manufactor.is_alive = 1
     </select>
-    <select id="getAllManufactorByName" resultType="com.everygamer.bean.Manufactor">
+    <select id="getAllManufactorByName" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT
             manufactor.id,
             manufactor.name,
-            item_type.name     AS itemType,
-            manufactor.insDate AS insDate
+        item_type.name AS item_type,
+        manufactor.ins_date AS ins_date
         FROM manufactor
-            LEFT JOIN item_type ON manufactor.itemType = item_type.id
-        WHERE manufactor.name = #{param} AND manufactor.isAlive = 1
+        LEFT JOIN item_type ON manufactor.item_type = item_type.id
+        WHERE manufactor.name = #{param} AND manufactor.is_alive = 1
     </select>
-    <select id="getManufactor" resultType="com.everygamer.bean.Manufactor">
+    <select id="getManufactor" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT
             manufactor.id,
             manufactor.name,
-            item_type.name     AS itemType,
-            manufactor.insDate AS insDate
+        item_type.name AS item_type,
+        manufactor.ins_date AS ins_date
         FROM manufactor
-            LEFT JOIN item_type ON manufactor.itemType = item_type.id
-        WHERE manufactor.name = #{param1} AND manufactor.itemType = #{param2} AND manufactor.isAlive = 1
+        LEFT JOIN item_type ON manufactor.item_type = item_type.id
+        WHERE manufactor.name = #{param1} AND manufactor.item_type = #{param2} AND manufactor.is_alive = 1
     </select>
 </mapper>

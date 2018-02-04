@@ -1,4 +1,4 @@
-package com.everygamer.bean.handler;
+package com.everygamer.orm.dao.mybatis.handler;
 
 import com.everygamer.bean.OrderItem;
 import org.apache.ibatis.type.BaseTypeHandler;
