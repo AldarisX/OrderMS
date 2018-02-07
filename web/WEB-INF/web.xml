@@ -8,6 +8,10 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <error-page>
+        <location>/error.do</location>
+    </error-page>
+
     <!--初始化servlet-->
     <servlet>
         <servlet-name>initServlet</servlet-name>

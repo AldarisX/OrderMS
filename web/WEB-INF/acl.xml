@@ -7,6 +7,7 @@
     <defaultRedirectUrl>/login.html</defaultRedirectUrl>
     <defaultLevel>6</defaultLevel>
     <white-list>
+        <url>.*/error/</url>
         <url>.*/favicon.ico$</url>
         <url>.*/login.jsp$</url>
         <url>.*/login.html$</url>
