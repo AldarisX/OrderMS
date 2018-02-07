@@ -8,11 +8,26 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <!--初始化servlet-->
     <servlet>
         <servlet-name>initServlet</servlet-name>
         <servlet-class>com.everygamer.web.OnStartUP</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
+
+    <!--访问控制过滤器-->
+    <filter>
+        <filter-name>ACL</filter-name>
+        <filter-class>cn.misakanet.web.acl.servlet.ACLFilter</filter-class>
+        <init-param>
+            <param-name>doLog</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>ACL</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <!--去掉jsp的换行-->
     <jsp-config>

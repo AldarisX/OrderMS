@@ -2,8 +2,8 @@ package com.everygamer.web;
 
 import cn.misakanet.site.SiteConfig;
 import cn.misakanet.tool.MakeHTML;
+import cn.misakanet.web.acl.servlet.ACLFilter;
 import org.apache.log4j.Logger;
-import org.springframework.web.context.SpringInit;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +15,9 @@ import java.net.URLDecoder;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
+
+//import cn.misakanet.web.ACLFilter;
 
 @WebServlet(name = "OnStartUP")
 public class OnStartUP extends HttpServlet {
@@ -45,16 +48,14 @@ public class OnStartUP extends HttpServlet {
             }
             logger.info("获取项目路径成功:" + wConfig.getWarLoc());
 
+            UUID token = UUID.randomUUID();
+            wConfig.addData("lweb-acl", token.toString());
+            logger.info("加载ACL");
+            ACLFilter.getInstance().load();
+
         } catch (UnsupportedEncodingException e) {
             logger.error("获取项目路径失败");
             e.printStackTrace();
-        }
-
-        try {
-            SpringInit springInit = SpringInit.getInstance();
-            springInit.initSpring(config.getServletContext());
-        } catch (Exception e) {
-            logger.error("Spring初始化出错");
         }
 
         try {

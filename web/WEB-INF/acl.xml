@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--ACL的配置文件-->
+<!--url使用正则表达式-->
+<ACList>
+    <condition>isLogin</condition>
+    <defaultCode>404</defaultCode>
+    <defaultRedirectUrl>/login.html</defaultRedirectUrl>
+    <defaultLevel>6</defaultLevel>
+    <white-list>
+        <url>.*/favicon.ico$</url>
+        <url>.*/login.jsp$</url>
+        <url>.*/login.html$</url>
+        <url>.*/js/jquery-3.2.1.min.js$</url>
+        <url>.*/css/common.css$</url>
+    </white-list>
+    <redirect>
+        <url redirect="/login.html">.*/$</url>
+        <url redirect="/login.jsp">.*/index.jsp</url>
+        <url redirect="/login.html">.*/index.html$</url>
+    </redirect>
+    <black-list>
+        <url>.*/*</url>
+    </black-list>
+</ACList>
