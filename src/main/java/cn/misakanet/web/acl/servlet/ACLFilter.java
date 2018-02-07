@@ -48,6 +48,10 @@ public class ACLFilter implements Filter {
         } else {
             HttpSession session = hreq.getSession();
             String reqURI = hreq.getRequestURI();
+            String queryString = hreq.getQueryString();
+            if (queryString != null) {
+                reqURI += "?" + hreq.getQueryString();
+            }
 
             ACL acl = aclCtrl.doArbite(session, reqURI);
             if (acl == null || acl.getState() == ACL.State.White) {
