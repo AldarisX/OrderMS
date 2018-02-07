@@ -50,14 +50,11 @@
                 FROM item_list_statis AS statis, item_type, manufactor AS manu
                 WHERE statis.item_type = item_type.id AND statis.manufactor = manu.id AND statis.item_type=#{type}
                 <if test="kw!=null">
-                    AND statis.name LIKE #{kw}
+                    AND statis.name ILIKE #{kw}
                 </if>
                 <if test="manu!=null">
                     AND statis.manufactor=#{manu}
                 </if>
-                <!--<foreach collection="exData" index="key" item="val">-->
-                <!--AND JSON_EXTRACT(statis.ex_data,CONCAT("$.",#{key})) = #{val}-->
-                <!--</foreach>-->
                 AND statis.ex_data @>#{exData}::jsonb
                 ORDER BY statis.up_date DESC,statis.id
             </otherwise>
@@ -81,15 +78,12 @@
             AND item.item_type=#{type}
         </if>
         <if test="kw!=null">
-            AND item.name LIKE #{kw}
+            AND item.name ILIKE #{kw}
         </if>
         <if test="manu!=null">
             AND manu.name=#{manu}
         </if>
         <if test="exData!=null">
-            <!--<foreach collection="exData" index="key" item="val">-->
-            <!--AND JSON_EXTRACT(item.ex_data,CONCAT("$.",#{key})) = #{val}-->
-            <!--</foreach>-->
             AND item.ex_data @> #{exData}::jsonb
         </if>
         <choose>
@@ -112,5 +106,19 @@
             </otherwise>
         </choose>
         ORDER BY item.ins_date DESC
+    </select>
+    <select id="getTopStore" resultType="com.everygamer.bean.BaseItem">
+        SELECT
+        statis.name,
+        item_type.name,
+        SUM(statis.count) AS "count"
+        FROM item_list_statis AS statis, item_type
+        WHERE statis.item_type = item_type.id
+        <if test="type!=null">
+            AND statis.item_type=#{type}
+        </if>
+        GROUP BY statis.name, item_type.name
+        ORDER BY SUM(statis.count) DESC
+        LIMIT #{count};
     </select>
 </mapper>

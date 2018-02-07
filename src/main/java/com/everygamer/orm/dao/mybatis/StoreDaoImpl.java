@@ -41,6 +41,11 @@ public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
     }
 
     @Override
+    public List<BaseItem> getTopStore(Integer type, int count) {
+        return dao.getTopStore(type, count);
+    }
+
+    @Override
     public void init() {
         dao = getSqlSession().getMapper(StoreDao.class);
     }
