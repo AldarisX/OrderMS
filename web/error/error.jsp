@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset=utf-8/>
@@ -50,7 +51,7 @@
             //判断是否是已知错误
             if (desc_msg === "") {
                 desc_msg = "未知错误  我们也不知道该怎么办";
-                img_Link = "000.png";
+                img_Link = "520.png";
             }
             //设置网页标题
             document.title = desc_msg;

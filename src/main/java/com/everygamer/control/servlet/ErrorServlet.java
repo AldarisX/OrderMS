@@ -14,6 +14,6 @@ public class ErrorServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        response.sendRedirect("error/error.html?error=" + statusCode);
+        response.sendRedirect("error/error.jsp?error=" + statusCode);
     }
 }
