@@ -13,6 +13,7 @@
         <url>.*/login.jsp$</url>
         <url>.*/login.html$</url>
         <url>.*/js/jquery-3.2.1.min.js$</url>
+        <url>.*/js/common.js$</url>
         <url>.*/css/common.css$</url>
         <url>.*/api/user\.json\?action=login</url>
     </white-list>

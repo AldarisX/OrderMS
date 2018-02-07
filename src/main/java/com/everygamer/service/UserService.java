@@ -33,7 +33,9 @@ public class UserService {
 
     public User getLogin(String uname, String passwd) {
         User u = userDao.getLogin(uname, passwd);
-        userDao.updateLoginTime(u.getId());
+        if (u != null) {
+            userDao.updateLoginTime(u.getId());
+        }
         return u;
     }
 

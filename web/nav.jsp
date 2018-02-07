@@ -45,6 +45,7 @@
                 }
             }
         %>
+        <li><a onclick="logout()" href="">退出</a></li>
     </ul>
     <ul id="sub_nav" class="headNav">
         <%

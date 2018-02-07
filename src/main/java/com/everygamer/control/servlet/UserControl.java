@@ -38,9 +38,15 @@ public class UserControl {
             }
         } else {
             result.accumulate("result", false);
-            result.accumulate("msg", "请输入验证码");
+            result.accumulate("msg", "验证码错误");
         }
         return result.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(params = "action=logout")
+    public void logout(HttpSession session) {
+        session.invalidate();
     }
 
     @ResponseBody
