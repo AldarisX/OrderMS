@@ -19,22 +19,27 @@ public class UserControl {
 
     @ResponseBody
     @RequestMapping(params = "action=login")
-    public String doLogin(String uname, String passwd, HttpSession session) {
+    public String doLogin(String uname, String passwd, String vcode, HttpSession session) {
         passwd = MD5Tool.StringToMd5(passwd);
         JSONObject result = new JSONObject();
 
-        User u = userService.getLogin(uname, passwd);
-        if (u != null) {
-            result.accumulate("result", true);
-            result.accumulate("url", "/index.html");
-            session.setAttribute("isLogin", true);
-            session.setAttribute("level", u.getLevel());
-            session.setAttribute("user", u);
+        String vCode = (String) session.getAttribute("vCode");
+        if (vcode.toLowerCase().equals(vCode.toLowerCase())) {
+            User u = userService.getLogin(uname, passwd);
+            if (u != null) {
+                result.accumulate("result", true);
+                result.accumulate("url", "/index.html");
+                session.setAttribute("isLogin", true);
+                session.setAttribute("level", u.getLevel());
+                session.setAttribute("user", u);
+            } else {
+                result.accumulate("result", false);
+                result.accumulate("msg", "用户名或密码错误");
+            }
         } else {
             result.accumulate("result", false);
-            result.accumulate("msg", "用户名或密码错误");
+            result.accumulate("msg", "请输入验证码");
         }
-
         return result.toString();
     }
 

@@ -19,25 +19,35 @@
         function doLogin() {
             let uname = $(":text[name=uname]").val();
             let passwd = $(":password[name=passwd]").val();
+            let vcode = $(":text[name=vCode]").val();
             $.post("/api/user.json?action=login", {
                 uname: uname,
-                passwd: passwd
+                passwd: passwd,
+                vcode: vcode
             }, function (data) {
                 if (data.result) {
                     location.href = data.url;
                 } else {
                     alert(data.msg);
                 }
-            })
+            });
+            return false;
+        }
+
+        function reVCode() {
+            $("#vCode").attr("src", "");
+            $("#vCode").attr("src", "vCode.jpg?id=" + new Date());
         }
     </script>
 </head>
 <body>
-<div>
+<form onsubmit="return doLogin()">
     <label>用户名:<input type="text" name="uname"/></label><br/>
-    <label>密码:<input type="password" name="passwd"/></label>
-    <button onclick="doLogin()">登陆</button>
-</div>
+    <label>密码:<input type="password" name="passwd"/></label><br>
+    <label>验证码:<input type="text" name="vCode"/></label><br/>
+    <label><img id="vCode" src="/vCode.jpg" onclick="reVCode()"/></label><br/>
+    <input type="submit" value="登录"/>
+</form>
 </body>
 </html>
 <%

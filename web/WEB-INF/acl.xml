@@ -8,6 +8,7 @@
     <defaultLevel>6</defaultLevel>
     <white-list>
         <url>.*/error/</url>
+        <url>.*/vCode\.jpg</url>
         <url>.*/favicon.ico$</url>
         <url>.*/login.jsp$</url>
         <url>.*/login.html$</url>
