@@ -1,5 +1,6 @@
 package com.everygamer.control.servlet;
 
+import cn.misakanet.tool.security.RSAUtils;
 import com.everygamer.bean.User;
 import com.everygamer.service.UserService;
 import com.everygamer.web.MD5Tool;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.security.PrivateKey;
 
 @Controller
 @RequestMapping(value = "/user.json")
@@ -20,11 +22,13 @@ public class UserControl {
     @ResponseBody
     @RequestMapping(params = "action=login")
     public String doLogin(String uname, String passwd, String vcode, HttpSession session) {
-        passwd = MD5Tool.StringToMd5(passwd);
         JSONObject result = new JSONObject();
 
         String vCode = (String) session.getAttribute("vCode");
         if (vcode.toLowerCase().equals(vCode.toLowerCase())) {
+            PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
+            passwd = RSAUtils.decryptBase64(priKey, passwd);
+            passwd = MD5Tool.StringToMd5(passwd);
             User u = userService.getLogin(uname, passwd);
             if (u != null) {
                 result.accumulate("result", true);
@@ -40,6 +44,17 @@ public class UserControl {
             result.accumulate("result", false);
             result.accumulate("msg", "验证码错误");
         }
+        return result.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(params = "action=getRSA")
+    public String getRSA(HttpSession session) {
+        JSONObject result = new JSONObject();
+        RSAUtils.generateRSA();
+        session.setAttribute("priKey", RSAUtils.priKey);
+        result.accumulate("result", true);
+        result.accumulate("puk", RSAUtils.getPubKey());
         return result.toString();
     }
 

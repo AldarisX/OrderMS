@@ -15,23 +15,32 @@
     <jsp:include page="head.jsp">
         <jsp:param name="title" value="<%=dpName%>"/>
     </jsp:include>
+    <script src="/js/jsencrypt.min.js"></script>
     <script>
         function doLogin() {
-            let uname = $(":text[name=uname]").val();
-            let passwd = $(":password[name=passwd]").val();
-            let vcode = $(":text[name=vCode]").val();
-            $.post("/api/user.json?action=login", {
-                uname: uname,
-                passwd: passwd,
-                vcode: vcode
-            }, function (data) {
-                if (data.result) {
-                    location.href = data.url;
+            $.post("/api/user.json?action=getRSA", function (result) {
+                if (result.result) {
+                    //加密
+                    let encrypt = new JSEncrypt();
+                    encrypt.setPublicKey(result.puk);
+                    let passwd = encrypt.encrypt($(":password[name=passwd]").val());
+                    let uname = $(":text[name=uname]").val();
+                    let vcode = $(":text[name=vCode]").val();
+                    $.post("/api/user.json?action=login", {
+                        uname: uname,
+                        passwd: passwd,
+                        vcode: vcode
+                    }, function (data) {
+                        if (data.result) {
+                            location.href = data.url;
+                        } else {
+                            alert(data.msg);
+                        }
+                    });
                 } else {
-                    alert(data.msg);
+                    alert("信息加密失败");
                 }
             });
-            return false;
         }
 
         function reVCode() {
@@ -41,12 +50,12 @@
     </script>
 </head>
 <body>
-<form onsubmit="return doLogin()">
+<form onsubmit="return false">
     <label>用户名:<input type="text" name="uname"/></label><br/>
     <label>密码:<input type="password" name="passwd"/></label><br>
     <label>验证码:<input type="text" name="vCode"/></label><br/>
     <label><img id="vCode" src="/vCode.jpg" onclick="reVCode()"/></label><br/>
-    <input type="submit" value="登录"/>
+    <input type="submit" value="登录" onclick="doLogin()"/>
 </form>
 </body>
 </html>
