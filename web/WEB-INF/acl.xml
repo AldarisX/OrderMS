@@ -12,6 +12,7 @@
         <url>.*/login.html$</url>
         <url>.*/js/jquery-3.2.1.min.js$</url>
         <url>.*/css/common.css$</url>
+        <url>.*/api/user\.json\?action=login</url>
     </white-list>
     <redirect>
         <url redirect="/login.html">.*/$</url>
@@ -19,6 +20,7 @@
         <url redirect="/login.html">.*/index.html$</url>
     </redirect>
     <black-list>
+        <url level="1">.*/api/user\.json\?action=addUser</url>
         <url>.*/*</url>
     </black-list>
 </ACList>

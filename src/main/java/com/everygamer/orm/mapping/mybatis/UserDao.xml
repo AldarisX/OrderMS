@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.orm.dao.UserDao">
+    <insert id="addUser">
+        INSERT INTO tb_user (uname, passwd, ins_date) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
+    </insert>
+    <update id="updateLoginTime">
+        UPDATE tb_user
+        SET last_login = UNIX_TIMESTAMP()
+        WHERE id = #{param1};
+    </update>
+    <update id="setPasswd">
+        UPDATE tb_user
+        SET passwd = #{param1}
+        WHERE id = #{param1}
+    </update>
+    <update id="delUser">
+        UPDATE tb_user
+        SET is_alive = 0
+        WHERE id = #{param1}
+    </update>
+    <update id="isExist">
+        SELECT id
+        FROM tb_user
+        WHERE uname = #{param1} AND is_alive = 1
+    </update>
+    <select id="getLogin" resultType="com.everygamer.bean.User">
+        SELECT *
+        FROM tb_user
+        WHERE uname = #{param1} AND passwd = #{param2} AND is_alive = 1
+    </select>
+</mapper>

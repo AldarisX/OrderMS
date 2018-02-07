@@ -1,5 +1,12 @@
 [
   {
+    "name": "login",
+    "dpName": "登陆",
+    "mapper": "login.html",
+    "url": "login.jsp",
+    "showInHead": false
+  },
+  {
     "name": "index",
     "dpName": "主页",
     "mapper": "index.html",
@@ -51,6 +58,12 @@
         "dpName": "厂商",
         "mapper": "manu_type.html",
         "url": "manu_type.jsp"
+      },
+      {
+        "name": "addUser",
+        "dpName": "添加用户",
+        "mapper": "add_user.html",
+        "url": "add_user.jsp"
       }
     ]
   },
