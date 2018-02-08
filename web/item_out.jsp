@@ -27,6 +27,8 @@
         });
 
         function selectItem(item, count, price) {
+            layer.closeAll();
+
             item.price = price;
             item.count = count;
             selectedItem.push(item);
