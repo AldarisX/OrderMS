@@ -102,34 +102,12 @@
     //物品选择
     //参数写好后会调用父页面的selectItem(item, count, price)函数
     function itemSelect(item) {
-        let count;
-        while (true) {
-            count = prompt("数量", 1);
-            if (count == null) {
-                return;
-            }
-            else if (!isNaN(parseInt(count))) {
-                count = parseInt(count);
-                if (count > item.count) {
-                    alert("库存不足");
-                    continue;
-                }
-                break;
-            }
-        }
-
-        let price;
-        while (true) {
-            price = prompt("单价", 0);
-            if (price == null) {
-                return;
-            } else if (!isNaN(parseFloat(price))) {
-                price = parseFloat(price);
-                break;
-            }
-        }
-
-        selectItem(item, count, price);
+        layer.open({
+            type: 1,
+            title: "物品信息",
+            area: ['320px', '250px'],
+            content: "<script src='/js/jquery-3.3.1.min.js'><\/script><script>    function itemAdd() {        let num = $('#num').val();        let price = $('#price').val();        if (isNaN(parseInt(num))) {            parent.layer.msg('数量格式不正确', {icon: 5});            return;        } else {            if (num - parseInt(num) !== 0) {                parent.layer.msg('数量不能是小数', {icon: 5});                return;            }        }        if (isNaN(parseFloat(price))) {            layer.msg('价格格式不正确', {icon: 5});            return;        }        parent.selectItem(JSON.parse('" + JSON.stringify(item) + "'), num, price);    }<\/script><div style='margin: 10px'><h4>" + item.manufactor + ":" + item.name + "<\/h4><label>数量:<input type='number' id='num'/><\/label><br/><label>价格:<input type='number' id='price'/><\/label><br/><br/><button onclick='itemAdd()'>确定<\/button><\/div>"
+        });
     }
 
     function btn_search() {
