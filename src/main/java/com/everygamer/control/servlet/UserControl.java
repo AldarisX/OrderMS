@@ -44,6 +44,9 @@ public class UserControl {
             result.accumulate("result", false);
             result.accumulate("msg", "验证码错误");
         }
+        //清理session
+        session.removeAttribute("vCode");
+        session.removeAttribute("priKey");
         return result.toString();
     }
 
