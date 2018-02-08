@@ -9,7 +9,7 @@
 <title><%=request.getParameter("title")%>
 </title>
 <link rel="icon" href="favicon.ico"/>
-<script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
 <link rel="stylesheet" href="/extend/layer/theme/default/layer.css" media="all">
 <script type="text/javascript" src="/extend/layer/layer.js"></script>
 <script type="text/javascript" src="/js/common.js"></script>
