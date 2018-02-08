@@ -47,7 +47,7 @@
                     layer.msg("密码加密失败", {icon: 5});
                 }
             }).error(function (xhr, status, info) {
-                layer.msg('获取RSA失败', {icon: 5});
+                layer.msg('请求RSA公钥失败', {icon: 5});
             });
         }
 
