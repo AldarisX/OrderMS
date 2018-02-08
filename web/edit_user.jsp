@@ -25,7 +25,7 @@
             let passwd = $(":password[name=passwd]").val();
             let passwd2 = $(":password[name=passwd2]").val();
             if (passwd !== passwd2) {
-                alert("两次密码不一致!!!");
+                layer.msg("两次密码不一致!!!", {icon: 5});
                 return;
             }
             $.post("/api/user.json?action=getRSA", function (result) {
