@@ -18,6 +18,10 @@
     <script src="/js/jsencrypt.min.js"></script>
     <script>
         function doLogin() {
+            layer.msg('加载中', {
+                icon: 16
+                , shade: 0.01
+            });
             $.post("/api/user.json?action=getRSA", function (result) {
                 if (result.result) {
                     //加密
@@ -34,12 +38,16 @@
                         if (data.result) {
                             location.href = data.url;
                         } else {
-                            alert(data.msg);
+                            layer.msg(data.msg, {icon: 5});
                         }
+                    }).error(function (xhr, status, info) {
+                        layer.msg('登陆请求失败', {icon: 5});
                     });
                 } else {
-                    alert("信息加密失败");
+                    layer.msg("密码加密失败", {icon: 5});
                 }
+            }).error(function (xhr, status, info) {
+                layer.msg('获取RSA失败', {icon: 5});
             });
         }
 

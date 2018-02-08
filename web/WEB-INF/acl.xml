@@ -8,6 +8,7 @@
     <defaultLevel>6</defaultLevel>
     <white-list>
         <url>.*/error/</url>
+        <url>.*/extend/</url>
         <url>.*/vCode\.jpg</url>
         <url>.*/favicon.ico$</url>
         <url>.*/login.jsp$</url>
@@ -25,7 +26,7 @@
         <url redirect="/login.html">.*/index.html$</url>
     </redirect>
     <black-list>
-        <url level="1">.*/api/user\.json\?action=addUser</url>
+        <url level="1" code="401">.*/api/user\.json\?action=addUser</url>
         <url>.*/*</url>
     </black-list>
 </ACList>
