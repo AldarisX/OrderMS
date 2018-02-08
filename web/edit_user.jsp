@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String mapper = request.getParameter("mapper");
-    String dpName = "登陆";
+    String dpName = "编辑用户";
     if (mapper != null) {
         dpName = request.getParameter("dpName");
         String path = SiteConfig.getInstance().getWarLoc() + mapper;
@@ -17,53 +17,55 @@
     </jsp:include>
     <script src="/js/jsencrypt.min.js"></script>
     <script>
-        function doLogin() {
-            layer.msg('加载中', {
+        function addUser() {
+            layer.msg('请稍后', {
                 icon: 16
                 , shade: 0.01
             });
+            let passwd = $(":password[name=passwd]").val();
+            let passwd2 = $(":password[name=passwd2]").val();
+            if (passwd !== passwd2) {
+                alert("两次密码不一致!!!");
+                return;
+            }
             $.post("/api/user.json?action=getRSA", function (result) {
                 if (result.result) {
                     //加密
                     let encrypt = new JSEncrypt();
                     encrypt.setPublicKey(result.puk);
-                    let passwd = encrypt.encrypt($(":password[name=passwd]").val());
+                    passwd = encrypt.encrypt(passwd);
                     let uname = $(":text[name=uname]").val();
-                    let vcode = $(":text[name=vCode]").val();
-                    $.post("/api/user.json?action=login", {
+                    $.post("/api/user.json?action=addUser", {
                         uname: uname,
                         passwd: passwd,
-                        vcode: vcode
                     }, function (data) {
                         if (data.result) {
-                            location.href = data.url;
+                            layer.msg('添加成功', {icon: 6});
                         } else {
                             layer.msg(data.msg, {icon: 5});
                         }
-                    }).fail(function () {
-                        layer.msg('登陆请求失败', {icon: 5});
+                    }).fail(function (xhr, status, error) {
+                        if (xhr.status === 401) {
+                            layer.msg("你没有这个权限", {icon: 5});
+                        }
                     });
                 } else {
-                    layer.msg("密码加密失败", {icon: 5});
+                    layer.msg('密码加密失败', {icon: 5});
                 }
             }).fail(function () {
                 layer.msg('请求RSA公钥失败', {icon: 5});
             });
         }
-
-        function reVCode() {
-            $("#vCode").attr("src", "");
-            $("#vCode").attr("src", "vCode.jpg?id=" + new Date());
-        }
     </script>
 </head>
 <body>
+<jsp:include page="nav.jsp"/>
 <form onsubmit="return false">
+    <h4>添加用户</h4>
     <label>用户名:<input type="text" name="uname"/></label><br/>
-    <label>密码:<input type="password" name="passwd"/></label><br>
-    <label>验证码:<input type="text" name="vCode"/></label><br/>
-    <label><img id="vCode" src="/vCode.jpg" onclick="reVCode()"/></label><br/>
-    <input type="submit" value="登录" onclick="doLogin()"/>
+    <label>密码:<input type="password" name="passwd"/></label><br/>
+    <label>确认密码:<input type="password" name="passwd2"/></label><br/>
+    <input type="submit" value="添加" onclick="addUser()"/>
 </form>
 </body>
 </html>

@@ -19,11 +19,11 @@
         SET is_alive = 0
         WHERE id = #{param1}
     </update>
-    <update id="isExist">
+    <select id="isExist" resultType="com.everygamer.bean.User">
         SELECT id
         FROM tb_user
         WHERE uname = #{param1} AND is_alive = 1
-    </update>
+    </select>
     <select id="getLogin" resultType="com.everygamer.bean.User">
         SELECT *
         FROM tb_user

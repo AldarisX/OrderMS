@@ -25,7 +25,7 @@ public class UserControl {
         JSONObject result = new JSONObject();
 
         String vCode = (String) session.getAttribute("vCode");
-        if (vcode.toLowerCase().equals(vCode.toLowerCase())) {
+        if (vcode != null && vcode.toLowerCase().equals(vCode.toLowerCase())) {
             PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
             passwd = RSAUtils.decryptBase64(priKey, passwd);
             passwd = MD5Tool.StringToMd5(passwd);
@@ -36,6 +36,10 @@ public class UserControl {
                 session.setAttribute("isLogin", true);
                 session.setAttribute("level", u.getLevel());
                 session.setAttribute("user", u);
+
+                //清理session
+                session.removeAttribute("vCode");
+                session.removeAttribute("priKey");
             } else {
                 result.accumulate("result", false);
                 result.accumulate("msg", "用户名或密码错误");
@@ -44,9 +48,6 @@ public class UserControl {
             result.accumulate("result", false);
             result.accumulate("msg", "验证码错误");
         }
-        //清理session
-        session.removeAttribute("vCode");
-        session.removeAttribute("priKey");
         return result.toString();
     }
 
@@ -69,7 +70,9 @@ public class UserControl {
 
     @ResponseBody
     @RequestMapping(params = "action=addUser")
-    public String addUser(String uname, String passwd) {
+    public String addUser(String uname, String passwd, HttpSession session) {
+        PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
+        passwd = RSAUtils.decryptBase64(priKey, passwd);
         passwd = MD5Tool.StringToMd5(passwd);
         JSONObject result = new JSONObject();
         int cRows = userService.addUser(uname, passwd);

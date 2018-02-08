@@ -60,10 +60,10 @@
         "url": "manu_type.jsp"
       },
       {
-        "name": "addUser",
-        "dpName": "添加用户",
-        "mapper": "add_user.html",
-        "url": "add_user.jsp"
+        "name": "editUser",
+        "dpName": "编辑用户",
+        "mapper": "edit_user.html",
+        "url": "edit_user.jsp"
       }
     ]
   },

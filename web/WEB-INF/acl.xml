@@ -13,7 +13,7 @@
         <url>.*/favicon.ico$</url>
         <url>.*/login.jsp$</url>
         <url>.*/login.html$</url>
-        <url>.*/js/jquery-3.2.1.min.js$</url>
+        <url>.*/js/jquery-3.3.1.min.js$</url>
         <url>.*/js/jsencrypt.min.js</url>
         <url>.*/js/common.js$</url>
         <url>.*/css/common.css$</url>
