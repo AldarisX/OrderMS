@@ -38,8 +38,8 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
     }
 
     @Override
-    public int setPasswd(String uname, String passwd) {
-        int cRows = dao.setPasswd(uname, passwd);
+    public int setPasswd(int id, String passwd) {
+        int cRows = dao.setPasswd(id, passwd);
         if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: setPasswd");
         }
@@ -58,6 +58,11 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
     @Override
     public User isExist(String uname) {
         return dao.isExist(uname);
+    }
+
+    @Override
+    public User getUser(int id) {
+        return dao.getUser(id);
     }
 
     @Override

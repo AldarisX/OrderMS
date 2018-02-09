@@ -7,6 +7,7 @@
     <defaultRedirectUrl>/login.html</defaultRedirectUrl>
     <defaultLevel>6</defaultLevel>
     <white-list>
+        <!--谁都能用的-->
         <url>.*/error/</url>
         <url>.*/extend/</url>
         <url>.*/vCode\.jpg</url>
@@ -17,17 +18,21 @@
         <url>.*/js/jsencrypt.min.js</url>
         <url>.*/js/common.js$</url>
         <url>.*/css/common.css$</url>
+        <!--允许一般用户登录  登出-->
         <url>.*/api/user\.json\?action=login</url>
         <url>.*/api/user\.json\?action=logout</url>
         <url>.*/api/user\.json\?action=getRSA</url>
     </white-list>
     <redirect>
+        <!--访问主页时没登录就跳转到登录页-->
         <url redirect="/login.html">.*/$</url>
         <url redirect="/login.jsp">.*/index.jsp</url>
         <url redirect="/login.html">.*/index.html$</url>
     </redirect>
     <black-list>
+        <!--操作用户只能是0 1级-->
         <url level="1" code="401">.*/api/user\.json</url>
+        <url level="1" code="404">.*/static/user</url>
         <url>.*/*</url>
     </black-list>
 </ACList>

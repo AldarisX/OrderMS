@@ -1,0 +1,70 @@
+<script src='/js/jquery-3.3.1.min.js'></script>
+<script>
+    let user;
+    $(document).ready(function () {
+        let uid = getQueryString("uid");
+        $.post("/api/user.json?action=getUser", {
+            id: uid
+        }, function (data) {
+            if (data.result) {
+                user = data.data;
+                $("#userTitle").text("设置用户:" + user.uname + "的密码");
+            } else {
+                parent.layer.msg(data.msg, {icon: 5});
+            }
+        });
+    });
+
+    function setPasswd() {
+        let passwd = $('#passwd').val();
+        let passwd2 = $('#passwd2').val();
+        if (passwd === passwd2) {
+            $.post("/api/user.json?action=getRSA", function (result) {
+                if (result.result) {
+                    let encrypt = new parent.JSEncrypt();
+                    encrypt.setPublicKey(result.puk);
+                    passwd = encrypt.encrypt(passwd);
+                    $.post("/api/user.json?action=setPasswd", {
+                        id: user.id,
+                        passwd: passwd
+                    }, function (data) {
+                        if (data.result) {
+                            parent.layer.confirm('修改成功', {
+                                btn: ['确定'],
+                                icon: 6
+                            }, function () {
+                                parent.layer.closeAll();
+                            });
+                        } else {
+                            parent.layer.msg(data.msg, {icon: 5});
+                        }
+                    }).fail(function (xhr, status, error) {
+                        if (xhr.status === 401) {
+                            layer.msg("你没有这个权限", {icon: 5});
+                        }
+                    });
+                } else {
+                    layer.msg('密码加密失败', {icon: 5});
+                }
+            }).fail(function () {
+                layer.msg('请求RSA公钥失败', {icon: 5});
+            });
+        } else {
+            parent.layer.msg("两次密码不一致", {icon: 5});
+        }
+    }
+
+    function getQueryString(name) {
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        let r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+</script>
+<div style='margin: 10px'>
+    <h4 id="userTitle"></h4>
+    <label>新密码:<input type='password' id='passwd'/></label><br/>
+    <label>确认密码:<input type='password' id='passwd2'/></label><br/>
+    <br/>
+    <button onclick='setPasswd()'>确定</button>
+</div>

@@ -59,12 +59,12 @@
         }
 
         function listUser() {
+            $("#userList table").empty();
             let kw = $("#search_uname").val();
             $.post("/api/user.json?action=search", {
                 kw: kw
             }, function (data) {
                 if (data.result) {
-                    $("#userList table").empty();
                     $("#userList table").append("<tr><td>ID</td><td>用户名</td><td>等级</td><td>最后登陆时间</td><td>操作</td></tr>");
                     for (let i = 0; i < data.data.length; i++) {
                         let user = data.data[i];
@@ -74,7 +74,7 @@
                         } else {
                             lastLogin = formatUnixTime(lastLogin);
                         }
-                        $("#userList table").append("<tr><td>" + user.id + "</td><td>" + user.uname + "</td><td>" + user.level + "</td><td>" + lastLogin + "</td><td>操作</td></tr>");
+                        $("#userList table").append("<tr><td>" + user.id + "</td><td>" + user.uname + "</td><td>" + user.level + "</td><td>" + lastLogin + "</td><td><button onclick='setUserPasswd(" + user.id + ")'>设置密码</button><button onclick='delUser(" + user.id + ")'>删除</button></td></tr>");
                     }
                 } else {
                     layer.msg("检索时粗错", {icon: 5});
@@ -83,6 +83,44 @@
                 if (xhr.status === 401) {
                     layer.msg("你没有这个权限", {icon: 5});
                 }
+            });
+        }
+
+        function setUserPasswd(uid) {
+            layer.open({
+                type: 2,
+                title: "设置密码",
+                area: ['320px', '250px'],
+                content: "/static/user/setUserPasswd.html?uid=" + uid
+            });
+        }
+
+        function delUser(uid) {
+            parent.layer.confirm('确定删除用户?', {
+                btn: ['确定', '取消'],
+                icon: 3
+            }, function () {
+                $.post("/api/user.json?action=delUser", {
+                    id: uid
+                }, function (data) {
+                    if (data.result) {
+                        parent.layer.confirm('删除成功', {
+                            btn: ['确定'],
+                            icon: 6
+                        }, function () {
+                            listUser();
+                            parent.layer.closeAll();
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 5});
+                    }
+                }).fail(function (xhr, status, error) {
+                    if (xhr.status === 401) {
+                        layer.msg("你没有这个权限", {icon: 5});
+                    }
+                });
+            }, function () {
+                parent.layer.closeAll();
             });
         }
     </script>

@@ -9,11 +9,13 @@ public interface UserDao extends BaseDao {
 
     int updateLoginTime(int uid);
 
-    int setPasswd(String uname, String passwd);
+    int setPasswd(int id, String passwd);
 
     int delUser(int uid);
 
     User isExist(String uname);
+
+    User getUser(int id);
 
     User getLogin(String uname, String passwd);
 
