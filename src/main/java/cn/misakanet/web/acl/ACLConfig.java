@@ -93,7 +93,6 @@ public class ACLConfig {
         List<Element> redirectList = xmlHelper.getElements("redirect/url");
         for (Element el : redirectList) {
             String url = el.getText();
-            System.out.println(url);
             String redirect = el.attributeValue("redirect", defaultRedirectUrl);
             int level = Integer.parseInt(el.attributeValue("level", defaultLevel + ""));
             this.redirectList.add(ACLFactory.getRedirect(url, redirect).setLevel(level));
