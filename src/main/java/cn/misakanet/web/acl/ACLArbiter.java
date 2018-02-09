@@ -30,6 +30,13 @@ public class ACLArbiter {
      * @return 时候允许访问
      */
     public synchronized ACL doArbite(HttpSession session, String url) {
+        //判断是不是在白名单内
+        ArrayList<ACL> whiteList = config.getWhiteList();
+        ACL whiteACL = matchACL(whiteList, url);
+        if (whiteACL != null) {
+            return whiteACL;
+        }
+
         //判断是否在黑名单内
         ArrayList<ACL> blackList = config.getBlackList();
         ACL blackACL = matchACL(blackList, url);
@@ -58,12 +65,6 @@ public class ACLArbiter {
         ACL redirectACL = matchACL(redirectList, url);
         if (redirectACL != null) {
             return redirectACL.setState(ACL.State.Redirect);
-        }
-        //判断是不是在白名单内
-        ArrayList<ACL> whiteList = config.getWhiteList();
-        ACL whiteACL = matchACL(whiteList, url);
-        if (whiteACL != null) {
-            return whiteACL;
         }
 
         //以上条件都不满足就返回默认的错误码
