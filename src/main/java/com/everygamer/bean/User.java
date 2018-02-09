@@ -6,8 +6,8 @@ public class User {
     private String passwd;
     private int level;
     private int lastLogin;
-    private int ins_date;
-    private int up_date;
+    private int insDate;
+    private int upDate;
 
     public int getId() {
         return id;
@@ -49,19 +49,19 @@ public class User {
         this.lastLogin = lastLogin;
     }
 
-    public int getIns_date() {
-        return ins_date;
+    public int getInsDate() {
+        return insDate;
     }
 
-    public void setIns_date(int ins_date) {
-        this.ins_date = ins_date;
+    public void setInsDate(int insDate) {
+        this.insDate = insDate;
     }
 
-    public int getUp_date() {
-        return up_date;
+    public int getUpDate() {
+        return upDate;
     }
 
-    public void setUp_date(int up_date) {
-        this.up_date = up_date;
+    public void setUpDate(int upDate) {
+        this.upDate = upDate;
     }
 }

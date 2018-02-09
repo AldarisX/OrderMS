@@ -8,6 +8,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Repository("UserDao")
 public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
@@ -62,6 +63,12 @@ public class UserDaoImpl extends SqlSessionDaoSupport implements UserDao {
     @Override
     public User getLogin(String uname, String passwd) {
         return dao.getLogin(uname, passwd);
+    }
+
+    @Override
+    public List<User> searchUser(String kw) {
+        kw = "%" + kw.replaceAll(" ", "%") + "%";
+        return dao.searchUser(kw);
     }
 
     @Override

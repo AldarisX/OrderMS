@@ -88,4 +88,15 @@ public class UserControl {
 
         return result.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(params = "action=search")
+    public String search(String kw) {
+        JSONObject result = new JSONObject();
+
+        result.accumulate("result", true);
+        result.accumulate("data", userService.searchUser(kw));
+
+        return result.toString();
+    }
 }

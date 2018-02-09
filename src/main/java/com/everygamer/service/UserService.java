@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("UserService")
 public class UserService {
     @Autowired
@@ -41,5 +43,9 @@ public class UserService {
 
     public void setPasswd(String uname, String passwd) {
         userDao.setPasswd(uname, passwd);
+    }
+
+    public List<User> searchUser(String kw) {
+        return userDao.searchUser(kw);
     }
 }

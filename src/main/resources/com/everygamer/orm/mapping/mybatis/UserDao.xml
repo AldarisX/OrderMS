@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.everygamer.orm.dao.UserDao">
+    <resultMap id="User" type="com.everygamer.bean.User">
+        <result property="id" column="id"/>
+        <result property="uname" column="uname"/>
+        <result property="passwd" column="passwd"/>
+        <result property="level" column="level"/>
+        <result property="lastLogin" column="last_login"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="upDate" column="up_data"/>
+    </resultMap>
+
     <insert id="addUser">
         INSERT INTO tb_user (uname, passwd, ins_date) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
     </insert>
@@ -11,7 +21,7 @@
     </update>
     <update id="setPasswd">
         UPDATE tb_user
-        SET passwd = #{param1}
+        SET passwd = #{param1}, up_date = UNIX_TIMESTAMP()
         WHERE id = #{param1}
     </update>
     <update id="delUser">
@@ -19,14 +29,26 @@
         SET is_alive = 0
         WHERE id = #{param1}
     </update>
-    <select id="isExist" resultType="com.everygamer.bean.User">
+    <select id="isExist" resultType="com.everygamer.bean.User" resultMap="User">
         SELECT id
         FROM tb_user
         WHERE uname = #{param1} AND is_alive = 1
     </select>
-    <select id="getLogin" resultType="com.everygamer.bean.User">
+    <select id="getLogin" resultType="com.everygamer.bean.User" resultMap="User">
         SELECT *
         FROM tb_user
         WHERE uname = #{param1} AND passwd = #{param2} AND is_alive = 1
+    </select>
+    <select id="searchUser" resultType="com.everygamer.bean.User" resultMap="User">
+        SELECT
+            id,
+            ins_date,
+            last_login,
+            "level",
+            uname,
+            up_date
+        FROM tb_user
+        WHERE uname ILIKE #{param1}
+        ORDER BY "level", last_login DESC
     </select>
 </mapper>

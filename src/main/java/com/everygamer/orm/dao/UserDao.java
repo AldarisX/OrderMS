@@ -2,6 +2,8 @@ package com.everygamer.orm.dao;
 
 import com.everygamer.bean.User;
 
+import java.util.List;
+
 public interface UserDao extends BaseDao {
     int addUser(String uname, String passwd);
 
@@ -14,4 +16,6 @@ public interface UserDao extends BaseDao {
     User isExist(String uname);
 
     User getLogin(String uname, String passwd);
+
+    List<User> searchUser(String kw);
 }

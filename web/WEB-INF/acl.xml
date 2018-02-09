@@ -18,6 +18,7 @@
         <url>.*/js/common.js$</url>
         <url>.*/css/common.css$</url>
         <url>.*/api/user\.json\?action=login</url>
+        <url>.*/api/user\.json\?action=logout</url>
         <url>.*/api/user\.json\?action=getRSA</url>
     </white-list>
     <redirect>
@@ -26,7 +27,7 @@
         <url redirect="/login.html">.*/index.html$</url>
     </redirect>
     <black-list>
-        <url level="1" code="401">.*/api/user\.json\?action=addUser</url>
+        <url level="1" code="401">.*/api/user\.json</url>
         <url>.*/*</url>
     </black-list>
 </ACList>
