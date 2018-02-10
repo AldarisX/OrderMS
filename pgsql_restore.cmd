@@ -1,0 +1,1 @@
+pg_restore -h 127.0.0.1 -p 5432 -U aldaris -W -O -c -C -d "orderms" "D:\pg_orderms.sql"

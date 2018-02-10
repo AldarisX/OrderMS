@@ -1,0 +1,1 @@
+pg_dump -h 127.0.0.1 -p 5432 -U aldaris -W -s -C -O -F c -E "UTF-8" -f d:\pg_orderms.sql orderms
