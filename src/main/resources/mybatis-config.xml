@@ -11,7 +11,7 @@
         <setting name="cacheEnabled" value="true"/>
 
         <!-- 打印查询语句 -->
-        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
         <!--输出到log4j-->
         <!--<setting name="logImpl" value="LOG4J"/>-->
     </settings>

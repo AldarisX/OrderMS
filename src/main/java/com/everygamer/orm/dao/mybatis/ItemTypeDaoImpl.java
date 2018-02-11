@@ -49,8 +49,8 @@ public class ItemTypeDaoImpl extends SqlSessionDaoSupport implements ItemTypeDao
     }
 
     @Override
-    public int updateItemType(int id, String name, String exData) {
-        return dao.updateItemType(id, name, exData);
+    public int updateItemType(int id, String name, int inIndex, String exData) {
+        return dao.updateItemType(id, name, inIndex, exData);
     }
 
     @Override

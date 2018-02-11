@@ -6,6 +6,7 @@
         <result property="name" column="name"/>
         <result property="exData" column="ex_data"/>
         <result property="isAlive" column="is_alive"/>
+        <result property="inIndex" column="in_index"/>
         <result property="insDate" column="ins_date"/>
         <result property="delDate" column="del_date"/>
         <result property="upDate" column="up_date"/>
@@ -29,13 +30,14 @@
     </update>
     <update id="updateItemType">
         UPDATE item_type
-        SET "name" = #{param2}, ex_data = #{param3}, item_type.up_date = UNIX_TIMESTAMP()
+        SET "name" = #{param2}, in_index = #{param3}, ex_data = #{param4}, up_date = UNIX_TIMESTAMP()
         WHERE id = #{param1}
     </update>
     <select id="getItemTypeById" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
         SELECT
             id,
         "name",
+        in_index,
         ins_date,
         ex_data
         FROM item_type
@@ -45,6 +47,7 @@
         SELECT
             id,
         "name",
+        in_index,
         ins_date,
         ex_data
         FROM item_type
@@ -59,6 +62,7 @@
         SELECT
             id,
         "name",
+        in_index,
         ins_date,
         ex_data
         FROM item_type

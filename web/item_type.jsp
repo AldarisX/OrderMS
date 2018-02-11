@@ -26,16 +26,22 @@
 
         function loadData() {
             $("#itemTypeList").empty();
-            $("#itemTypeList").append("<tr><td>ID</td><td>物品类型</td><td>添加时间</td><td>额外数据</td><td>操作</td></tr>");
+            $("#itemTypeList").append("<tr><td>ID</td><td>物品类型</td><td>添加时间</td><td>是否在主页显示</td><td>额外数据</td><td>操作</td></tr>");
             $.post("/api/itemType.json?action=getAll", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         const itemType = data.data[i];
+                        let inIndex = itemType.inIndex;
+                        if (inIndex === 1) {
+                            inIndex = "显示";
+                        } else {
+                            inIndex = "不显示";
+                        }
                         let exData = "";
                         for (let j = 0; j < itemType.exData.length; j++) {
                             exData += itemType.exData[j].desc + "<br>";
                         }
-                        $("<tr><td>" + itemType.id + "</td><td>" + itemType.name + "</td><td>" + formatUnixTime(itemType.insDate) + "</td><td>" + exData + "</td><td><button onclick='editItemType(" + itemType.id + ")'>编辑</button><button onclick='delItemType(" + itemType.id + ")'>删除</button></td></tr>").appendTo("#itemTypeList");
+                        $("<tr><td>" + itemType.id + "</td><td>" + itemType.name + "</td><td>" + formatUnixTime(itemType.insDate) + "</td><td>" + inIndex + "</td><td>" + exData + "</td><td><button onclick='editItemType(" + itemType.id + ")'>编辑</button><button onclick='delItemType(" + itemType.id + ")'>删除</button></td></tr>").appendTo("#itemTypeList");
                     }
                 } else {
                     alert(data.msg);
@@ -109,6 +115,7 @@
             if (itemType.length > 0) {
                 $.post("/api/itemType.json?action=" + action, {
                     name: itemType,
+                    inIndex: $(":checkbox[name=inIndex]").is(':checked'),
                     exData: JSON.stringify(exData)
                 }, function (data) {
                     if (data.result) {
@@ -172,7 +179,7 @@
 <div>
     <form action="/api/itemType.json?action=addItemType" method="post" onsubmit="return postItemType()">
         <label>物品类型:<input type="text" name="itemType" placeholder="CPU...硬盘...显示器"/></label><br/>
-
+        <label>在主页显示:<input type="checkbox" name="inIndex" checked/></label>
         <div id="isExData">
             <label>附加数据<input name="isExData" type="checkbox" onchange="isExDataChange()"/></label>
         </div>

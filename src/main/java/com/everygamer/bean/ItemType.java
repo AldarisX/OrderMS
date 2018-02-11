@@ -5,6 +5,7 @@ public class ItemType {
     private String name;
     private String exData;
     private int isAlive;
+    private int inIndex;
     private String insDate;
     private String delDate;
     private String upDate;
@@ -39,6 +40,14 @@ public class ItemType {
 
     public void setIsAlive(int isAlive) {
         this.isAlive = isAlive;
+    }
+
+    public int getInIndex() {
+        return inIndex;
+    }
+
+    public void setInIndex(int inIndex) {
+        this.inIndex = inIndex;
     }
 
     public String getInsDate() {

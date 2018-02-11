@@ -47,11 +47,18 @@ public class ItemTypeService {
     }
 
     @Transactional
-    public int updateItemType(Integer id, String name, JSONArray exData) throws DBUpdateException {
-        JSONArray exDataJson = JSONArray.fromObject(exData);
+    public int updateItemType(Integer id, String name, int inIndex, JSONArray exData) throws DBUpdateException {
+        JSONArray exDataJson;
+        String exDataStr = null;
+        if (exData == null) {
+            exDataJson = null;
+        } else {
+            exDataJson = JSONArray.fromObject(exData);
+            exDataStr = exData.toString();
+        }
 
         String tempItemType = itemListDao.getExDataByType(id);
-        int cRows = itemTypeDao.updateItemType(id, name, exData.toString());
+        int cRows = itemTypeDao.updateItemType(id, name, inIndex, exDataStr);
         int cRowsItemList;
         if (tempItemType != null) {
             JSONObject exDataPatch = calcPatchExData(tempItemType, exDataJson);

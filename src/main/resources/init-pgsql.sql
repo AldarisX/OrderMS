@@ -57,6 +57,7 @@ CREATE TABLE item_type
   name     VARCHAR(128) NOT NULL,
   ex_data  JSONB,
   is_alive SMALLINT DEFAULT 1,
+  in_index SMALLINT DEFAULT 1,
   ins_date INTEGER,
   del_date INTEGER,
   up_date  INTEGER

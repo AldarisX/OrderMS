@@ -87,15 +87,25 @@ public class ItemTypeControl extends BaseControl {
 
     @ResponseBody
     @RequestMapping(params = "action=updateItemType", produces = "application/json;charset=UTF-8")
-    public String updateItemType(Integer id, String name, @Nullable String exData) {
+    public String updateItemType(Integer id, String name, boolean inIndex, String exData) {
         JSONObject result = new JSONObject();
 
         //先判断exData的格式，格式不对就返回错误
         try {
-            JSONArray exDataJson = JSONArray.fromObject(exData);
+            JSONArray exDataJson;
+            if ("\"\"".equals(exData)) {
+                exDataJson = null;
+            } else {
+                exDataJson = JSONArray.fromObject(exData);
+            }
+
+            int showInIndex = 1;
+            if (!inIndex) {
+                showInIndex = 0;
+            }
 
             try {
-                int cRows = itemTypeService.updateItemType(id, name, exDataJson);
+                int cRows = itemTypeService.updateItemType(id, name, showInIndex, exDataJson);
                 result.accumulate("result", true);
                 result.accumulate("msg", "共修改了" + cRows + "条进货记录");
             } catch (DBUpdateException e) {
