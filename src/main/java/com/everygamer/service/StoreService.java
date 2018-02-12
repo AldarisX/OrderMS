@@ -203,6 +203,10 @@ public class StoreService {
         return new PageInfo<>(items);
     }
 
+    public List<BaseItem> getTopItem(int type, int count) {
+        return storeDao.getTopStore(type, count);
+    }
+
     /**
      * 将JSONObject字符串转化成HashMap
      *

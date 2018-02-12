@@ -60,7 +60,7 @@
             </otherwise>
         </choose>
     </select>
-    <select id="listStore" resultType="com.everygamer.bean.BaseItem">
+    <select id="listStore" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
         SELECT
         item.id,
         item.name,
@@ -107,18 +107,17 @@
         </choose>
         ORDER BY item.ins_date DESC
     </select>
-    <select id="getTopStore" resultType="com.everygamer.bean.BaseItem">
+    <select id="getTopStore" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
         SELECT
         statis.name,
-        item_type.name,
-        SUM(statis.count) AS "count"
-        FROM item_list_statis AS statis, item_type
-        WHERE statis.item_type = item_type.id
-        <if test="type!=null">
-            AND statis.item_type=#{type}
-        </if>
-        GROUP BY statis.name, item_type.name
-        ORDER BY SUM(statis.count) DESC
-        LIMIT #{count};
+        "item_type".name,
+        "manu".name,
+        statis.count,
+        statis.ex_data
+        FROM item_list_statis AS statis, item_type, manufactor AS manu
+        WHERE statis.item_type = #{param1} AND statis.item_type = item_type.id AND statis.manufactor = manu.id AND
+        item_type.in_index = 1
+        ORDER BY statis.count DESC
+        LIMIT #{param2};
     </select>
 </mapper>

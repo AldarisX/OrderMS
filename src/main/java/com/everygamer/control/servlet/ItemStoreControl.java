@@ -11,6 +11,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
@@ -112,6 +113,17 @@ public class ItemStoreControl extends BaseControl {
             result.accumulate("result", false);
             result.accumulate("msg", "JS异常");
         }
+
+        return result.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(params = "action=getTop")
+    public String getTop(@RequestParam() Integer type, @RequestParam() Integer count) {
+        JSONObject result = new JSONObject();
+
+        result.accumulate("result", true);
+        result.accumulate("data", JSONArray.fromObject(storeService.getTopItem(type, count)));
 
         return result.toString();
     }

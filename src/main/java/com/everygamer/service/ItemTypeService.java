@@ -60,7 +60,7 @@ public class ItemTypeService {
         String tempItemType = itemListDao.getExDataByType(id);
         int cRows = itemTypeDao.updateItemType(id, name, inIndex, exDataStr);
         int cRowsItemList;
-        if (tempItemType != null) {
+        if (tempItemType != null && !"{}".equals(tempItemType)) {
             JSONObject exDataPatch = calcPatchExData(tempItemType, exDataJson);
             cRowsItemList = itemListDao.mergeExData(id, exDataPatch.toString());
             itemListStatisDao.mergeExData(id, exDataPatch.toString());
