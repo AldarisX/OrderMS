@@ -15,7 +15,7 @@
     <jsp:include page="head.jsp">
         <jsp:param name="title" value="<%=dpName%>"/>
     </jsp:include>
-    <script src="/js/Chart.bundle.min.js"></script>
+    <script src="/js/highcharts.js"></script>
     <script src="/js/lweb-json.js"></script>
     <script>
         $(document).ready(function () {
@@ -25,7 +25,7 @@
                     for (let i = 0; i < types.length; i++) {
                         let type = types[i];
                         if (type.inIndex) {
-                            $("#storeList ul").append("<li>" + type.name + ":<canvas class='top_store store" + type.id + "' height='40vh' width='80vw'></canvas></li>");
+                            $("#storeList ul").append("<li><div id='store" + type.id + "' class='top_store'></div></li>");
                             loadStoreList(type);
                         }
                     }
@@ -44,46 +44,43 @@
             }, function (data) {
                 if (data.result) {
                     let items = data.data;
-                    if (items.length > 0) {
-                        let labels = [];
-                        let bgColor = [];
-                        let borderColor = [];
-                        let datas = [];
-                        for (let i = 0; i < items.length; i++) {
-                            let item = items[i];
+                    let datas = [];
+                    for (let i = 0; i < items.length; i++) {
+                        let item = items[i];
 
-                            let r = Math.floor(-Math.pow(((32 / (6 * 2)) * i), 2) + 255);
-                            let g = Math.floor(-Math.pow(((32 / 6) * i - Math.sqrt(255)), 2) + 255);
-                            let b = Math.floor(-Math.pow(((32 / (6 * 4)) * i - Math.sqrt(255)), 2) + 255);
-                            bgColor.push("rgba(" + r + "," + g + "," + b + ",0.2)");
-                            borderColor.push("rgba(" + r + "," + g + "," + b + ",1)");
-
-                            let exData = "";
-                            if (type.exData.length > 0) {
-                                exData = "(" + LwebJson.jsonToString(item.exData, type.exData, " ") + ")";
-                            }
-                            labels.push(item.name + exData);
-                            datas.push(item.count);
+                        let exData = "";
+                        if (type.exData.length > 0) {
+                            exData = "(" + LwebJson.jsonToString(item.exData, type.exData, " ") + ")";
                         }
-                        let ctx = $(".store" + type.id).get(0).getContext("2d");
-                        let chart = new Chart(ctx, {
-                            type: 'pie',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: type.name,
-                                    data: datas,
-                                    backgroundColor: bgColor,
-                                    borderColor: borderColor,
-                                    borderWidth: 1,
-                                    hoverBorderWidth: 2
-                                }]
-                            },
-                            option: {}
-                        });
-                    } else {
-                        $(".store" + type.id).parent().append("没有数据");
+                        let serie = {};
+                        serie.name = item.name + exData;
+                        serie.y = item.count;
+                        datas.push(serie);
                     }
+                    let chart = Highcharts.chart("store" + type.id, {
+                        chart: {
+                            type: 'pie'
+                        },
+                        title: {
+                            text: type.name,
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.y}</b>'
+                        }, plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                showInLegend: true
+                            }
+                        }, series: [{
+                            name: '库存数量',
+                            colorByPoint: true,
+                            data: datas
+                        }]
+                    });
                 } else {
                     layer.msg("获取物品库存统计失败", {icon: 5});
                 }
@@ -93,12 +90,12 @@
     <style>
         #storeList ul li {
             list-style: none;
-            width: 33%;
-            height: 25%;
-            min-width: 630px;
-            min-height: 350px;
+            width: 20%;
+            height: 10%;
             float: left;
         }
+
+
     </style>
 </head>
 <body>
