@@ -41,7 +41,7 @@
 
         function removeItem(index, count, price) {
             $("#selectedItem table tr").get(index).remove();
-            priceCount -= price;
+            priceCount -= price * count;
             itemCount -= count;
             selectedItem.splice(index);
             $("#itemStatis").text(" 一共选择了" + itemCount + "个物品 共" + priceCount + "元");
