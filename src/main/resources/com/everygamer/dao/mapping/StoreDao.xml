@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.dao.StoreDao">
+    <resultMap id="BaseItem" type="com.everygamer.bean.BaseItem">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="itemType" column="item_type"/>
+        <result property="manufactor" column="manufactor"/>
+        <result property="model" column="model"/>
+        <result property="count" column="count"/>
+        <result property="remain" column="remain"/>
+        <result property="price" column="price"/>
+        <result property="exData" column="ex_data"/>
+        <result property="desc" column="desc"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="delDate" column="del_date"/>
+        <result property="upDate" column="up_date"/>
+    </resultMap>
+
+    <select id="searchStore" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
+        SELECT
+        statis.name,
+        item_type.name AS item_type,
+        manu.name AS manufactor,
+        <choose>
+            <when test="exData==null">
+                SUM(statis.count) AS "count",
+                SUM(statis.price) AS price,
+                statis.up_date
+                FROM item_list_statis AS statis, item_type, manufactor AS manu
+                WHERE statis.item_type = item_type.id AND statis.manufactor = manu.id
+                <if test="type!=null">
+                    AND statis.item_type=#{type}
+                </if>
+                <if test="kw!=null">
+                    AND statis.name LIKE #{kw}
+                </if>
+                <if test="manu!=null">
+                    AND statis.manufactor=#{manu}
+                </if>
+                GROUP BY statis.name, statis.manufactor, item_type.name, manu.name, statis.up_date, statis.id
+                ORDER BY statis.up_date DESC,statis.id
+            </when>
+            <otherwise>
+                statis.count,
+                statis.price,
+                statis.ex_data,
+                statis.up_date
+                FROM item_list_statis AS statis, item_type, manufactor AS manu
+                WHERE statis.item_type = item_type.id AND statis.manufactor = manu.id AND statis.item_type=#{type}
+                <if test="kw!=null">
+                    AND statis.name ILIKE #{kw}
+                </if>
+                <if test="manu!=null">
+                    AND statis.manufactor=#{manu}
+                </if>
+                AND statis.ex_data @>#{exData}::jsonb
+                ORDER BY statis.up_date DESC,statis.id
+            </otherwise>
+        </choose>
+    </select>
+    <select id="listStore" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
+        SELECT
+        item.id,
+        item.name,
+        item_type.name AS item_type,
+        manu.name AS manufactor,
+        item.count,
+        item.remain,
+        item.price,
+        item.ex_data,
+        item.desc,
+        item.ins_date
+        FROM item_list AS item, item_type, manufactor AS manu
+        WHERE item.item_type=item_type.id AND item.manufactor=manu.id
+        <if test="type!=null">
+            AND item.item_type=#{type}
+        </if>
+        <if test="kw!=null">
+            AND item.name ILIKE #{kw}
+        </if>
+        <if test="manu!=null">
+            AND manu.name=#{manu}
+        </if>
+        <if test="exData!=null">
+            AND item.ex_data @> #{exData}::jsonb
+        </if>
+        <choose>
+            <when test="startTime!=null and endTime!=null">
+                AND item.ins_date BETWEEN #{startTime} AND #{endTime}
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="startTime!=null">
+                        AND item.ins_date &gt;= #{startTime}
+                    </when>
+                    <otherwise>
+                        <choose>
+                            <when test="endTime!=null">
+                                AND item.ins_date &lt;= #{endTime}
+                            </when>
+                        </choose>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        ORDER BY item.ins_date DESC
+    </select>
+    <select id="getTopStore" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
+        SELECT
+            statis.name,
+            "item_type".name,
+            "manu".name,
+            statis.count,
+            statis.ex_data
+        FROM item_list_statis AS statis, item_type, manufactor AS manu
+        WHERE statis.item_type = #{param1} AND statis.item_type = item_type.id AND statis.manufactor = manu.id AND
+              item_type.in_index = 1
+        ORDER BY statis.count DESC
+        LIMIT #{param2};
+    </select>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.dao.ItemListDao">
+    <resultMap id="BaseItem" type="com.everygamer.bean.BaseItem">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="itemType" column="item_type"/>
+        <result property="manufactor" column="manufactor"/>
+        <result property="model" column="model"/>
+        <result property="count" column="count"/>
+        <result property="remain" column="remain"/>
+        <result property="price" column="price"/>
+        <result property="exData" column="ex_data"/>
+        <result property="desc" column="desc"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="delDate" column="del_date"/>
+        <result property="upDate" column="up_date"/>
+    </resultMap>
+
+    <insert id="addItem">
+        INSERT INTO item_list ("name", item_type, manufactor, model, "count", remain, price, ex_data, "desc", ins_date)
+        VALUES
+            (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param5}, #{param6}, #{param7}, #{param8},
+             UNIX_TIMESTAMP())
+    </insert>
+    <update id="mergeExData">
+        UPDATE item_list
+        SET ex_data = JSON_MERGE(ex_data, #{param2}), up_date = UNIX_TIMESTAMP()
+        WHERE item_type = #{param1}
+    </update>
+    <update id="splitItem">
+        UPDATE item_list
+        SET remain = remain - #{param2}
+        WHERE id = #{param1};
+    </update>
+    <delete id="delItem">
+        UPDATE item_list
+        SET is_alive = 0
+        WHERE id = #{param1};
+    </delete>
+    <select id="getItemByName" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
+        SELECT
+            item_list.id,
+            item_list.name,
+            item_type.name AS item_type,
+            item_list.model,
+            item_list.count,
+            item_list.remain,
+            item_list.price,
+            item_list.ins_date,
+            item_list.up_date
+        FROM item_list
+            LEFT JOIN item_type ON item_list.item_type = item_type.id
+        WHERE item_list.name = #{param1} AND item_list.remain > 0 AND item_list.is_alive = 1
+        ORDER BY item_list.ins_date
+    </select>
+    <select id="getExDataByType" resultType="java.lang.String">
+        SELECT ex_data
+        FROM item_list
+        WHERE item_type = #{param1}
+        LIMIT 1
+    </select>
+    <select id="getItemById" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
+        SELECT *
+        FROM item_list
+        WHERE id = #{param1}
+    </select>
+    <select id="getItemByCondition" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
+        SELECT
+        item_list.id,
+        item_list.name,
+        item_type.name AS item_type,
+        item_list.model,
+        item_list.count,
+        item_list.remain,
+        item_list.price,
+        item_list.ins_date,
+        item_list.up_date
+        FROM item_list
+        LEFT JOIN item_type ON item_list.item_type = item_type.id
+        WHERE item_list.name = #{param1} AND item_list.item_type = #{param2} AND item_list.manufactor = #{param3} AND
+        item_list.ex_data = #{param4}::jsonb AND item_list.remain > 0 AND item_list.is_alive = 1 AND item_list.id NOT
+        IN(0
+        <foreach collection="param5" index="index" item="item">
+            , #{item}
+        </foreach>
+        )
+        LIMIT 1
+    </select>
+</mapper>

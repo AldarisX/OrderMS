@@ -1,0 +1,37 @@
+body {
+    height: 100%;
+    background-color: #FFF;
+}
+
+ul {
+    padding: 0;
+}
+
+.clearfix {
+    clear: both;
+}
+
+.headNav {
+    list-style: none;
+    height: 10px;
+}
+
+.headNav li {
+    float: left;
+    margin-right: 20px;
+}
+
+.headNav li a:hover {
+    color: #ff6a6c;
+    transition-duration: .2s;
+    -webkit-transition-duration: .2s;
+}
+
+.headNav li .selected {
+    color: #ff6a6c;
+}
+
+.headNav li a {
+    text-decoration: none;
+    color: #000;
+}

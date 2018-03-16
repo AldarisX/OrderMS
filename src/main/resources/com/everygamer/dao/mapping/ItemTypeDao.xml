@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.dao.ItemTypeDao">
+    <resultMap id="ItemType" type="com.everygamer.bean.ItemType">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="exData" column="ex_data"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="inIndex" column="in_index"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="delDate" column="del_date"/>
+        <result property="upDate" column="up_date"/>
+    </resultMap>
+
+    <insert id="addItemType">
+        <choose>
+            <when test="param2!=null">
+                INSERT INTO item_type ("name", ex_data, ins_date) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
+            </when>
+            <otherwise>
+                INSERT INTO item_type ("name", ins_date) VALUES (#{param1}, UNIX_TIMESTAMP())
+            </otherwise>
+        </choose>
+
+    </insert>
+    <update id="delItemType">
+        UPDATE item_type
+        SET is_alive = 0, del_date = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
+    <update id="updateItemType">
+        UPDATE item_type
+        SET "name" = #{param2}, in_index = #{param3}, ex_data = #{param4}, up_date = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
+    <select id="getItemTypeById" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
+        SELECT
+            id,
+            "name",
+            in_index,
+            ins_date,
+            ex_data
+        FROM item_type
+        WHERE id = #{param1} AND is_alive = 1
+    </select>
+    <select id="getAllItemType" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
+        SELECT
+            id,
+            "name",
+            in_index,
+            ins_date,
+            ex_data
+        FROM item_type
+        WHERE is_alive = 1
+    </select>
+    <select id="isItemExist" resultType="java.lang.Boolean" resultMap="ItemType">
+        SELECT count(id)
+        FROM item_type
+        WHERE "name" = #{param1} AND is_alive = 1
+    </select>
+    <select id="getItemTypeByName" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
+        SELECT
+            id,
+            "name",
+            in_index,
+            ins_date,
+            ex_data
+        FROM item_type
+        WHERE "name" = #{param1} AND is_alive = 1
+    </select>
+    <select id="getExData" resultType="java.lang.String">
+        SELECT ex_data
+        FROM item_type
+        WHERE id = #{param1}
+    </select>
+</mapper>

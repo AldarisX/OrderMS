@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.dao.OrderListDao">
+    <resultMap id="OrderItem" type="com.everygamer.bean.OrderItem">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userWW" column="userww"/>
+        <result property="tel" column="tel"/>
+        <result property="phone" column="phone"/>
+        <result property="address" column="address"/>
+        <result property="itemList" column="item_list"/>
+        <result property="logisticsType" column="logistics_type"/>
+        <result property="logistics" column="logistics"/>
+        <result property="logisticsNum" column="logistics_num"/>
+        <result property="transCost" column="trans_cost"/>
+        <result property="desc" column="desc"/>
+        <result property="orderState" column="order_state"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="delDate" column="del_date"/>
+        <result property="upDate" column="up_date"/>
+    </resultMap>
+    <insert id="addOrder" parameterType="com.everygamer.bean.OrderItem">
+        INSERT INTO order_list (user_name, userww, tel, phone, address, item_list, logistics_type, logistics, logistics_num, trans_cost, `desc`, order_state, ins_date)
+        VALUES (#{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{itemList}, #{logisticsType}, #{logistics},
+                             #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP())
+    </insert>
+    <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
+        SELECT *
+        FROM order_list
+        WHERE id = #{param1};
+    </select>
+</mapper>

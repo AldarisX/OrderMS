@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.dao.ItemListStatisDao">
+    <resultMap id="BaseItem" type="com.everygamer.bean.BaseItem">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="itemType" column="item_type"/>
+        <result property="manufactor" column="manufactor"/>
+        <result property="model" column="model"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="exData" column="ex_data"/>
+        <result property="upDate" column="up_data"/>
+    </resultMap>
+
+    <insert id="addStatis">
+        INSERT INTO item_list_statis ("name", item_type, manufactor, "count", price, ex_data, up_date)
+        VALUES
+            (#{param1}, #{param2}, #{param3}, #{param4}, #{param5} * #{param4}, #{param6}, UNIX_TIMESTAMP())
+    </insert>
+    <update id="updateStatis">
+        UPDATE item_list_statis
+        SET "count" = "count" + #{param2}, price = price + #{param3} * #{param2}, up_date = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
+    <update id="mergeExData">
+        UPDATE item_list_statis
+        SET ex_data = JSON_MERGE(ex_data, #{param2}), up_date = UNIX_TIMESTAMP()
+        WHERE item_type = #{param1}
+    </update>
+    <update id="splitItem">
+        UPDATE item_list_statis
+        SET "count" = "count" - #{param4}, price = price - #{param5}
+        WHERE "name" = #{param1} AND item_type = #{param2} AND manufactor = #{param3} AND
+              ex_data = #{param6}
+    </update>
+    <select id="isExist" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
+        SELECT id
+        FROM item_list_statis
+        WHERE
+            "name" = #{param1} AND item_type = #{param2} AND manufactor = #{param3} AND
+            ex_data = #{param4}
+    </select>
+</mapper>

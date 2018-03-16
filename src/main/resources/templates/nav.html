@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<div th:fragment="commonNav(page,sub,child)" th:class="head">
+    <ul th:id="head_nav" th:class="headNav">
+        <li><a th:class="${page eq 'home'}? 'selected':''" th:href="index.html">主页</a></li>
+        <li><a th:class="${page eq 'store'}? 'selected':''" th:href="store.html">仓库管理</a></li>
+        <li><a th:class="${page eq 'sys'}? 'selected':''" th:href="item_type.html">系统数据</a></li>
+        <li><a onclick="logout()" th:href="''">退出</a></li>
+    </ul>
+    <ul th:if="${sub==null}" th:id="sub_nav" th:class="headNav">
+    </ul>
+    <ul th:if="${sub!=null && sub eq 'store'}" th:id="sub_nav" th:class="headNav">
+        <li><a th:class="${child eq 'store'}? 'selected':''" th:href="store.html">入库</a></li>
+        <li><a th:class="${child eq 'store_list'}? 'selected':''" th:href="store_list.html">入库记录</a></li>
+        <li><a th:class="${child eq 'item_out'}? 'selected':''" th:href="item_out.html">出库</a></li>
+    </ul>
+    <ul th:if="${sub!=null && sub eq 'sys'}" th:id="sub_nav" th:class="headNav">
+        <li><a th:class="${child eq 'item_type'}? 'selected':''" th:href="item_type.html">物品类型</a></li>
+        <li><a th:class="${child eq 'manu_type'}? 'selected':''" th:href="manu_type.html">厂商</a></li>
+        <li><a th:class="${child eq 'edit_user'}? 'selected':''" th:href="edit_user.html">编辑用户</a></li>
+    </ul>
+    <div th:class="clearfix"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="commonHead(title)">
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+    <link rel="icon" th:href="favicon.ico"/>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/extend/layer/theme/default/layer.css}" media="all">
+    <script type="text/javascript" th:src="@{/extend/layer/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+</head>
+</html>
