@@ -1,26 +1,28 @@
 package com.everygamer.site;
 
 import com.everygamer.service.security.AdminUserService;
-import com.everygamer.site.expection.VCodeExpection;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.*;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.security.auth.login.AccountExpiredException;
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -43,38 +45,47 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    VCodeFilter vCodeFilter() throws Exception {
-        VCodeFilter filter = new VCodeFilter();
+    SiteLoginFilter vCodeFilter() throws Exception {
+        SiteLoginFilter filter = new SiteLoginFilter();
         filter.setAuthenticationManager(authenticationManagerBean());
         filter.setFilterProcessesUrl("/login/login.do");
-        filter.setAuthenticationSuccessHandler(new SavedRequestAwareAuthenticationSuccessHandler());
-        filter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        filter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/json;charset=UTF-8");
+                JSONObject result = new JSONObject();
+                result.accumulate("result", true);
+                result.accumulate("url", "/index.html");
+                response.getWriter().print(result.toString());
+            }
+        });
+        filter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/json;charset=UTF-8");
+                JSONObject result = new JSONObject();
+                result.accumulate("result", false);
+                result.accumulate("msg", exception.getMessage());
+                response.getWriter().print(result.toString());
+            }
+        });
         return filter;
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        //根据抛出的不同的异常跳转到不同的URL
-        ExceptionMappingAuthenticationFailureHandler failureHandler = new ExceptionMappingAuthenticationFailureHandler();
-        Map<String, String> failureUrlMap = new HashMap<>();
-        failureUrlMap.put(BadCredentialsException.class.getName(), "/login/getLogin?error");
-        failureUrlMap.put(VCodeExpection.class.getName(), "/login/getLogin?verror");
-        failureUrlMap.put(AccountExpiredException.class.getName(), "/login/getLogin?error");
-        failureUrlMap.put(LockedException.class.getName(), "/login/getLogin?error");
-        failureUrlMap.put(DisabledException.class.getName(), "/login/getLogin?error");
-        failureHandler.setExceptionMappings(failureUrlMap);
-        return failureHandler;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().ignoringAntMatchers("/api/*")
+        http.headers().cacheControl().disable();
+        http.csrf().ignoringAntMatchers("/api/*", "/login/login.do")
                 .and()
                 .addFilterBefore(vCodeFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(loginUrlAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
                 .antMatchers("/login/*", "/logout", "/error/*", "/favicon.ico").permitAll()
+                .antMatchers("/css/*", "/js/*", "/extend/**").permitAll()
+                .antMatchers("/api/user.json").permitAll()
                 .antMatchers("/admin").access("hasRole('ADMIN')")
                 .anyRequest().authenticated()
                 .and()
