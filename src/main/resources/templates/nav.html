@@ -8,7 +8,7 @@
         <li><a th:class="${page eq 'home'}? 'selected':''" th:href="index.html">主页</a></li>
         <li><a th:class="${page eq 'store'}? 'selected':''" th:href="store.html">仓库管理</a></li>
         <li><a th:class="${page eq 'sys'}? 'selected':''" th:href="item_type.html">系统数据</a></li>
-        <li><a onclick="logout()" th:href="''">退出</a></li>
+        <li><a onclick="logout()" th:href="@{/logout}">退出</a></li>
     </ul>
     <ul th:if="${sub==null}" th:id="sub_nav" th:class="headNav">
     </ul>
