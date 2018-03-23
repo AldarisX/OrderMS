@@ -2,24 +2,62 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>登陆</title>
+    <script th:replace="/head.html::commonHead('登陆')"></script>
+    <script th:src="@{/js/jsencrypt.min.js}"></script>
+    <script th:inline="javascript" type="text/javascript">
+        function doLogin() {
+            layer.msg('加载中', {
+                icon: 16
+                , shade: 0.01
+            });
+            $.post("/api/user.json?action=getRSA", function (result) {
+                console.log(result);
+                if (result.result) {
+                    //加密
+                    let encrypt = new JSEncrypt();
+                    encrypt.setPublicKey(result.puk);
+                    let passwd = encrypt.encrypt($(":password[name=password]").val());
+                    let uname = $(":text[name=username]").val();
+                    let vcode = $(":text[name=vcode]").val();
+                    $.post("/login/login.do", {
+                        username: uname,
+                        password: passwd,
+                        vcode: vcode
+                    }, function (data) {
+                        if (data.result) {
+                            location.href = data.url;
+                        } else {
+                            layer.msg(data.msg, {icon: 5});
+                        }
+                    }).fail(function () {
+                        layer.msg('登陆请求失败', {icon: 5});
+                    });
+                } else {
+                    layer.msg("密码加密失败", {icon: 5});
+                }
+            }).fail(function () {
+                layer.msg('请求RSA公钥失败', {icon: 5});
+            });
+        }
+
+        function reVCode() {
+            $("#vCode").attr("src", "");
+            $("#vCode").attr("src", "vCode.jpg?id=" + new Date());
+        }
+    </script>
 </head>
 <body>
-<p th:if="${param.verror}">
-    验证码错误
-</p>
-<p th:if="${param.error}">
-    用户名或密码错误
-</p>
-<p th:if="${param.logout}">
-    注销成功
-</p>
-<form th:action="@{/login/login.do}" method="post">
+<form th:action="@{/login/login.do}" onsubmit="return false">
     <div><label> 用户名 : <input type="text" name="username"/> </label></div>
     <div><label> 密 码 : <input type="password" name="password"/> </label></div>
     <div><label> 验证码 : <input type="text" name="vcode"/> </label></div>
     <div><img src="/login/vCode.jpg"></div>
-    <div><input type="submit" value="登录"/></div>
+    <div>
+        <button onclick="doLogin()">登录</button>
+    </div>
 </form>
+<p th:if="${param.logout}">
+    注销成功
+</p>
 </body>
 </html>
