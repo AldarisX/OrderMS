@@ -35,6 +35,44 @@ public class MakerFake {
         }
     }
 
+    class FakeThr implements Runnable {
+        @Override
+        public void run() {
+            try (
+                    Connection conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/orderms?stringtype=unspecified", "aldaris", "0000")
+            ) {
+                ArrayList<String> gpuNameList = new ArrayList<>(gpuList.keySet());
+                for (int j = 0; j < 10000; j++) {
+                    int rdCount = getRD(10, 100);
+                    int rdPrice = getRD(1500, 3000);
+
+                    String name = gpuNameList.get(getRD(0, gpuList.keySet().size()));
+                    String model = gpuList.get(name);
+                    int manu = manuList.get(getRD(0, manuList.size()));
+
+                    String exData = exDataList.get(getRD(0, exDataList.size())).toString();
+                    String sql = "INSERT INTO item_list (name, item_type, manufactor, model, count, remain, price, ex_data, ins_date) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    PreparedStatement pst = conn.prepareStatement(sql);
+                    pst.setString(1, name);
+                    pst.setInt(2, 1);
+                    pst.setInt(3, manu);
+                    pst.setString(4, model);
+                    pst.setInt(5, rdCount);
+                    pst.setInt(6, rdCount);
+                    pst.setInt(7, rdPrice);
+                    pst.setString(8, exData);
+                    pst.setInt(9, (int) getUnixTime());
+
+                    pst.executeUpdate();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            System.out.println(Thread.currentThread().getName() + " finish");
+        }
+    }
+
     private long getUnixTime() {
         synchronized (fakeDate) {
             long time = fakeDate.getTimeInMillis() / 1000;
@@ -196,43 +234,5 @@ public class MakerFake {
     private int getRD(int min, int max) {
         Random random = new Random();
         return random.nextInt(max) % (max - min + 1) + min;
-    }
-
-    class FakeThr implements Runnable {
-        @Override
-        public void run() {
-            try (
-                    Connection conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/orderms?stringtype=unspecified", "aldaris", "0000")
-            ) {
-                ArrayList<String> gpuNameList = new ArrayList<>(gpuList.keySet());
-                for (int j = 0; j < 10000; j++) {
-                    int rdCount = getRD(10, 100);
-                    int rdPrice = getRD(1500, 3000);
-
-                    String name = gpuNameList.get(getRD(0, gpuList.keySet().size()));
-                    String model = gpuList.get(name);
-                    int manu = manuList.get(getRD(0, manuList.size()));
-
-                    String exData = exDataList.get(getRD(0, exDataList.size())).toString();
-                    String sql = "INSERT INTO item_list (name, item_type, manufactor, model, count, remain, price, ex_data, ins_date) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    PreparedStatement pst = conn.prepareStatement(sql);
-                    pst.setString(1, name);
-                    pst.setInt(2, 1);
-                    pst.setInt(3, manu);
-                    pst.setString(4, model);
-                    pst.setInt(5, rdCount);
-                    pst.setInt(6, rdCount);
-                    pst.setInt(7, rdPrice);
-                    pst.setString(8, exData);
-                    pst.setInt(9, (int) getUnixTime());
-
-                    pst.executeUpdate();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.out.println(Thread.currentThread().getName() + " finish");
-        }
     }
 }
