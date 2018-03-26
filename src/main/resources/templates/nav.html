@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 </head>
 <body>
@@ -20,8 +20,9 @@
     <ul th:if="${sub!=null && sub eq 'sys'}" th:id="sub_nav" th:class="headNav">
         <li><a th:class="${child eq 'item_type'}? 'selected':''" th:href="item_type.html">物品类型</a></li>
         <li><a th:class="${child eq 'manu_type'}? 'selected':''" th:href="manu_type.html">厂商</a></li>
-        <li th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><a
-                th:class="${child eq 'edit_user'}? 'selected':''" th:href="edit_user.html">编辑用户</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:class="${child eq 'edit_user'}? 'selected':''" th:href="edit_user.html">编辑用户</a>
+        </li>
     </ul>
     <div th:class="clearfix"></div>
 </div>

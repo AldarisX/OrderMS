@@ -33,7 +33,7 @@ public class PageControl {
 
     @RequestMapping(path = {"/manu_type.html"})
     public String manu_type() {
-        return "/manu_type.html";
+        return "manu_type.html";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
