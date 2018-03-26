@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.headers().cacheControl().disable();
+        http.headers().cacheControl().disable().frameOptions().disable();
         http.csrf().ignoringAntMatchers("/static/**", "/api/**", "/login/login.do")
                 .and()
                 .addFilterBefore(vCodeFilter(), UsernamePasswordAuthenticationFilter.class)
