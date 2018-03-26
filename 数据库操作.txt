@@ -1,0 +1,7 @@
+生成物品统计数据
+
+insert into item_list_statis (name,item_type,manufactor,model,count,price,ex_data,up_date)
+select name,item_type,manufactor,model,sum(count) as count,sum(count*price) as price,ex_data,max(ins_date) as up_date
+from item_list
+where remain>0
+group by name,item_type,manufactor,model,ex_data
