@@ -8,7 +8,7 @@
         }, function (data) {
             if (data.result) {
                 user = data.data;
-                $("#userTitle").text("设置用户:" + user.uname + "的密码");
+                $("#userTitle").text("设置用户:" + user.username + "的密码");
             } else {
                 parent.layer.msg(data.msg, {icon: 5});
             }
