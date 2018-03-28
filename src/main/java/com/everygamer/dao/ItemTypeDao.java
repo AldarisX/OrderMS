@@ -17,6 +17,8 @@ public interface ItemTypeDao extends BaseDao {
 
     int addItemType(String name, String exData);
 
+    int updateItemTypeExData(int id, String exData);
+
     int updateItemType(int id, String name, int inIndex, String exData);
 
     int delItemType(int id);

@@ -64,13 +64,20 @@ public class ItemTypeService {
         if (tempItemType != null && !"{}".equals(tempItemType)) {
             HashMap<String, Object> exDataPatch = calcPatchExData(tempItemType, exDataJson);
             for (Object key : exDataPatch.keySet()) {
-//                System.out.println(key + ":" + exDataPatch.get(key));
                 cRowsItemList += itemListDao.mergeExData(id, key, exDataPatch.get(key));
                 itemListStatisDao.mergeExData(id, key, exDataPatch.get(key));
             }
         } else {
             cRowsItemList = 0;
         }
+        return 1;
+    }
+
+    @Transactional
+    public int delExDataKey(int id, String key, JSONArray exData) {
+        itemTypeDao.updateItemTypeExData(id, exData.toString());
+        itemListDao.deleteExDataKey(id, key);
+        itemListStatisDao.deleteExDataKey(id, key);
         return 1;
     }
 

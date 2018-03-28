@@ -48,6 +48,11 @@ public class ItemListStatisticsDaoImpl extends SqlSessionDaoSupport implements I
     }
 
     @Override
+    public int deleteExDataKey(int itemType, Object key) {
+        return dao.deleteExDataKey(itemType, key);
+    }
+
+    @Override
     public int splitItem(String name, Integer itemType, Integer manu, Integer num, BigDecimal price, String exData) {
         int cRows = dao.splitItem(name, itemType, manu, num, price, exData);
         if (cRows != 1) {

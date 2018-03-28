@@ -33,6 +33,11 @@
         SET "name" = #{param2}, in_index = #{param3}, ex_data = #{param4}, up_date = UNIX_TIMESTAMP()
         WHERE id = #{param1}
     </update>
+    <update id="updateItemTypeExData">
+        UPDATE item_type
+        SET ex_data = #{param2}, up_date = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
     <select id="getItemTypeById" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
         SELECT
             id,

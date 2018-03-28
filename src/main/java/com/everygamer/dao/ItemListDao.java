@@ -17,6 +17,8 @@ public interface ItemListDao extends BaseDao {
 
     int mergeExData(int itemType, Object key, Object value);
 
+    int deleteExDataKey(int itemType, Object key);
+
     int addItem(String name, Integer itemType, Integer manu, String model, Integer num, BigDecimal price, String exData, String desc);
 
     int delItem(int id);

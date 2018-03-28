@@ -148,7 +148,30 @@
         }
 
         function delKey(event) {
+            let keyName = $(event).parent().find(".keyName").val();
             $(event).parent().remove();
+            parent.layer.confirm('确定删除属性' + keyName + '?', {
+                btn: ['确定', '取消'],
+                icon: 3
+            }, function () {
+                if (isEdit) {
+                    const itemType = $(":text[name=itemType]").val();
+                    let exData = getExData();
+                    $.post("/api/itemType.json?action=delItemTypeKey", {
+                        id: editItem,
+                        key: keyName,
+                        exData: JSON.stringify(exData)
+                    }, function (data) {
+                        layer.msg("删除完成", {icon: 6});
+                    }).fail(function () {
+                        layer.msg("删除属性时出错", {icon: 5});
+                    });
+                } else {
+                    layer.msg("删除完成", {icon: 6});
+                }
+            }, function () {
+                parent.layer.closeAll();
+            });
         }
 
         function getExData() {
@@ -171,7 +194,7 @@
 <body>
 <div th:replace="/nav.html::commonNav('sys','item_type')"></div>
 <div>
-    <form action="/api/itemType.json?action=addItemType" method="post" onsubmit="return postItemType()">
+    <form action="/api/itemType.json?action=addItemType" method="post" onsubmit="return false">
         <label>物品类型:<input type="text" name="itemType" placeholder="CPU...硬盘...显示器"/></label><br/>
         <label>在主页显示:<input type="checkbox" name="inIndex"/></label>
         <div id="isExData">
@@ -193,7 +216,7 @@
             <button id="btn_addKey" type="button" onclick="addKey()">添加字段</button>
             <br>
         </div>
-        <button>保存</button>
+        <button onclick="postItemType()">保存</button>
     </form>
     <table id="itemTypeList" border="1">
     </table>

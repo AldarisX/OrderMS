@@ -119,6 +119,16 @@ public class ItemTypeControl extends BaseControl {
     }
 
     @ResponseBody
+    @RequestMapping(params = "action=delItemTypeKey", produces = "application/json;charset=UTF-8")
+    public String delExDataKey(Integer id, String key, String exData) {
+        JSONObject result = new JSONObject();
+
+        itemTypeService.delExDataKey(id, key, JSONArray.fromObject(exData));
+
+        return result.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(params = "action=delItemType", produces = "application/json;charset=UTF-8")
     public String delItemType(int id) {
         JSONObject result = new JSONObject();

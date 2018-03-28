@@ -47,6 +47,11 @@ public class ItemListDaoImpl extends SqlSessionDaoSupport implements ItemListDao
     }
 
     @Override
+    public int deleteExDataKey(int itemType, Object key) {
+        return dao.deleteExDataKey(itemType, key);
+    }
+
+    @Override
     public int addItem(String name, Integer itemType, Integer manu, String model, Integer num, BigDecimal price, String exData, String desc) {
         int cRows = dao.addItem(name, itemType, manu, model, num, price, exData, desc);
         if (cRows != 1) {

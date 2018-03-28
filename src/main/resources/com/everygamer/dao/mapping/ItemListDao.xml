@@ -29,6 +29,11 @@
         SET ex_data = jsonb_set(ex_data, #{param2}, '${param3}', TRUE), up_date = UNIX_TIMESTAMP()
         WHERE item_type = #{param1}
     </update>
+    <update id="deleteExDataKey">
+        UPDATE item_list
+        SET ex_data = ex_data - '${param2}', up_date = UNIX_TIMESTAMP()
+        WHERE item_type = #{param1};
+    </update>
     <update id="splitItem">
         UPDATE item_list
         SET remain = remain - #{param2}
