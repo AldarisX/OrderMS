@@ -6,6 +6,10 @@
         let itemTypeData;
 
         $(document).ready(function () {
+            $.get("/store_search.html", function (page) {
+                $("#searchBlock").append(page);
+                pageLoad();
+            });
             loadData();
         });
 
@@ -13,11 +17,6 @@
             document.getElementById("manuList").selectedIndex = -1;
             $("#itemTypeList").empty();
             $("#itemTypeList").append("<option selected='selected' disabled='disabled' value='selected'></option>");
-
-            $.get("/store_search.html", function (page) {
-                $("#searchBlock").append(page);
-                pageLoad();
-            });
         }
 
         function loadManuList() {
