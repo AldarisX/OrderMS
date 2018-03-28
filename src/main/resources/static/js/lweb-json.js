@@ -22,17 +22,19 @@ LwebJson.getSelectIndex = function (type) {
 
 LwebJson.jsonToString = function (json, structure, division) {
     let text = "";
-    for (let j = 0; j < structure.length; j++) {
-        const exItem = structure[j];
-        switch (exItem.type) {
-            case typeEnmu.boolean:
-                if (json[exItem.name]) {
-                    text += exItem.desc + division;
-                }
-                break;
-            default:
-                text += exItem.desc + ":" + json[exItem.name] + division;
-                break;
+    if (structure != null) {
+        for (let j = 0; j < structure.length; j++) {
+            const exItem = structure[j];
+            switch (exItem.type) {
+                case typeEnmu.boolean:
+                    if (json[exItem.name]) {
+                        text += exItem.desc + division;
+                    }
+                    break;
+                default:
+                    text += exItem.desc + ":" + json[exItem.name] + division;
+                    break;
+            }
         }
     }
     text = text.substring(0, text.lastIndexOf(division));
