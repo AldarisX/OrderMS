@@ -167,7 +167,7 @@
     </script>
 </head>
 <body>
-<div th:replace="/nav.html::commonNav('sys','sys','item_type')"></div>
+<div th:replace="/nav.html::commonNav('sys','item_type')"></div>
 <div>
     <form action="/api/itemType.json?action=addItemType" method="post" onsubmit="return postItemType()">
         <label>物品类型:<input type="text" name="itemType" placeholder="CPU...硬盘...显示器"/></label><br/>

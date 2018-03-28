@@ -3,21 +3,21 @@
 <head>
 </head>
 <body>
-<div th:fragment="commonNav(page,sub,child)" th:class="head">
+<div th:fragment="commonNav(page,child)" th:class="head">
     <ul th:id="head_nav" th:class="headNav">
         <li><a th:class="${page eq 'home'}? 'selected':''" th:href="index.html">主页</a></li>
         <li><a th:class="${page eq 'store'}? 'selected':''" th:href="store.html">仓库管理</a></li>
         <li><a th:class="${page eq 'sys'}? 'selected':''" th:href="item_type.html">系统数据</a></li>
         <li><a th:href="@{/logout}">退出</a></li>
     </ul>
-    <ul th:if="${sub==null}" th:id="sub_nav" th:class="headNav">
+    <ul th:if="${page eq 'home'}" th:id="sub_nav" th:class="headNav">
     </ul>
-    <ul th:if="${sub!=null && sub eq 'store'}" th:id="sub_nav" th:class="headNav">
+    <ul th:if="${page != 'home' && page eq 'store'}" th:id="sub_nav" th:class="headNav">
         <li><a th:class="${child eq 'store'}? 'selected':''" th:href="store.html">入库</a></li>
         <li><a th:class="${child eq 'store_list'}? 'selected':''" th:href="store_list.html">入库记录</a></li>
         <li><a th:class="${child eq 'item_out'}? 'selected':''" th:href="item_out.html">出库</a></li>
     </ul>
-    <ul th:if="${sub!=null && sub eq 'sys'}" th:id="sub_nav" th:class="headNav">
+    <ul th:if="${page != 'home' && page eq 'sys'}" th:id="sub_nav" th:class="headNav">
         <li><a th:class="${child eq 'item_type'}? 'selected':''" th:href="item_type.html">物品类型</a></li>
         <li><a th:class="${child eq 'manu_type'}? 'selected':''" th:href="manu_type.html">厂商</a></li>
         <li sec:authorize="hasRole('ROLE_ADMIN')">
