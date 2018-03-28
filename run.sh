@@ -1,2 +1,2 @@
-./mvnw clean
-./mvnw spring-boot:run
+bash ./mvnw clean
+bash ./mvnw spring-boot:run
