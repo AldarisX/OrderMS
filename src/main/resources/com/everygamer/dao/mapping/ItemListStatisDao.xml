@@ -25,7 +25,7 @@
     </update>
     <update id="mergeExData">
         UPDATE item_list_statis
-        SET ex_data = JSON_MERGE(ex_data, #{param2}), up_date = UNIX_TIMESTAMP()
+        SET ex_data = jsonb_set(ex_data, #{param2}, '${param3}', TRUE), up_date = UNIX_TIMESTAMP()
         WHERE item_type = #{param1}
     </update>
     <update id="splitItem">

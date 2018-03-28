@@ -15,7 +15,7 @@ public interface ItemListDao extends BaseDao {
 
     BaseItem getItemByCondition(String name, int type, int manu, String exData, ArrayList<Integer> notIN);
 
-    int mergeExData(int itemType, String exData);
+    int mergeExData(int itemType, Object key, Object value);
 
     int addItem(String name, Integer itemType, Integer manu, String model, Integer num, BigDecimal price, String exData, String desc);
 

@@ -42,8 +42,8 @@ public class ItemListDaoImpl extends SqlSessionDaoSupport implements ItemListDao
     }
 
     @Override
-    public int mergeExData(int itemType, String exData) {
-        return dao.mergeExData(itemType, exData);
+    public int mergeExData(int itemType, Object key, Object value) {
+        return dao.mergeExData(itemType, key, value);
     }
 
     @Override

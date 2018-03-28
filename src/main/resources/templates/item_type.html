@@ -116,7 +116,9 @@
                     } else {
                         alert(data.msg);
                     }
-                })
+                }).fail(function () {
+                    layer.msg("更新时出错", {icon: 5});
+                });
             } else {
                 alert("请认真填写");
             }

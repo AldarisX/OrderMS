@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service("ItemTypeService")
@@ -59,15 +60,18 @@ public class ItemTypeService {
 
         String tempItemType = itemListDao.getExDataByType(id);
         int cRows = itemTypeDao.updateItemType(id, name, inIndex, exDataStr);
-        int cRowsItemList;
+        int cRowsItemList = 0;
         if (tempItemType != null && !"{}".equals(tempItemType)) {
-            JSONObject exDataPatch = calcPatchExData(tempItemType, exDataJson);
-            cRowsItemList = itemListDao.mergeExData(id, exDataPatch.toString());
-            itemListStatisDao.mergeExData(id, exDataPatch.toString());
+            HashMap<String, Object> exDataPatch = calcPatchExData(tempItemType, exDataJson);
+            for (Object key : exDataPatch.keySet()) {
+//                System.out.println(key + ":" + exDataPatch.get(key));
+                cRowsItemList += itemListDao.mergeExData(id, key, exDataPatch.get(key));
+                itemListStatisDao.mergeExData(id, key, exDataPatch.get(key));
+            }
         } else {
             cRowsItemList = 0;
         }
-        return cRowsItemList;
+        return 1;
     }
 
     @Transactional
@@ -75,25 +79,27 @@ public class ItemTypeService {
         return itemTypeDao.delItemType(id);
     }
 
-    private JSONObject calcPatchExData(String existData, JSONArray exDataList) {
+    private HashMap<String, Object> calcPatchExData(String existData, JSONArray exDataList) {
         JSONObject existExData = JSONObject.fromObject(existData);
-        JSONObject exData = new JSONObject();
+        HashMap exData = new HashMap();
         if (existData != null) {
             for (int i = 0; i < exDataList.size(); i++) {
                 JSONObject exDataItem = exDataList.getJSONObject(i);
 
                 String name = exDataItem.getString("name");
                 if (existExData.get(name) == null) {
+                    Object value = null;
                     switch (exDataItem.getString("type")) {
                         case "text":
-                            exData.accumulate(name, "");
+                            value = "";
                             break;
                         case "number":
-                            exData.accumulate(name, 0);
+                            value = 0;
                         case "checkbox":
-                            exData.accumulate(name, false);
+                            value = false;
                             break;
                     }
+                    exData.put("{\"" + name + "\"}", value);
                 }
             }
         }

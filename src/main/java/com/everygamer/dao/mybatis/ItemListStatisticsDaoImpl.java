@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Repository("ItemListStatisDao")
 public class ItemListStatisticsDaoImpl extends SqlSessionDaoSupport implements ItemListStatisDao {
@@ -23,11 +22,6 @@ public class ItemListStatisticsDaoImpl extends SqlSessionDaoSupport implements I
     @Override
     public BaseItem isExist(String name, Integer itemType, Integer manu, String exData) {
         return dao.isExist(name, itemType, manu, exData);
-    }
-
-    @Override
-    public List<BaseItem> getTopItem(int type, int size) {
-        return dao.getTopItem(type, size);
     }
 
     @Override
@@ -49,8 +43,8 @@ public class ItemListStatisticsDaoImpl extends SqlSessionDaoSupport implements I
     }
 
     @Override
-    public int mergeExData(int itemType, String exData) {
-        return dao.mergeExData(itemType, exData);
+    public int mergeExData(int itemType, Object key, Object value) {
+        return dao.mergeExData(itemType, key, value);
     }
 
     @Override
