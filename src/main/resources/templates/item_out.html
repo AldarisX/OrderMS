@@ -23,7 +23,7 @@
             itemCount += count;
             $("#itemStatis").text(" 一共选择了" + itemCount + "个物品 共" + priceCount + "元");
             let exData = LwebJson.jsonToString(item.exData, nowExData, "</br>");
-            $("#selectedItem table").append("<tr><td>" + item.name + "</td><td>" + item.itemType + "</td><td>" + exData + "</td><td>" + price + "</td><td>" + count + "</td><td><button onclick='removeItem(" + selectedItem.length + "," + count + "," + price + ")'>移除</button></td></tr>");
+            $("#selectedItem table").append("<tr><td>" + item.name + "</td><td>" + item.manufactor + "</td><td>" + item.itemType + "</td><td>" + exData + "</td><td>" + price + "</td><td>" + count + "</td><td><button onclick='removeItem(" + selectedItem.length + "," + count + "," + price + ")'>移除</button></td></tr>");
         }
 
         function removeItem(index, count, price) {
@@ -40,7 +40,7 @@
             itemCount = 0;
             $("#itemStatis").text(" 一共选择了0个物品 共0元");
             $("#selectedItem table").empty();
-            $("#selectedItem table").append("<tr><td>型号</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
+            $("#selectedItem table").append("<tr><td>型号</td><td>厂商</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
         }
 
         function itemOut() {
@@ -51,7 +51,7 @@
                     layer.msg("操作成功", {icon: 6});
                     $("#itemStatis").text(" 一共选择了0个物品 共0元");
                     $("#selectedItem table").empty();
-                    $("#selectedItem table").append("<tr><td>型号</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
+                    $("#selectedItem table").append("<tr><td>型号</td><td>厂商</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
                     selectedItem = [];
                     loadStore();
                 } else {
@@ -76,6 +76,7 @@
         <table border="1">
             <tr>
                 <td>型号</td>
+                <td>厂商</td>
                 <td>类型</td>
                 <td>附加参数</td>
                 <td>出库价</td>
