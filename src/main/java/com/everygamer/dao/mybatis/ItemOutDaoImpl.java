@@ -1,5 +1,6 @@
 package com.everygamer.dao.mybatis;
 
+import com.everygamer.bean.OutItem;
 import com.everygamer.dao.ItemOutDao;
 import com.everygamer.dao.exception.DBUpdateException;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -19,12 +20,17 @@ public class ItemOutDaoImpl extends SqlSessionDaoSupport implements ItemOutDao {
     }
 
     @Override
-    public int itemOut(int itemListStatisId, String itemList, int count, BigDecimal price, String desc) {
-        int cRows = dao.itemOut(itemListStatisId, itemList, count, price, desc);
-        if (cRows != 1) {
-            throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: itemOut");
+    public int itemOut(int orderId, int itemListStatisId, String itemList, int count, BigDecimal price, String desc) {
+        int cRows = dao.itemOut(orderId, itemListStatisId, itemList, count, price, desc);
+        if (cRows <= 0) {
+            throw new DBUpdateException("操作失败(返回ID<0),引发类: " + this.getClass().getName() + " 方法: itemOut");
         }
         return cRows;
+    }
+
+    @Override
+    public OutItem getItemByOrder(int orderId) {
+        return dao.getItemByOrder(orderId);
     }
 
     @Override

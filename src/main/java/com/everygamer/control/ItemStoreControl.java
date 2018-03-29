@@ -106,7 +106,7 @@ public class ItemStoreControl extends BaseControl {
 
         try {
             JSONArray itemsArray = JSONArray.fromObject(items);
-            storeService.itemOut(itemsArray, desc);
+            storeService.itemOut(0, itemsArray, desc);
             result.accumulate("result", true);
         } catch (JSONException e) {
             result.accumulate("result", false);

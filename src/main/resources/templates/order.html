@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:replace="/head.html::commonHead('添加订单')"></script>
+    <script th:inline="javascript" type="text/javascript">
+        let selectedItem = [];
+        let priceCount = 0;
+        let itemCount = 0;
+
+        $(document).ready(function () {
+            $.get("/select_item.html", function (page) {
+                $("#searchFrame").append(page);
+                pageLoad();
+            });
+        });
+
+        function addOrder() {
+            const userName = $(":text[name=userName]").val();
+            const userWW = $(":text[name=userWW]").val();
+            const tel = $(":text[name=tel]").val();
+            const phone = $(":text[name=phone]").val();
+            const address = $(":text[name=address]").val();
+            const logistics = $(":text[name=logistics]").val();
+            const logisticsNum = $(":text[name=logisticsNum]").val();
+            const transCost = $(":text[name=transCost]").val();
+            const logisticsType = $("#logisticsType").val();
+
+            $.post("/api/order.json?action=addOrder", {
+                userName: userName,
+                userWW: userWW,
+                tel: tel,
+                phone: phone,
+                address: address,
+                logistics: logistics,
+                logisticsType: logisticsType,
+                logisticsNum: logisticsNum,
+                transCost: transCost,
+                desc: $("#desc").val(),
+                items: JSON.stringify(selectedItem)
+            }, function (data) {
+                if (data.result) {
+                    layer.msg("操作成功", {icon: 6});
+                    $("#itemStatis").text(" 一共选择了0个物品 共0元");
+                    $("#selectedItem table").empty();
+                    $("#selectedItem table").append("<tr><td>型号</td><td>厂商</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
+                    selectedItem = [];
+                    loadStore();
+                } else {
+                    layer.msg(data.msg, {icon: 5});
+                }
+            })
+        }
+
+        function selectItem(item, count, price) {
+            layer.closeAll();
+
+            item.price = price;
+            item.count = count;
+            selectedItem.push(item);
+            priceCount += price * count;
+            itemCount += count;
+            $("#itemStatis").text(" 一共选择了" + itemCount + "个物品 共" + priceCount + "元");
+            let exData = LwebJson.jsonToString(item.exData, nowExData, "</br>");
+            $("#selectedItem table").append("<tr><td>" + item.name + "</td><td>" + item.manufactor + "</td><td>" + item.itemType + "</td><td>" + exData + "</td><td>" + price + "</td><td>" + count + "</td><td><button onclick='removeItem(" + selectedItem.length + "," + count + "," + price + ")'>移除</button></td></tr>");
+        }
+
+        function removeItem(index, count, price) {
+            $("#selectedItem table tr").get(index).remove();
+            priceCount -= price * count;
+            itemCount -= count;
+            selectedItem.splice(index - 1);
+            console.log(selectedItem);
+            $("#itemStatis").text(" 一共选择了" + itemCount + "个物品 共" + priceCount + "元");
+        }
+
+        function clearItem() {
+            selectedItem = [];
+            priceCount = 0;
+            itemCount = 0;
+            $("#itemStatis").text(" 一共选择了0个物品 共0元");
+            $("#selectedItem table").empty();
+            $("#selectedItem table").append("<tr><td>型号</td><td>厂商</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
+        }
+    </script>
+</head>
+<div th:replace="/nav.html::commonNav('order','order')"></div>
+<div>
+    <form onsubmit="return false">
+        <label>*买家姓名:<input th:type="text" th:name="userName" required/></label><br/>
+        <label>买家旺旺:<input th:type="text" th:name="userWW"/></label><br/>
+        <label>买家电话:<input th:type="text" th:name="tel"/></label><br/>
+        <label>*买家手机:<input th:type="text" th:name="phone" required/></label><br/>
+        <label>*买家地址:<input th:type="text" th:name="address" required/></label><br/>
+        <div>
+            <label>商品信息</label>
+            <div id="itemStatis">
+                一共选择了0个物品 共0元
+            </div>
+            <div id="selectedItem">
+                <table border="1">
+                    <tr>
+                        <td>型号</td>
+                        <td>厂商</td>
+                        <td>类型</td>
+                        <td>附加参数</td>
+                        <td>出库价</td>
+                        <td>数量</td>
+                        <td>操作</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <label>*面单类型:
+            <select id="logisticsType">
+                <option th:value="0">电子</option>
+                <option th:value="1">手工</option>
+            </select>
+        </label><br/>
+        <label>*物流:<input th:type="text" th:name="logistics" required/></label><br/>
+        <label>*单号:<input th:type="number" th:name="logisticsNum" required/></label><br/>
+        <label>*运费:<input th:type="number" th:name="transCost" required/></label><br/>
+        <label>备注<textarea th:id="desc" cols="40" rows="5"></textarea></label><br/>
+        <button onclick="addOrder()">添加</button>
+    </form>
+    <div id="searchFrame">
+
+    </div>
+</div>
+</html>

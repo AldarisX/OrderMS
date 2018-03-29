@@ -20,9 +20,11 @@
         <result property="delDate" column="del_date"/>
         <result property="upDate" column="up_date"/>
     </resultMap>
-    <insert id="addOrder" parameterType="com.everygamer.bean.OrderItem">
-        INSERT INTO order_list (user_name, userww, tel, phone, address, item_list, logistics_type, logistics, logistics_num, trans_cost, `desc`, order_state, ins_date)
-        VALUES (#{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{itemList}, #{logisticsType}, #{logistics},
+    <insert id="addOrder" parameterType="com.everygamer.bean.OrderItem" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id">
+        INSERT INTO order_list (user_name, userww, tel, phone, address, logistics_type, logistics, logistics_num, trans_cost, "desc", order_state, ins_date)
+        VALUES (#{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{logisticsType},
+                             #{logistics},
                              #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP())
     </insert>
     <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
