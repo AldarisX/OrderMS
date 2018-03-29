@@ -41,12 +41,13 @@ CREATE TABLE item_out
   id               SERIAL         NOT NULL
     CONSTRAINT item_out_pkey
     PRIMARY KEY,
+  order_id         INTEGER        NOT NULL DEFAULT 0,
   item_list_statis INTEGER        NOT NULL,
   item_list        JSONB,
   count            INTEGER        NOT NULL,
   price            NUMERIC(32, 5) NOT NULL,
   "desc"           TEXT,
-  is_alive         SMALLINT DEFAULT 1,
+  is_alive         SMALLINT                DEFAULT 1,
   ins_date         INTEGER,
   up_date          INTEGER,
   del_date         INTEGER
@@ -98,7 +99,6 @@ CREATE TABLE order_list
   id             SERIAL             NOT NULL
     CONSTRAINT order_list_pkey
     PRIMARY KEY,
-  out_id         INTEGER            NOT NULL,
   user_name      TEXT               NOT NULL,
   userww         TEXT,
   tel            TEXT,
