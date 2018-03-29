@@ -13,7 +13,7 @@ public class OrderItem {
     private int logisticsNum;
     private double transCost;
     private String desc;
-    private State orderState;
+    private State orderState = State.Create;
     private int isAlive;
     private String insDate;
     private String upDate;
