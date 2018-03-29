@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    SiteLoginFilter vCodeFilter() throws Exception {
+    SiteLoginFilter loginFilter() throws Exception {
         SiteLoginFilter filter = new SiteLoginFilter();
         filter.setAuthenticationManager(authenticationManagerBean());
         filter.setFilterProcessesUrl("/login/login.do");
@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.headers().cacheControl().disable().frameOptions().disable();
         http.csrf().ignoringAntMatchers("/static/**", "/api/**", "/login/login.do")
                 .and()
-                .addFilterBefore(vCodeFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(loginUrlAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
