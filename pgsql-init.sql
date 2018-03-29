@@ -104,7 +104,6 @@ CREATE TABLE order_list
   tel            TEXT,
   phone          TEXT               NOT NULL,
   address        TEXT               NOT NULL,
-  item_list      JSONB              NOT NULL,
   logistics_type INTEGER            NOT NULL,
   logistics      INTEGER            NOT NULL,
   logistics_num  INTEGER            NOT NULL,
