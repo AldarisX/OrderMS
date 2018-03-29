@@ -118,10 +118,11 @@ CREATE TABLE order_list
 
 CREATE TABLE admin_role
 (
-  id   SERIAL NOT NULL
+  id     SERIAL NOT NULL
     CONSTRAINT admin_role_pkey
     PRIMARY KEY,
-  name TEXT
+  name   TEXT,
+  "desc" TEXT
 );
 
 CREATE TABLE admin_user
