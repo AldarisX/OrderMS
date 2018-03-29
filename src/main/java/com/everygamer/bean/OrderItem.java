@@ -8,7 +8,7 @@ public class OrderItem {
     private String phone;
     private String address;
     private String itemList;
-    private String logisticsType;
+    private int logisticsType;
     private String logistics;
     private int logisticsNum;
     private double transCost;
@@ -75,11 +75,11 @@ public class OrderItem {
         this.itemList = itemList;
     }
 
-    public String getLogisticsType() {
+    public int getLogisticsType() {
         return logisticsType;
     }
 
-    public void setLogisticsType(String logisticsType) {
+    public void setLogisticsType(int logisticsType) {
         this.logisticsType = logisticsType;
     }
 
