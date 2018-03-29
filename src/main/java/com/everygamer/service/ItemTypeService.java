@@ -102,6 +102,7 @@ public class ItemTypeService {
                             break;
                         case "number":
                             value = 0;
+                            break;
                         case "checkbox":
                             value = false;
                             break;
