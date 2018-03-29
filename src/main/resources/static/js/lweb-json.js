@@ -43,6 +43,8 @@ LwebJson.jsonToString = function (json, structure, division) {
 
 LwebJson.getVal = function (el, type) {
     switch (type) {
+        case typeEnmu.int:
+            return parseInt($(el).val());
         case typeEnmu.boolean:
             return $(el).is(':checked');
         default:
