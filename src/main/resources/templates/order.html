@@ -30,7 +30,7 @@
                 return;
             }
 
-            layer.alert('请等待完成', {icon: 6});
+            layer.alert('请等待完成', {icon: 16});
             $.post("/api/order.json?action=addOrder", {
                 userName: userName,
                 userWW: userWW,
