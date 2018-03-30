@@ -20,8 +20,8 @@ public class ItemOutDaoImpl extends SqlSessionDaoSupport implements ItemOutDao {
     }
 
     @Override
-    public int itemOut(int orderId, int itemListStatisId, String itemList, int count, BigDecimal price, String desc) {
-        int cRows = dao.itemOut(orderId, itemListStatisId, itemList, count, price, desc);
+    public int itemOut(int orderId, String itemList, int count, BigDecimal price, String desc) {
+        int cRows = dao.itemOut(orderId, itemList, count, price, desc);
         if (cRows <= 0) {
             throw new DBUpdateException("操作失败(返回ID<0),引发类: " + this.getClass().getName() + " 方法: itemOut");
         }

@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 public class OutItem {
     private int id;
     private int orderId;
-    private int itemStatisId;
     private String itemList;
     private int count;
     private BigDecimal price;
@@ -29,14 +28,6 @@ public class OutItem {
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
-    }
-
-    public int getItemStatisId() {
-        return itemStatisId;
-    }
-
-    public void setItemStatisId(int itemStatisId) {
-        this.itemStatisId = itemStatisId;
     }
 
     public String getItemList() {

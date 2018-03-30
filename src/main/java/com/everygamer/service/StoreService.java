@@ -165,7 +165,7 @@ public class StoreService {
                     tarItems.add(tarItemJson);
                 }
                 //添加到出库记录
-                itemOutDao.itemOut(orderId, itemStatis.getId(), tarItems.toString(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")), desc);
+                itemOutDao.itemOut(orderId, tarItems.toString(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")), desc);
                 BaseItem itemOutStatis = itemOutStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
                 //更新出库统计
                 if (itemOutStatis != null) {

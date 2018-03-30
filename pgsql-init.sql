@@ -42,7 +42,6 @@ CREATE TABLE item_out
     CONSTRAINT item_out_pkey
     PRIMARY KEY,
   order_id         INTEGER        NOT NULL DEFAULT 0,
-  item_list_statis INTEGER        NOT NULL,
   item_list        JSONB,
   count            INTEGER        NOT NULL,
   price            NUMERIC(32, 5) NOT NULL,

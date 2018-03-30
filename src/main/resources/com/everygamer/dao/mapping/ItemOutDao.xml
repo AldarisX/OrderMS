@@ -4,7 +4,6 @@
     <resultMap id="OutItem" type="com.everygamer.bean.OutItem">
         <id property="id" column="id"/>
         <result property="orderId" column="order_id"/>
-        <result property="itemStatisId" column="item_list_statis"/>
         <result property="itemList" column="item_list"/>
         <result property="count" column="count"/>
         <result property="price" column="price"/>
@@ -16,8 +15,8 @@
     </resultMap>
 
     <insert id="itemOut" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO item_out (order_id, item_list_statis, item_list, "count", price, "desc", ins_date)
-        VALUES (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, UNIX_TIMESTAMP())
+        INSERT INTO item_out (order_id, item_list, "count", price, "desc", ins_date)
+        VALUES (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, UNIX_TIMESTAMP())
     </insert>
     <select id="getItemByOrder" resultType="com.everygamer.bean.OutItem" resultMap="OutItem">
         SELECT *
