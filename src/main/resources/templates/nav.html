@@ -9,7 +9,7 @@
         <li><a th:class="${page eq 'store'} ? 'selected':''" th:href="store.html">仓库管理</a></li>
         <li><a th:class="${page eq 'order' ? 'selected':''}" th:href="order.html">订单</a></li>
         <li><a th:class="${page eq 'sys'} ? 'selected':''" th:href="item_type.html">系统数据</a></li>
-        <li><a th:href="@{/logout}">退出</a></li>
+        <li><a th:class="click_block" onclick="logout()">退出</a></li>
         <li th:class="user_block"><span sec:authentication="name"></span></li>
     </ul>
     <ul th:if="${page eq 'home'}" th:id="sub_nav" th:class="headNav">

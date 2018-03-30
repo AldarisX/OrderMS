@@ -12,6 +12,10 @@ ul {
     clear: both;
 }
 
+.click_block {
+    cursor: pointer;
+}
+
 .headNav {
     list-style: none;
     height: 10px;
