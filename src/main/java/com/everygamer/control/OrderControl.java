@@ -22,8 +22,13 @@ public class OrderControl {
         JSONObject result = new JSONObject();
         try {
             JSONArray itemsArray = JSONArray.fromObject(items);
-            orderService.addOrder(order, itemsArray);
-            result.accumulate("result", true);
+            if (itemsArray.size() > 0) {
+                orderService.addOrder(order, itemsArray);
+                result.accumulate("result", true);
+            } else {
+                result.accumulate("result", false);
+                result.accumulate("msg", "请选择物品");
+            }
         } catch (JSONException e) {
             result.accumulate("result", false);
             result.accumulate("msg", "JS异常");

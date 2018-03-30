@@ -25,6 +25,12 @@
             const transCost = $(":text[name=transCost]").val();
             const logisticsType = $("#logisticsType").val();
 
+            if (selectedItem.length <= 0) {
+                layer.msg("请选择物品", {icon: 5});
+                return;
+            }
+
+            layer.alert('请等待完成', {icon: 6});
             $.post("/api/order.json?action=addOrder", {
                 userName: userName,
                 userWW: userWW,
