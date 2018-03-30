@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
@@ -103,9 +104,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().clearAuthentication(true)
                 .logoutUrl("/logout")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                .invalidateHttpSession(true)
-                .logoutSuccessUrl("/login/getLogin?logout");
-
+                .logoutSuccessHandler(new LogoutSuccessHandler() {
+                    @Override
+                    public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
+                        httpServletResponse.setCharacterEncoding("UTF-8");
+                        httpServletResponse.setContentType("application/json;charset=UTF-8");
+                        JSONObject result = new JSONObject();
+                        result.accumulate("result", true);
+                        result.accumulate("url", "/login/getLogin?logout");
+                        httpServletResponse.getWriter().print(result.toString());
+                    }
+                })
+                .invalidateHttpSession(true);
         http.exceptionHandling().accessDeniedHandler(new AccessDeniedHandler() {
             @Override
             public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
