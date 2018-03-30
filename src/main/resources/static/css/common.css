@@ -1,6 +1,7 @@
 body {
     height: 100%;
     background-color: #FFF;
+    overflow-y: scroll;
 }
 
 ul {
@@ -19,6 +20,10 @@ ul {
 .headNav li {
     float: left;
     margin-right: 20px;
+}
+
+.headNav .user_block {
+    float: right;
 }
 
 .headNav li a:hover {
