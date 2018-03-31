@@ -25,6 +25,7 @@
     <ul th:if="${page != 'home' && page eq 'sys'}" th:id="sub_nav" th:class="headNav">
         <li><a th:class="${child eq 'item_type'} ? 'selected':''" th:href="item_type.html">物品类型</a></li>
         <li><a th:class="${child eq 'manu_type'} ? 'selected':''" th:href="manu_type.html">厂商</a></li>
+        <li><a th:class="${child eq 'logistics'} ? 'selected':''" th:href="logistics.html">物流信息</a></li>
         <li sec:authorize="hasRole('ROLE_ADMIN')">
             <a th:class="${child eq 'edit_user'} ? 'selected':''" th:href="edit_user.html">编辑用户</a>
         </li>

@@ -41,6 +41,11 @@ public class PageControl {
         return "manu_type.html";
     }
 
+    @RequestMapping(path = {"/logistics.html"})
+    public String logistics() {
+        return "logistics.html";
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(path = {"/edit_user.html"})
     public String edit_user() {

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:replace="/head.html::commonHead('物流管理')"></script>
+    <script th:src="@{/js/lweb-tool-format.js}"></script>
+    <script th:inline="javascript" type="text/javascript">
+        $(document).ready(function () {
+            loadData();
+        });
+
+        function loadData() {
+            $("#logisticsList").empty();
+            $("#logisticsList").append("<tr><td>ID</td><td>名称</td><td>添加时间</td><td>操作</td></tr>");
+            $.post("/api/logistics.json?action=getAllLogistics", function (data) {
+                if (data.result) {
+                    for (let i = 0; i < data.data.length; i++) {
+                        let logistics = data.data[i];
+                        $("#logisticsList").append("<tr><td>" + logistics.id + "</td><td>" + logistics.name + "</td><td>" + formatUnixTime(logistics.insDate) + "</td><td><button onclick='delLogistics(" + logistics.id + ")'>删除</button></td></tr>")
+                    }
+                } else {
+                    layer.msg(data.msg, {icon: 5});
+                }
+            })
+        }
+
+        function addLogistics() {
+            const logisticsName = $(":text[name=logisticsName]").val();
+            $.post("/api/logistics.json?action=addLogistics", {
+                name: logisticsName
+            }, function (data) {
+                if (data.result) {
+                    layer.msg("添加成功", {icon: 6});
+                    loadData();
+                } else {
+                    layer.msg(data.msg, {icon: 5});
+                }
+            })
+        }
+
+        function delLogistics(id) {
+            layer.confirm('确定删除物流?', {
+                btn: ['确定', '取消'],
+                icon: 3
+            }, function () {
+                $.post("/api/logistics.json?action=delLogistics", {
+                    id: id
+                }, function (data) {
+                    if (data.result) {
+                        layer.msg("删除成功", {icon: 6});
+                        loadData();
+                    } else {
+                        layer.msg(data.msg, {icon: 5});
+                    }
+                })
+            }, function () {
+                layer.closeAll();
+            });
+
+        }
+    </script>
+</head>
+<div th:replace="/nav.html::commonNav('sys','logistics')"></div>
+<div>
+    <form onsubmit="return false">
+        <label>物流名称:<input th:type="text" th:name="logisticsName" th:placeholder="顺丰...韵达...申通"/></label><br/>
+        <button onclick="addLogistics()">添加</button>
+    </form>
+    <table th:id="logisticsList" border="1">
+    </table>
+</div>
+</html>

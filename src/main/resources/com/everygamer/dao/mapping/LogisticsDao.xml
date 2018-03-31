@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.everygamer.dao.LogisticsDao">
+    <resultMap id="logistics" type="com.everygamer.bean.Logistics">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="isAlive" column="is_alive"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="delDate" column="del_date"/>
+        <result property="upDate" column="up_date"/>
+    </resultMap>
+    <insert id="addLogistics">
+        INSERT INTO logistics ("name", ins_date) VALUES (#{param1}, UNIX_TIMESTAMP());
+    </insert>
+    <update id="updateLogistics" parameterType="com.everygamer.bean.Logistics">
+        UPDATE logistics
+        SET "name" = #{name}, up_date = #{upDate}
+        WHERE id = #{id}
+    </update>
+    <update id="delLogistics">
+        UPDATE logistics
+        SET is_alive = 0, del_date = UNIX_TIMESTAMP()
+        WHERE id = #{param1}
+    </update>
+    <select id="getAllLogistics" resultType="com.everygamer.bean.Logistics" resultMap="logistics">
+        SELECT *
+        FROM logistics
+        WHERE is_alive = 1;
+    </select>
+    <select id="getLogisticsByName" resultType="com.everygamer.bean.Logistics">
+        SELECT *
+        FROM logistics
+        WHERE "name" = #{param1} AND is_alive = 1;
+    </select>
+
+</mapper>

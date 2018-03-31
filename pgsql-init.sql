@@ -38,18 +38,18 @@ CREATE TABLE item_list_statis
 
 CREATE TABLE item_out
 (
-  id               SERIAL         NOT NULL
+  id        SERIAL         NOT NULL
     CONSTRAINT item_out_pkey
     PRIMARY KEY,
-  order_id         INTEGER        NOT NULL DEFAULT 0,
-  item_list        JSONB,
-  count            INTEGER        NOT NULL,
-  price            NUMERIC(32, 5) NOT NULL,
-  "desc"           TEXT,
-  is_alive         SMALLINT                DEFAULT 1,
-  ins_date         INTEGER,
-  up_date          INTEGER,
-  del_date         INTEGER
+  order_id  INTEGER        NOT NULL DEFAULT 0,
+  item_list JSONB,
+  count     INTEGER        NOT NULL,
+  price     NUMERIC(32, 5) NOT NULL,
+  "desc"    TEXT,
+  is_alive  SMALLINT                DEFAULT 1,
+  ins_date  INTEGER,
+  up_date   INTEGER,
+  del_date  INTEGER
 );
 
 CREATE TABLE item_out_statis
@@ -114,6 +114,19 @@ CREATE TABLE order_list
   up_date        INTEGER,
   del_date       INTEGER
 );
+
+CREATE TABLE logistics
+(
+  id       SERIAL             NOT NULL
+    CONSTRAINT logistics_pkey
+    PRIMARY KEY,
+  name     text               NOT NULL,
+  is_alive SMALLINT DEFAULT 1 NOT NULL,
+  ins_date INTEGER            NOT NULL,
+  del_date INTEGER,
+  up_date  INTEGER
+);
+
 
 CREATE TABLE admin_role
 (
