@@ -12,6 +12,17 @@
                 $("#searchFrame").append(page);
                 pageLoad();
             });
+
+            $.post("/api/logistics.json?action=getAllLogistics", function (data) {
+                if (data.result) {
+                    for (let i = 0; i < data.data.length; i++) {
+                        let logistics = data.data[i];
+                        $("#logistics").append("<option value='" + logistics.id + "'>" + logistics.name + "</option>");
+                    }
+                } else {
+                    layer.msg(data.msg, {icon: 5});
+                }
+            })
         });
 
         function addOrder() {
@@ -20,7 +31,7 @@
             const tel = $(":text[name=tel]").val();
             const phone = $(":text[name=phone]").val();
             const address = $(":text[name=address]").val();
-            const logistics = $(":text[name=logistics]").val();
+            const logistics = $("#logistics").val();
             const logisticsNum = $(":text[name=logisticsNum]").val();
             const transCost = $(":text[name=transCost]").val();
             const logisticsType = $("#logisticsType").val();
@@ -122,7 +133,12 @@
                 <option th:value="1">手工</option>
             </select>
         </label><br/>
-        <label>*物流:<input th:type="text" th:name="logistics" required/></label><br/>
+        <div>
+            <label>*物流:</label>
+            <select id="logistics">
+            </select>
+        </div>
+
         <label>*单号:<input th:type="number" th:name="logisticsNum" required/></label><br/>
         <label>*运费:<input th:type="number" th:name="transCost" required/></label><br/>
         <label>备注<textarea th:id="desc" cols="40" rows="5"></textarea></label><br/>
