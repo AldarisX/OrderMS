@@ -187,7 +187,7 @@ CREATE UNLOGGED TABLE IF NOT EXISTS spring_session_attributes
 );
 
 -- 初始admin用户 密码123456
-INSERT INTO admin_role (name) VALUES ('ROLE_ADMIN');
-INSERT INTO admin_role (name) VALUES ('ROLE_USER');
+INSERT INTO admin_role ("name", "desc") VALUES ('ROLE_ADMIN', '管理员');
+INSERT INTO admin_role ("name", "desc") VALUES ('ROLE_USER', '普通员工');
 INSERT INTO admin_user (username, password) VALUES ('admin', 'e10adc3949ba59abbe56e057f20f883e');
 INSERT INTO admin_user_roles VALUES (1, 1);
