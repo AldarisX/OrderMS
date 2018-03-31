@@ -3,21 +3,15 @@ package com.everygamer.dao.mybatis;
 import com.everygamer.bean.OutItem;
 import com.everygamer.dao.ItemOutDao;
 import com.everygamer.dao.exception.DBUpdateException;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 @Repository("ItemOutDao")
-public class ItemOutDaoImpl extends SqlSessionDaoSupport implements ItemOutDao {
+public class ItemOutDaoImpl implements ItemOutDao {
+    @Autowired
     private ItemOutDao dao;
-
-    @Resource(name = "sqlSessionFactory")
-    public void setSuperSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        super.setSqlSessionFactory(sqlSessionFactory);
-    }
 
     @Override
     public int itemOut(int orderId, String itemList, int count, BigDecimal price, String desc) {
@@ -33,8 +27,4 @@ public class ItemOutDaoImpl extends SqlSessionDaoSupport implements ItemOutDao {
         return dao.getItemByOrder(orderId);
     }
 
-    @Override
-    public void init() {
-        dao = getSqlSession().getMapper(ItemOutDao.class);
-    }
 }

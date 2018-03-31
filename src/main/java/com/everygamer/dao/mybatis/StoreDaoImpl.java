@@ -2,23 +2,17 @@ package com.everygamer.dao.mybatis;
 
 import com.everygamer.bean.BaseItem;
 import com.everygamer.dao.StoreDao;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("StoreDao")
 @Scope("singleton")
-public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
+public class StoreDaoImpl implements StoreDao {
+    @Autowired
     private StoreDao dao;
-
-    @Resource(name = "sqlSessionFactory")
-    public void setSuperSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        super.setSqlSessionFactory(sqlSessionFactory);
-    }
 
     @Override
     public List<BaseItem> searchStore(Integer type, String kw, Integer manu, String exData) {
@@ -45,8 +39,4 @@ public class StoreDaoImpl extends SqlSessionDaoSupport implements StoreDao {
         return dao.getTopStore(type, count);
     }
 
-    @Override
-    public void init() {
-        dao = getSqlSession().getMapper(StoreDao.class);
-    }
 }

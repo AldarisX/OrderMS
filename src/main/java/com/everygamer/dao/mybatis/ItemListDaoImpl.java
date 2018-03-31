@@ -3,23 +3,17 @@ package com.everygamer.dao.mybatis;
 import com.everygamer.bean.BaseItem;
 import com.everygamer.dao.ItemListDao;
 import com.everygamer.dao.exception.DBUpdateException;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository("ItemListDao")
-public class ItemListDaoImpl extends SqlSessionDaoSupport implements ItemListDao {
+public class ItemListDaoImpl implements ItemListDao {
+    @Autowired
     private ItemListDao dao;
-
-    @Resource(name = "sqlSessionFactory")
-    public void setSuperSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        super.setSqlSessionFactory(sqlSessionFactory);
-    }
 
     @Override
     public String getExDataByType(int type) {
@@ -76,10 +70,5 @@ public class ItemListDaoImpl extends SqlSessionDaoSupport implements ItemListDao
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: splitItem");
         }
         return cRows;
-    }
-
-    @Override
-    public void init() {
-        dao = getSqlSession().getMapper(ItemListDao.class);
     }
 }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ItemListDao extends BaseDao {
+public interface ItemListDao {
     String getExDataByType(int type);
 
     List<BaseItem> getItemByName(String name);

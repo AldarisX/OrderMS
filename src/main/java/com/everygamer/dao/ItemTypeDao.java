@@ -4,7 +4,7 @@ import com.everygamer.bean.ItemType;
 
 import java.util.List;
 
-public interface ItemTypeDao extends BaseDao {
+public interface ItemTypeDao {
     ItemType getItemTypeById(int id);
 
     ItemType getItemTypeByName(String name);

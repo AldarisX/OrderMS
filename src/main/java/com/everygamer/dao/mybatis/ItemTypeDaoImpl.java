@@ -2,21 +2,15 @@ package com.everygamer.dao.mybatis;
 
 import com.everygamer.bean.ItemType;
 import com.everygamer.dao.ItemTypeDao;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("ItemTypeDao")
-public class ItemTypeDaoImpl extends SqlSessionDaoSupport implements ItemTypeDao {
+public class ItemTypeDaoImpl implements ItemTypeDao {
+    @Autowired
     private ItemTypeDao dao;
-
-    @Resource(name = "sqlSessionFactory")
-    public void setSuperSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        super.setSqlSessionFactory(sqlSessionFactory);
-    }
 
     @Override
     public ItemType getItemTypeById(int id) {
@@ -63,8 +57,4 @@ public class ItemTypeDaoImpl extends SqlSessionDaoSupport implements ItemTypeDao
         return dao.delItemType(id);
     }
 
-    @Override
-    public void init() {
-        dao = getSqlSession().getMapper(ItemTypeDao.class);
-    }
 }

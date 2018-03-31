@@ -4,7 +4,7 @@ import com.everygamer.bean.BaseItem;
 
 import java.math.BigDecimal;
 
-public interface ItemListStatisDao extends BaseDao {
+public interface ItemListStatisDao {
     BaseItem isExist(String name, Integer itemType, Integer manu, String exData);
 
     int updateStatis(int id, Integer num, BigDecimal price);

@@ -3,21 +3,15 @@ package com.everygamer.dao.mybatis;
 import com.everygamer.bean.Logistics;
 import com.everygamer.dao.LogisticsDao;
 import com.everygamer.dao.exception.DBUpdateException;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("LogisticsDao")
-public class LogisticsDaoImpl extends SqlSessionDaoSupport implements LogisticsDao {
+public class LogisticsDaoImpl implements LogisticsDao {
+    @Autowired
     private LogisticsDao dao;
-
-    @Resource(name = "sqlSessionFactory")
-    public void setSuperSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        super.setSqlSessionFactory(sqlSessionFactory);
-    }
 
     @Override
     public Logistics getLogisticsByName(String name) {
@@ -56,8 +50,4 @@ public class LogisticsDaoImpl extends SqlSessionDaoSupport implements LogisticsD
         return cRows;
     }
 
-    @Override
-    public void init() {
-        dao = getSqlSession().getMapper(LogisticsDao.class);
-    }
 }

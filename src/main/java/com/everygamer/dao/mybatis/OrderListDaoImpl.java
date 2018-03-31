@@ -3,20 +3,13 @@ package com.everygamer.dao.mybatis;
 import com.everygamer.bean.OrderItem;
 import com.everygamer.dao.OrderListDao;
 import com.everygamer.dao.exception.DBUpdateException;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
-
 @Repository("OrderListDao")
-public class OrderListDaoImpl extends SqlSessionDaoSupport implements OrderListDao {
+public class OrderListDaoImpl implements OrderListDao {
+    @Autowired
     private OrderListDao dao;
-
-    @Resource(name = "sqlSessionFactory")
-    public void setSuperSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        super.setSqlSessionFactory(sqlSessionFactory);
-    }
 
     @Override
     public int addOrder(OrderItem orderItem) {
@@ -32,8 +25,4 @@ public class OrderListDaoImpl extends SqlSessionDaoSupport implements OrderListD
         return dao.getOrderById(id);
     }
 
-    @Override
-    public void init() {
-        dao = getSqlSession().getMapper(OrderListDao.class);
-    }
 }

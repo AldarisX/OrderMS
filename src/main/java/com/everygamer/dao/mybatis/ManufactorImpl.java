@@ -3,21 +3,15 @@ package com.everygamer.dao.mybatis;
 import com.everygamer.bean.Manufactor;
 import com.everygamer.dao.ManufactorDao;
 import com.everygamer.dao.exception.DBUpdateException;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Repository("ManuDao")
-public class ManufactorImpl extends SqlSessionDaoSupport implements ManufactorDao {
+public class ManufactorImpl implements ManufactorDao {
+    @Autowired
     private ManufactorDao dao;
-
-    @Resource(name = "sqlSessionFactory")
-    public void setSuperSessionFactory(SqlSessionFactory sqlSessionFactory) {
-        super.setSqlSessionFactory(sqlSessionFactory);
-    }
 
     @Override
     public List<Manufactor> getAllManufactor() {
@@ -55,10 +49,5 @@ public class ManufactorImpl extends SqlSessionDaoSupport implements ManufactorDa
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: delManufactor");
         }
         return cRows;
-    }
-
-    @Override
-    public void init() {
-        dao = getSqlSession().getMapper(ManufactorDao.class);
     }
 }

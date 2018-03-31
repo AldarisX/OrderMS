@@ -4,7 +4,7 @@ import com.everygamer.bean.Manufactor;
 
 import java.util.List;
 
-public interface ManufactorDao extends BaseDao {
+public interface ManufactorDao {
     List<Manufactor> getAllManufactor();
 
     List<Manufactor> getAllManufactorByItemType(int itemType);

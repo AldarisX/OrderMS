@@ -4,7 +4,7 @@ import com.everygamer.bean.Logistics;
 
 import java.util.List;
 
-public interface LogisticsDao extends BaseDao {
+public interface LogisticsDao {
     Logistics getLogisticsByName(String name);
 
     List<Logistics> getAllLogistics();
