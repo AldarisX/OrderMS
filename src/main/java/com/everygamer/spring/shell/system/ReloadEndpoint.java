@@ -1,4 +1,4 @@
-package com.everygamer.spring.shell;
+package com.everygamer.spring.shell.system;
 
 import org.springframework.beans.BeansException;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
