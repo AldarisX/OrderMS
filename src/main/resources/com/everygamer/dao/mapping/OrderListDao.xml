@@ -30,6 +30,40 @@
     <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
         SELECT *
         FROM order_list
-        WHERE id = #{param1};
+        WHERE id = #{param1} AND is_alive = 1
+    </select>
+    <select id="listOrder" resultType="com.everygamer.bean.OrderItem">
+        SELECT *
+        FROM order_list
+        WHERE is_alive=1
+        <choose>
+            <when test="startTime!=null and endTime!=null">
+                AND ins_date BETWEEN #{startTime} AND #{endTime}
+            </when>
+            <otherwise>
+                <choose>
+                    <when test="startTime!=null">
+                        AND ins_date &gt;= #{startTime}
+                    </when>
+                    <otherwise>
+                        <choose>
+                            <when test="endTime!=null">
+                                AND ins_date &lt;= #{endTime}
+                            </when>
+                        </choose>
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        <if test="state!=null">
+            AND order_state=#{state}
+        </if>
+        <if test="userName!=null">
+            AND user_name ILIKE #{userName}
+        </if>
+        <if test="phone!=null">
+            AND phone=#{phone}
+        </if>
+        ORDER BY ins_date
     </select>
 </mapper>

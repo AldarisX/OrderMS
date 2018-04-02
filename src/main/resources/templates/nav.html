@@ -21,6 +21,7 @@
     </ul>
     <ul th:if="${page != 'home' && page eq 'order'}" th:id="sub_nav" th:class="headNav">
         <li><a th:class="${child eq 'order' ? 'selected':''}" th:href="order.html">添加订单</a></li>
+        <li><a th:class="${child eq 'order_list' ? 'selected':''}" th:href="order_list.html">订单记录</a></li>
     </ul>
     <ul th:if="${page != 'home' && page eq 'sys'}" th:id="sub_nav" th:class="headNav">
         <li><a th:class="${child eq 'item_type'} ? 'selected':''" th:href="item_type.html">物品类型</a></li>

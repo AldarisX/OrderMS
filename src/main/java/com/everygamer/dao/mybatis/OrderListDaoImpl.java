@@ -6,10 +6,17 @@ import com.everygamer.dao.exception.DBUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository("OrderListDao")
 public class OrderListDaoImpl implements OrderListDao {
     @Autowired
     private OrderListDao dao;
+
+    @Override
+    public OrderItem getOrderById(int id) {
+        return dao.getOrderById(id);
+    }
 
     @Override
     public int addOrder(OrderItem orderItem) {
@@ -21,8 +28,7 @@ public class OrderListDaoImpl implements OrderListDao {
     }
 
     @Override
-    public OrderItem getOrderById(int id) {
-        return dao.getOrderById(id);
+    public List<OrderItem> listOrder(String userName, String phone, OrderItem.State state, Integer startTime, Integer endTime) {
+        return dao.listOrder(userName, phone, state, startTime, endTime);
     }
-
 }

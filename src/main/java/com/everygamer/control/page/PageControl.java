@@ -31,6 +31,11 @@ public class PageControl {
         return "order.html";
     }
 
+    @RequestMapping(path = "/order_list.html")
+    public String order_list() {
+        return "order_list.html";
+    }
+
     @RequestMapping(path = {"/item_type.html"})
     public String item_type() {
         return "item_type.html";

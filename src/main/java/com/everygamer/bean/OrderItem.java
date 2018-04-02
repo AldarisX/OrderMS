@@ -156,12 +156,24 @@ public class OrderItem {
     }
 
     public enum State {
-        Create("排单"), Outgoing("出库"), Finish("完成");
+        Create("排单"), Outgoing("出库"), Finish("完成"), Unkonw("未知");
 
         String name;
 
         State(String name) {
             this.name = name;
+        }
+
+        public static State getState(String name) {
+            if (name == null) {
+                return null;
+            }
+            for (State state : State.values()) {
+                if (state.name.equals(name)) {
+                    return state;
+                }
+            }
+            return Unkonw;
         }
 
         public String getName() {

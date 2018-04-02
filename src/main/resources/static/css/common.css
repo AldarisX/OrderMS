@@ -44,3 +44,13 @@ ul {
     text-decoration: none;
     color: #000;
 }
+
+form select {
+    height: 21px;
+}
+
+form .form_block {
+    float: left;
+    height: 22px;
+    margin-right: 6px;
+}
