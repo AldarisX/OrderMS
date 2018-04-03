@@ -19,15 +19,15 @@
             <includes>
                 <include>*.jar</include>
             </includes>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>${file.separator}</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/lib</directory>
-            <outputDirectory>/lib</outputDirectory>
+            <outputDirectory>${file.separator}lib</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/config</directory>
-            <outputDirectory>/config</outputDirectory>
+            <outputDirectory>${file.separator}config</outputDirectory>
         </fileSet>
 
         <!-- 从源目录拷贝文件去压缩 -->
@@ -37,14 +37,14 @@
                 <include>*.sh</include>
                 <include>*.cmd</include>
             </includes>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>${file.separator}</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>/config</directory>
             <includes>
                 <include>application.properties</include>
             </includes>
-            <outputDirectory>/config</outputDirectory>
+            <outputDirectory>${file.separator}config</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
