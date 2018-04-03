@@ -8,52 +8,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PageControl {
     @RequestMapping(path = {"/", "/index.html", "/index"})
     public String index() {
-        return "index.html";
+        return "/index.html";
     }
 
     @RequestMapping(path = "/store.html")
     public String store() {
-        return "store.html";
+        return "/store.html";
     }
 
     @RequestMapping(path = "/store_list.html")
     public String store_list() {
-        return "store_list.html";
+        return "/store_list.html";
     }
 
     @RequestMapping(path = "/item_out.html")
     public String item_out() {
-        return "item_out.html";
+        return "/item_out.html";
     }
 
     @RequestMapping(path = "/order.html")
     public String order() {
-        return "order.html";
+        return "/order.html";
     }
 
     @RequestMapping(path = "/order_list.html")
     public String order_list() {
-        return "order_list.html";
+        return "/order_list.html";
     }
 
     @RequestMapping(path = {"/item_type.html"})
     public String item_type() {
-        return "item_type.html";
+        return "/item_type.html";
     }
 
     @RequestMapping(path = {"/manu_type.html"})
     public String manu_type() {
-        return "manu_type.html";
+        return "/manu_type.html";
     }
 
     @RequestMapping(path = {"/logistics.html"})
     public String logistics() {
-        return "logistics.html";
+        return "/logistics.html";
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(path = {"/edit_user.html"})
     public String edit_user() {
-        return "edit_user.html";
+        return "/edit_user.html";
     }
 }
