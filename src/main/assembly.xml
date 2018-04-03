@@ -32,7 +32,7 @@
 
         <!-- 从源目录拷贝文件去压缩 -->
         <fileSet>
-            <directory>/mvn</directory>
+            <directory>${basedir}/mvn</directory>
             <includes>
                 <include>*.sh</include>
                 <include>*.cmd</include>
@@ -40,7 +40,7 @@
             <outputDirectory>${file.separator}</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>/config</directory>
+            <directory>${basedir}/config</directory>
             <includes>
                 <include>application.properties</include>
             </includes>
