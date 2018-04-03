@@ -134,6 +134,14 @@
     <build>
         <!--定义jar的文件名-->
         <finalName>OrderMS</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <excludes>
+                    <exclude>src/main/java/resources/application.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
 
         <plugins>
             <plugin>
