@@ -32,6 +32,13 @@
 
         <!-- 从源目录拷贝文件去压缩 -->
         <fileSet>
+            <directory>${basedir}/</directory>
+            <includes>
+                <include>pgsql-init.sql</include>
+            </includes>
+            <outputDirectory>/init</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>${basedir}/mvn</directory>
             <includes>
                 <include>*.sh</include>
