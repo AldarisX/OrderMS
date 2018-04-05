@@ -24,7 +24,7 @@ public class OrderControl {
         pageSize = pageSize == null ? 50 : pageSize;
         JSONObject result = new JSONObject();
 
-        PageInfo<OrderItem> pages = orderService.listOrders(userName, phone, OrderItem.State.getState(state), startTime, endTime, page, pageSize);
+        PageInfo<OrderItem> pages = orderService.listOrders(userName, phone, state, startTime, endTime, page, pageSize);
         result.accumulate("result", true);
         result.accumulate("data", JSONArray.fromObject(pages.getList()));
         result.accumulate("pages", pages.getPages());

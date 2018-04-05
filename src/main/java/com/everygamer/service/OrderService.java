@@ -20,7 +20,7 @@ public class OrderService {
     @Autowired
     private StoreService storeService;
 
-    public PageInfo<OrderItem> listOrders(String userName, String phone, OrderItem.State state, Integer startTime, Integer endTime, int page, int pageSize) {
+    public PageInfo<OrderItem> listOrders(String userName, String phone, String state, Integer startTime, Integer endTime, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         List<OrderItem> datas = orderListDao.listOrder(userName, phone, state, startTime, endTime);
         return new PageInfo<>(datas);

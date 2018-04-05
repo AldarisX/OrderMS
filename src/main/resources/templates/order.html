@@ -140,7 +140,7 @@
         </div>
 
         <label>*单号:<input th:type="number" th:name="logisticsNum" required/></label><br/>
-        <label>*运费:<input th:type="number" th:name="transCost" required/></label><br/>
+        <label>*运费:<input th:type="number" th:name="transCost" step="0.01" required/></label><br/>
         <label>备注<textarea th:id="desc" cols="40" rows="5"></textarea></label><br/>
         <button onclick="addOrder()">添加</button>
     </form>

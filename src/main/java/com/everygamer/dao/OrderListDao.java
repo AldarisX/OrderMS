@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface OrderListDao {
-    List<OrderItem> listOrder(@Param("userName") String userName, @Param("phone") String phone, @Param("state") OrderItem.State state, @Param("startTime") Integer startTime, @Param("endTime") Integer endTime);
+    List<OrderItem> listOrder(@Param("userName") String userName, @Param("phone") String phone, @Param("state") String state, @Param("startTime") Integer startTime, @Param("endTime") Integer endTime);
 
     OrderItem getOrderById(int id);
 

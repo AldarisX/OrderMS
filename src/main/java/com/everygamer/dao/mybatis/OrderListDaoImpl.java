@@ -28,7 +28,7 @@ public class OrderListDaoImpl implements OrderListDao {
     }
 
     @Override
-    public List<OrderItem> listOrder(String userName, String phone, OrderItem.State state, Integer startTime, Integer endTime) {
+    public List<OrderItem> listOrder(String userName, String phone, String state, Integer startTime, Integer endTime) {
         return dao.listOrder(userName, phone, state, startTime, endTime);
     }
 }

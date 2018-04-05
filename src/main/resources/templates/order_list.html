@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:replace="/head.html::commonHead('订单记录')"></script>
+    <script th:inline="javascript" type="text/javascript">
+        function listOrder() {
+            let userName = $(":text[name=userName]").val();
+            let phone = $(":text[name=phone]").val();
+            let state = $("#orderState").val();
+
+            if (userName === "") {
+                userName = undefined;
+            }
+            if (phone === "") {
+                phone = undefined;
+            }
+            if (state === "unkonw") {
+                state = undefined;
+            }
+
+            $.post("/api/order.json?action=listOrder", {
+                userName: userName,
+                phone: phone,
+                state: state
+            }, function (data) {
+                if (data.result) {
+                    $("#orderList").append("<tr><td>ID</td><td>姓名" +
+                        "</td><td>电话</td><td>手机</td><td>地址</td><td></td></tr>");
+                    for (let i = 0; i < data.data.length; i++) {
+                        let order = data.data[i];
+                        $("#orderList").append("");
+                    }
+                } else {
+                    alert("未知错误");
+                }
+            });
+        }
+    </script>
+</head>
+<div th:replace="/nav.html::commonNav('order','order_list')"></div>
+<form onsubmit="return false">
+    <label th:class="form_block">用户名:<input th:type="text" th:name="userName"/></label>
+    <label th:class="form_block">手机号:<input th:type="text" th:name="phone"/></label>
+    <div th:class="form_block">
+        <label>订单状态:</label>
+        <select id="orderState">
+            <option th:value="unkonw"></option>
+            <option th:value="排单">排单</option>
+            <option th:value="出库">出库</option>
+            <option th:value="完成">完成</option>
+            <option th:value="未知">未知</option>
+        </select>
+    </div>
+    <button onclick="listOrder()">搜索</button>
+</form>
+<table id="orderList">
+</table>
+</html>
