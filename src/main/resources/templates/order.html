@@ -26,6 +26,7 @@
         });
 
         function addOrder() {
+            const orderNum = $(":text[name=orderNum]").val();
             const userName = $(":text[name=userName]").val();
             const userWW = $(":text[name=userWW]").val();
             const tel = $(":text[name=tel]").val();
@@ -43,6 +44,7 @@
 
             layer.alert('请等待完成', {icon: 16});
             $.post("/api/order.json?action=addOrder", {
+                orderNum: orderNum,
                 userName: userName,
                 userWW: userWW,
                 tel: tel,
@@ -103,6 +105,7 @@
 <div th:replace="/nav.html::commonNav('order','order')"></div>
 <div>
     <form onsubmit="return false">
+        <label>*订单编号:<input th:type="text" th:name="orderNum" required/></label><br/>
         <label>*买家姓名:<input th:type="text" th:name="userName" required/></label><br/>
         <label>买家旺旺:<input th:type="text" th:name="userWW"/></label><br/>
         <label>买家电话:<input th:type="text" th:name="tel"/></label><br/>

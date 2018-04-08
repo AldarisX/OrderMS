@@ -3,6 +3,7 @@
 <mapper namespace="com.everygamer.dao.OrderListDao">
     <resultMap id="OrderItem" type="com.everygamer.bean.OrderItem">
         <id property="id" column="id"/>
+        <result property="orderNum" column="order_num"/>
         <result property="userName" column="user_name"/>
         <result property="userWW" column="userww"/>
         <result property="tel" column="tel"/>
@@ -22,8 +23,8 @@
     </resultMap>
     <insert id="addOrder" parameterType="com.everygamer.bean.OrderItem" useGeneratedKeys="true" keyProperty="id"
             keyColumn="id">
-        INSERT INTO order_list (user_name, userww, tel, phone, address, logistics_type, logistics, logistics_num, trans_cost, "desc", order_state, ins_date)
-        VALUES (#{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{logisticsType},
+        INSERT INTO order_list (order_num, user_name, userww, tel, phone, address, logistics_type, logistics, logistics_num, trans_cost, "desc", order_state, ins_date)
+        VALUES (#{orderNum}, #{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{logisticsType},
                              #{logistics},
                              #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP())
     </insert>
