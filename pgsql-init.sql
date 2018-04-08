@@ -1,3 +1,17 @@
+CREATE FUNCTION unix_timestamp()
+  RETURNS integer AS $$
+SELECT (date_part('epoch', now())) :: integer;
+$$
+LANGUAGE SQL
+IMMUTABLE;
+
+CREATE FUNCTION from_unixtime(int)
+  RETURNS timestamp AS $$
+SELECT to_timestamp($1) :: timestamp;
+$$
+LANGUAGE SQL
+IMMUTABLE;
+
 CREATE TABLE item_list
 (
   id         SERIAL         NOT NULL
