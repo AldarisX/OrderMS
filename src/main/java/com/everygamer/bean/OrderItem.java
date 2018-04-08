@@ -2,6 +2,7 @@ package com.everygamer.bean;
 
 public class OrderItem {
     private int id;
+    private String orderNum;
     private String userName;
     private String userWW;
     private String tel;
@@ -25,6 +26,14 @@ public class OrderItem {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(String orderNum) {
+        this.orderNum = orderNum;
     }
 
     public String getUserName() {
@@ -156,7 +165,7 @@ public class OrderItem {
     }
 
     public enum State {
-        Create("排单"), Outgoing("出库"), Finish("完成"), Unkonw("未知");
+        Create("排单"), Outgoing("出库"), Finish("完成"), Closed("关闭"), Unkonw("未知");
 
         String name;
 

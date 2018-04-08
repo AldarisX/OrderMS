@@ -98,6 +98,7 @@ CREATE TABLE order_list
   id             SERIAL             NOT NULL
     CONSTRAINT order_list_pkey
     PRIMARY KEY,
+  order_num      TEXT               NOT NULL,
   user_name      TEXT               NOT NULL,
   userww         TEXT,
   tel            TEXT,
