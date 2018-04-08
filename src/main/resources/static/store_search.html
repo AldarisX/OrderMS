@@ -110,7 +110,10 @@
     function getExData(el) {
         const exData = {};
         $(el).each(function (index, el) {
-            exData[$(el).attr("name")] = LwebJson.getVal(el, $(el).attr("type"));
+            let val = LwebJson.getVal(el, $(el).attr("type"));
+            if (val !== undefined) {
+                exData[$(el).attr("name")] = LwebJson.getVal(el, $(el).attr("type"));
+            }
         });
         return exData;
     }

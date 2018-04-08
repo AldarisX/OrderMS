@@ -44,6 +44,10 @@ LwebJson.jsonToString = function (json, structure, division) {
 LwebJson.getVal = function (el, type) {
     switch (type) {
         case typeEnmu.int:
+            let num = parseInt($(el).val());
+            if (isNaN(num)) {
+                return undefined;
+            }
             return parseInt($(el).val());
         case typeEnmu.boolean:
             return $(el).is(':checked');
