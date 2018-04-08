@@ -4,6 +4,7 @@
     <script th:replace="/head.html::commonHead('订单记录')"></script>
     <script th:inline="javascript" type="text/javascript">
         function listOrder() {
+            $("#orderList").empty();
             let userName = $(":text[name=userName]").val();
             let phone = $(":text[name=phone]").val();
             let state = $("#orderState").val();
@@ -14,7 +15,7 @@
             if (phone === "") {
                 phone = undefined;
             }
-            if (state === "unkonw") {
+            if (state === "unknow") {
                 state = undefined;
             }
 
@@ -24,8 +25,7 @@
                 state: state
             }, function (data) {
                 if (data.result) {
-                    $("#orderList").append("<tr><td>ID</td><td>姓名" +
-                        "</td><td>电话</td><td>手机</td><td>地址</td><td></td></tr>");
+                    $("#orderList").append("<tr><td>订单编号</td><td>姓名</td><td>手机</td><td>物品</td><td>地址</td><td>单号</td><td>运费</td><td>备注</td><td>操作</td></tr>");
                     for (let i = 0; i < data.data.length; i++) {
                         let order = data.data[i];
                         $("#orderList").append("");
