@@ -165,7 +165,7 @@ public class OrderItem {
     }
 
     public enum State {
-        Create("排单"), Outgoing("出库"), Finish("完成"), Closed("关闭"), Unkonw("未知");
+        Create("排单"), Outgoing("出库"), Finish("完成"), Closed("关闭"), Unknow("未知");
 
         String name;
 
@@ -182,7 +182,7 @@ public class OrderItem {
                     return state;
                 }
             }
-            return Unkonw;
+            return Unknow;
         }
 
         public String getName() {
