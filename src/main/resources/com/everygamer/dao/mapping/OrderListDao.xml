@@ -9,13 +9,14 @@
         <result property="tel" column="tel"/>
         <result property="phone" column="phone"/>
         <result property="address" column="address"/>
-        <result property="itemList" column="item_list"/>
+        <result property="itemStatisList" column="item_statis_list"/>
         <result property="logisticsType" column="logistics_type"/>
         <result property="logistics" column="logistics"/>
         <result property="logisticsNum" column="logistics_num"/>
         <result property="transCost" column="trans_cost"/>
         <result property="desc" column="desc"/>
-        <result property="orderState" column="order_state"/>
+        <result property="orderState" column="order_state" javaType="com.everygamer.bean.OrderState"
+                typeHandler="com.everygamer.dao.mybatis.handler.StateEnumHandler" jdbcType="INTEGER"/>
         <result property="isAlive" column="is_alive"/>
         <result property="insDate" column="ins_date"/>
         <result property="delDate" column="del_date"/>
@@ -23,33 +24,34 @@
     </resultMap>
     <insert id="addOrder" parameterType="com.everygamer.bean.OrderItem" useGeneratedKeys="true" keyProperty="id"
             keyColumn="id">
-        INSERT INTO order_list (order_num, user_name, userww, tel, phone, address, logistics_type, logistics, logistics_num, trans_cost, "desc", order_state, ins_date)
-        VALUES (#{orderNum}, #{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{logisticsType},
-                             #{logistics},
-                             #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP())
+        INSERT INTO order_list (order_num, user_name, userww, tel, phone, address, item_statis_list, logistics_type, logistics, logistics_num, trans_cost, "desc", order_state, ins_date)
+        VALUES (#{orderNum}, #{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{itemStatisList}, #{logisticsType},
+                             #{logistics}, #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP())
     </insert>
     <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
         SELECT *
         FROM order_list
         WHERE id = #{param1} AND is_alive = 1
     </select>
-    <select id="listOrder" resultType="com.everygamer.bean.OrderItem">
-        SELECT *
-        FROM order_list
-        WHERE is_alive=1
+    <select id="listOrder" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
+        SELECT
+        iorder.id,iorder.order_num,iorder.user_name,iorder.userww,iorder.tel,iorder.phone,iorder.address,iorder.item_statis_list,iorder.logistics_type,log.name
+        AS logistics,iorder.logistics_num,iorder.trans_cost,iorder."desc",iorder.order_state
+        FROM order_list AS iorder,logistics AS log
+        WHERE iorder.is_alive=1 AND log.id=iorder.logistics
         <choose>
             <when test="startTime!=null and endTime!=null">
-                AND ins_date BETWEEN #{startTime} AND #{endTime}
+                AND iorder.ins_date BETWEEN #{startTime} AND #{endTime}
             </when>
             <otherwise>
                 <choose>
                     <when test="startTime!=null">
-                        AND ins_date &gt;= #{startTime}
+                        AND iorder.ins_date &gt;= #{startTime}
                     </when>
                     <otherwise>
                         <choose>
                             <when test="endTime!=null">
-                                AND ins_date &lt;= #{endTime}
+                                AND iorder.ins_date &lt;= #{endTime}
                             </when>
                         </choose>
                     </otherwise>
@@ -57,14 +59,14 @@
             </otherwise>
         </choose>
         <if test="state!=null">
-            AND order_state=#{state}
+            AND iorder.order_state=#{state}
         </if>
         <if test="userName!=null">
-            AND user_name ILIKE #{userName}
+            AND iorder.user_name ILIKE #{userName}
         </if>
         <if test="phone!=null">
-            AND phone=#{phone}
+            AND iorder.phone=#{phone}
         </if>
-        ORDER BY ins_date
+        ORDER BY iorder.ins_date
     </select>
 </mapper>

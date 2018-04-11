@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface OrderListDao {
-    List<OrderItem> listOrder(@Param("userName") String userName, @Param("phone") String phone, @Param("state") String state, @Param("startTime") Integer startTime, @Param("endTime") Integer endTime);
+    List<OrderItem> listOrder(@Param("userName") String userName, @Param("phone") String phone, @Param("state") Integer state, @Param("startTime") Integer startTime, @Param("endTime") Integer endTime);
 
     OrderItem getOrderById(int id);
 

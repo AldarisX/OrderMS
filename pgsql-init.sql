@@ -55,7 +55,7 @@ CREATE TABLE item_out
   id        SERIAL         NOT NULL
     CONSTRAINT item_out_pkey
     PRIMARY KEY,
-  order_id  INTEGER        NOT NULL DEFAULT 0,
+  order_id  INTEGER        NOT NULL DEFAULT -1,
   item_list JSONB,
   count     INTEGER        NOT NULL,
   price     NUMERIC(32, 5) NOT NULL,
@@ -109,25 +109,26 @@ CREATE TABLE manufactor
 
 CREATE TABLE order_list
 (
-  id             SERIAL             NOT NULL
+  id               SERIAL             NOT NULL
     CONSTRAINT order_list_pkey
     PRIMARY KEY,
-  order_num      TEXT               NOT NULL,
-  user_name      TEXT               NOT NULL,
-  userww         TEXT,
-  tel            TEXT,
-  phone          TEXT               NOT NULL,
-  address        TEXT               NOT NULL,
-  logistics_type INTEGER            NOT NULL,
-  logistics      INTEGER            NOT NULL,
-  logistics_num  INTEGER            NOT NULL,
-  trans_cost     DOUBLE PRECISION   NOT NULL,
-  "desc"         TEXT,
-  order_state    TEXT,
-  is_alive       SMALLINT DEFAULT 1 NOT NULL,
-  ins_date       INTEGER,
-  up_date        INTEGER,
-  del_date       INTEGER
+  order_num        TEXT               NOT NULL,
+  user_name        TEXT               NOT NULL,
+  userww           TEXT,
+  tel              TEXT,
+  phone            TEXT               NOT NULL,
+  address          TEXT               NOT NULL,
+  item_statis_list JSONB              NOT NULL,
+  logistics_type   INTEGER            NOT NULL,
+  logistics        INTEGER            NOT NULL,
+  logistics_num    INTEGER            NOT NULL,
+  trans_cost       DOUBLE PRECISION   NOT NULL,
+  "desc"           TEXT,
+  order_state      INTEGER,
+  is_alive         SMALLINT DEFAULT 1 NOT NULL,
+  ins_date         INTEGER,
+  up_date          INTEGER,
+  del_date         INTEGER
 );
 
 CREATE TABLE logistics

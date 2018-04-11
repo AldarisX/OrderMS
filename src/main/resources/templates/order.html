@@ -55,7 +55,7 @@
                 logisticsNum: logisticsNum,
                 transCost: transCost,
                 desc: $("#desc").val(),
-                items: JSON.stringify(selectedItem)
+                itemStatisList: JSON.stringify(selectedItem)
             }, function (data) {
                 if (data.result) {
                     layer.msg("操作成功", {icon: 6});
@@ -67,6 +67,8 @@
                 } else {
                     layer.msg(data.msg, {icon: 5});
                 }
+            }).fail(function () {
+                layer.msg("操作失败", {icon: 5});
             })
         }
 

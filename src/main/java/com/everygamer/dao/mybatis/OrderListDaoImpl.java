@@ -22,13 +22,13 @@ public class OrderListDaoImpl implements OrderListDao {
     public int addOrder(OrderItem orderItem) {
         int cRows = dao.addOrder(orderItem);
         if (cRows <= 0) {
-            throw new DBUpdateException("操作失败(返回ID<0),引发类: " + this.getClass().getName() + " 方法: addOrder");
+            throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: addOrder");
         }
         return 1;
     }
 
     @Override
-    public List<OrderItem> listOrder(String userName, String phone, String state, Integer startTime, Integer endTime) {
+    public List<OrderItem> listOrder(String userName, String phone, Integer state, Integer startTime, Integer endTime) {
         return dao.listOrder(userName, phone, state, startTime, endTime);
     }
 }

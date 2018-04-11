@@ -20,18 +20,18 @@ public class OrderService {
     @Autowired
     private StoreService storeService;
 
-    public PageInfo<OrderItem> listOrders(String userName, String phone, String state, Integer startTime, Integer endTime, int page, int pageSize) {
+    public PageInfo<OrderItem> listOrders(String userName, String phone, Integer state, Integer startTime, Integer endTime, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         List<OrderItem> datas = orderListDao.listOrder(userName, phone, state, startTime, endTime);
         return new PageInfo<>(datas);
     }
 
     @Transactional
-    public int addOrder(OrderItem order, JSONArray itemList) {
-        int orderId = orderListDao.addOrder(order);
+    public int addOrder(OrderItem order) {
+        int cRows = orderListDao.addOrder(order);
 
         String desc = "".equals(order.getDesc()) ? "来自订单" : order.getDesc();
-        storeService.itemOut(orderId, itemList, desc);
-        return 1;
+        storeService.itemOut(order.getId(), JSONArray.fromObject(order.getItemStatisList()), desc);
+        return cRows;
     }
 }

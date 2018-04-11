@@ -8,13 +8,13 @@ public class OrderItem {
     private String tel;
     private String phone;
     private String address;
-    private String itemList;
+    private String itemStatisList;
     private int logisticsType;
     private String logistics;
     private int logisticsNum;
     private double transCost;
     private String desc;
-    private State orderState = State.Create;
+    private OrderState orderState;
     private int isAlive;
     private String insDate;
     private String upDate;
@@ -76,12 +76,12 @@ public class OrderItem {
         this.address = address;
     }
 
-    public String getItemList() {
-        return itemList;
+    public String getItemStatisList() {
+        return itemStatisList;
     }
 
-    public void setItemList(String itemList) {
-        this.itemList = itemList;
+    public void setItemStatisList(String itemStatisList) {
+        this.itemStatisList = itemStatisList;
     }
 
     public int getLogisticsType() {
@@ -124,11 +124,11 @@ public class OrderItem {
         this.desc = desc;
     }
 
-    public State getOrderState() {
+    public OrderState getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(State orderState) {
+    public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
     }
 
@@ -162,35 +162,5 @@ public class OrderItem {
 
     public void setDelDate(String delDate) {
         this.delDate = delDate;
-    }
-
-    public enum State {
-        Create("排单"), Outgoing("出库"), Finish("完成"), Closed("关闭"), Unknow("未知");
-
-        String name;
-
-        State(String name) {
-            this.name = name;
-        }
-
-        public static State getState(String name) {
-            if (name == null) {
-                return null;
-            }
-            for (State state : State.values()) {
-                if (state.name.equals(name)) {
-                    return state;
-                }
-            }
-            return Unknow;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
     }
 }
