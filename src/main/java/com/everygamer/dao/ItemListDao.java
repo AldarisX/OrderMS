@@ -1,11 +1,13 @@
 package com.everygamer.dao;
 
 import com.everygamer.bean.BaseItem;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Mapper
 public interface ItemListDao {
     String getExDataByType(int type);
 

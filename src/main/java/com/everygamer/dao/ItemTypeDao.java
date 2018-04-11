@@ -1,9 +1,11 @@
 package com.everygamer.dao;
 
 import com.everygamer.bean.ItemType;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface ItemTypeDao {
     ItemType getItemTypeById(int id);
 

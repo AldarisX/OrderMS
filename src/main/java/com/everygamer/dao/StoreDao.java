@@ -1,10 +1,12 @@
 package com.everygamer.dao;
 
 import com.everygamer.bean.BaseItem;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+@Mapper
 public interface StoreDao {
     List<BaseItem> searchStore(@Param("type") Integer type, @Param("kw") String kw, @Param("manu") Integer manu, @Param("exData") String exData);
 
