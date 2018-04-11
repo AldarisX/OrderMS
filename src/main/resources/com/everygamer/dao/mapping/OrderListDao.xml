@@ -24,9 +24,10 @@
     </resultMap>
     <insert id="addOrder" parameterType="com.everygamer.bean.OrderItem" useGeneratedKeys="true" keyProperty="id"
             keyColumn="id">
-        INSERT INTO order_list (order_num, user_name, userww, tel, phone, address, item_statis_list, logistics_type, logistics, logistics_num, trans_cost, "desc", order_state, ins_date)
+        INSERT INTO order_list (order_num, user_name, userww, tel, phone, address, item_statis_list, logistics_type, logistics, logistics_num, trans_cost, "desc", order_state, ins_date, up_date)
         VALUES (#{orderNum}, #{userName}, #{userWW}, #{tel}, #{phone}, #{address}, #{itemStatisList}, #{logisticsType},
-                             #{logistics}, #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP())
+                             #{logistics}, #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP(),
+                UNIX_TIMESTAMP())
     </insert>
     <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
         SELECT *
@@ -36,7 +37,8 @@
     <select id="listOrder" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
         SELECT
         iorder.id,iorder.order_num,iorder.user_name,iorder.userww,iorder.tel,iorder.phone,iorder.address,iorder.item_statis_list,iorder.logistics_type,log.name
-        AS logistics,iorder.logistics_num,iorder.trans_cost,iorder."desc",iorder.order_state
+        AS
+        logistics,iorder.logistics_num,iorder.trans_cost,iorder."desc",iorder.order_state,iorder.ins_date,iorder.up_date
         FROM order_list AS iorder,logistics AS log
         WHERE iorder.is_alive=1 AND log.id=iorder.logistics
         <choose>
@@ -65,7 +67,7 @@
             AND iorder.user_name ILIKE #{userName}
         </if>
         <if test="phone!=null">
-            AND iorder.phone=#{phone}
+            AND iorder.phone ILIKE #{phone}
         </if>
         ORDER BY iorder.ins_date
     </select>
