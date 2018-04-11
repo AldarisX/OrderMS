@@ -16,6 +16,11 @@ ul {
     cursor: pointer;
 }
 
+.link {
+    color: #ff6a6c;
+    cursor: pointer;
+}
+
 .headNav {
     list-style: none;
     height: 10px;
