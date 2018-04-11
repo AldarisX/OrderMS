@@ -33,8 +33,8 @@
             const phone = $(":text[name=phone]").val();
             const address = $(":text[name=address]").val();
             const logistics = $("#logistics").val();
-            const logisticsNum = $(":text[name=logisticsNum]").val();
-            const transCost = $(":text[name=transCost]").val();
+            const logisticsNum = $("#logisticsNum").val();
+            const transCost = $("#transCost").val();
             const logisticsType = $("#logisticsType").val();
 
             if (selectedItem.length <= 0) {
@@ -144,8 +144,8 @@
             </select>
         </div>
 
-        <label>*单号:<input th:type="number" th:name="logisticsNum" required/></label><br/>
-        <label>*运费:<input th:type="number" th:name="transCost" step="0.01" required/></label><br/>
+        <label>*单号:<input th:id="logisticsNum" th:type="number" th:name="logisticsNum" required/></label><br/>
+        <label>*运费:<input th:id="transCost" th:type="number" th:name="transCost" step="0.01" required/></label><br/>
         <label>备注<textarea th:id="desc" cols="40" rows="5"></textarea></label><br/>
         <button onclick="addOrder()">添加</button>
     </form>
