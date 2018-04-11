@@ -20,7 +20,7 @@
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         const manu = data.data[i];
-                        $("<tr><td>" + manu.id + "</td><td><a onclick='loadManuInfo(\"" + manu.name + "\")'>" + manu.name + "</a></td><td>" + formatUnixTime(manu.insDate) + "</td></tr>").appendTo("#manuTypeList");
+                        $("<tr><td>" + manu.id + "</td><td><a class='link' onclick='loadManuInfo(\"" + manu.name + "\")'>" + manu.name + "</a></td><td>" + formatUnixTime(manu.insDate) + "</td></tr>").appendTo("#manuTypeList");
                     }
                 } else {
                     alert(data.msg);
