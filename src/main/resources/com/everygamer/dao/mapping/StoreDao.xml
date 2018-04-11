@@ -20,6 +20,7 @@
 
     <select id="searchStore" resultType="com.everygamer.bean.BaseItem" resultMap="BaseItem">
         SELECT
+        statis.id,
         statis.name,
         item_type.name AS item_type,
         manu.name AS manufactor,
