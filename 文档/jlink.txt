@@ -1,0 +1,2 @@
+jlink --add-modules java.base,java.sql,java.desktop,java.xml.bind,java.naming,java.management,java.security.jgss,java.instrument --output jre
+
