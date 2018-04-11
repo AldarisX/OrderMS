@@ -30,6 +30,9 @@
         <li sec:authorize="hasRole('ROLE_ADMIN')">
             <a th:class="${child eq 'edit_user'} ? 'selected':''" th:href="edit_user.html">编辑用户</a>
         </li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')">
+            <a th:class="${child eq 'debug'} ? 'selected':''" th:href="debug.html">DEBUG</a>
+        </li>
     </ul>
     <div th:class="clearfix"></div>
 </div>

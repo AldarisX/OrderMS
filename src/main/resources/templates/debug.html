@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:replace="/head.html::commonHead('DEBUG')"></script>
+    <script th:inline="javascript" type="text/javascript">
+
+    </script>
+</head>
+<body>
+<div th:replace="/nav.html::commonNav('sys','debug')"></div>
+<p th:text="'操作系统: '+${osName}"></p>
+<p th:text="'Java版本: '+${javaVer}"></p>
+<p th:text="'JVM厂商: '+${jvmVendor}"></p>
+<p th:text="'虚拟机名称: '+${jvmName}"></p>
+<p th:text="'用户名: '+${userName}"></p>
+<p th:text="'用户目录: '+${userHome}"></p>
+<p th:text="'当前工作目录: '+${userDir}"></p>
+</body>
+</html>
