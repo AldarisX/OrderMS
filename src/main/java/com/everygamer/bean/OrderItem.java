@@ -11,7 +11,7 @@ public class OrderItem {
     private String itemStatisList;
     private int logisticsType;
     private String logistics;
-    private int logisticsNum;
+    private String logisticsNum;
     private double transCost;
     private String desc;
     private OrderState orderState;
@@ -100,11 +100,11 @@ public class OrderItem {
         this.logistics = logistics;
     }
 
-    public int getLogisticsNum() {
+    public String getLogisticsNum() {
         return logisticsNum;
     }
 
-    public void setLogisticsNum(int logisticsNum) {
+    public void setLogisticsNum(String logisticsNum) {
         this.logisticsNum = logisticsNum;
     }
 

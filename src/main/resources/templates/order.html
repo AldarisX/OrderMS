@@ -59,10 +59,7 @@
             }, function (data) {
                 if (data.result) {
                     layer.msg("操作成功", {icon: 6});
-                    $("#itemStatis").text(" 一共选择了0个物品 共0元");
-                    $("#selectedItem table").empty();
-                    $("#selectedItem table").append("<tr><td>型号</td><td>厂商</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
-                    selectedItem = [];
+                    clearItem();
                     loadStore();
                 } else {
                     layer.msg(data.msg, {icon: 5});
@@ -77,12 +74,34 @@
 
             item.price = price;
             item.count = count;
-            selectedItem.push(item);
+            let nowFlag = false;
+            for (let i = 0; i < selectedItem.length; i++) {
+                let nowItem = selectedItem[i];
+                if (nowItem.id === item.id) {
+                    if (nowItem.price === item.price) {
+                        nowFlag = true;
+                        nowItem.count += item.count;
+                        break;
+                    } else {
+                        layer.msg("价格跟已有的冲突", {icon: 5});
+                        return;
+                    }
+                }
+            }
+            if (!nowFlag) {
+                selectedItem.push(item);
+            }
+
             priceCount += price * count;
             itemCount += count;
             $("#itemStatis").text(" 一共选择了" + itemCount + "个物品 共" + priceCount + "元");
-            let exData = LwebJson.jsonToString(item.exData, nowExData, "</br>");
-            $("#selectedItem table").append("<tr><td>" + item.name + "</td><td>" + item.manufactor + "</td><td>" + item.itemType + "</td><td>" + exData + "</td><td>" + price + "</td><td>" + count + "</td><td><button onclick='removeItem(" + selectedItem.length + "," + count + "," + price + ")'>移除</button></td></tr>");
+            $("#selectedItem table").empty();
+            $("#selectedItem table").append("<tr><td>型号</td><td>厂商</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
+            for (let i = 0; i < selectedItem.length; i++) {
+                let nowItem = selectedItem[i];
+                let exData = LwebJson.jsonToString(nowItem.exData, nowExData, "</br>");
+                $("#selectedItem table").append("<tr><td>" + nowItem.name + "</td><td>" + nowItem.manufactor + "</td><td>" + nowItem.itemType + "</td><td>" + exData + "</td><td>" + nowItem.price + "</td><td>" + nowItem.count + "</td><td><button onclick='removeItem(" + selectedItem.length + "," + count + "," + price + ")'>移除</button></td></tr>");
+            }
         }
 
         function removeItem(index, count, price) {
@@ -102,11 +121,23 @@
             $("#selectedItem table").empty();
             $("#selectedItem table").append("<tr><td>型号</td><td>厂商</td><td>类型</td><td>附加参数</td><td>出库价</td><td>数量</td><td>操作</td></tr>");
         }
+
+        function resetForm() {
+            layer.confirm('确定重置表单?', {
+                btn: ['确定', '取消'],
+                icon: 3
+            }, function () {
+                $("#orderForm")[0].reset();
+                layer.closeAll();
+            }, function () {
+                layer.closeAll();
+            });
+        }
     </script>
 </head>
 <div th:replace="/nav.html::commonNav('order','order')"></div>
 <div>
-    <form onsubmit="return false">
+    <form id="orderForm" onsubmit="return false">
         <label>*订单编号:<input th:type="text" th:name="orderNum" required/></label><br/>
         <label>*买家姓名:<input th:type="text" th:name="userName" required/></label><br/>
         <label>买家旺旺:<input th:type="text" th:name="userWW"/></label><br/>
@@ -147,8 +178,9 @@
         <label>*单号:<input th:id="logisticsNum" th:type="number" th:name="logisticsNum" required/></label><br/>
         <label>*运费:<input th:id="transCost" th:type="number" th:name="transCost" step="0.01" required/></label><br/>
         <label>备注<textarea th:id="desc" cols="40" rows="5"></textarea></label><br/>
-        <button onclick="addOrder()">添加</button>
     </form>
+    <button onclick="addOrder()">添加</button>
+    <button onclick="resetForm()">重置</button>
     <div id="searchFrame">
 
     </div>

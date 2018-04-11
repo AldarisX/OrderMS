@@ -121,7 +121,7 @@ CREATE TABLE order_list
   item_statis_list JSONB              NOT NULL,
   logistics_type   INTEGER            NOT NULL,
   logistics        INTEGER            NOT NULL,
-  logistics_num    INTEGER            NOT NULL,
+  logistics_num    TEXT               NOT NULL,
   trans_cost       DOUBLE PRECISION   NOT NULL,
   "desc"           TEXT,
   order_state      INTEGER,

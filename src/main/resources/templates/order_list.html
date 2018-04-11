@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script th:replace="/head.html::commonHead('订单记录')"></script>
+    <script th:src="@{/js/lweb-json.js}"></script>
+    <script th:src="@{/js/lweb-tool-format.js}"></script>
     <script th:inline="javascript" type="text/javascript">
         function listOrder() {
             $("#orderList").empty();
@@ -25,10 +27,16 @@
                 state: state
             }, function (data) {
                 if (data.result) {
-                    $("#orderList").append("<tr><td>订单编号</td><td>姓名</td><td>手机</td><td>物品</td><td>地址</td><td>单号</td><td>运费</td><td>备注</td><td>操作</td></tr>");
+                    $("#orderList").append("<tr><td>订单编号</td><td>姓名</td><td>手机</td><td>物品</td><td>地址</td><td class='table_state'>状态</td><td>单号</td><td>物流</td><td>运费</td><td>备注</td><td class='table_last_date'>最后修改时间</td><td>操作</td></tr>");
                     for (let i = 0; i < data.data.length; i++) {
                         let order = data.data[i];
-                        $("#orderList").append("");
+                        let items = "";
+                        for (let i = 0; i < order.itemStatisList.length; i++) {
+                            let item = order.itemStatisList[i];
+                            items += item.itemType + "&nbsp;" + item.manufactor + "&nbsp;" + item.name + "(" + LwebJson.jsonToString(item.exData, item.exDataStr, ",") + ")" + "&nbsp;数量:" + item.count + "&nbsp;单价:" + item.price;
+                            items += "</br>";
+                        }
+                        $("#orderList").append("<tr><td>" + order.orderNum + "</td><td><a class='link'>" + order.userName + "</a></td><td><a class='link'>" + order.phone + "</a></td><td>" + items + "</td><td>" + order.address + "</td><td><a class='link'>" + order.orderState + "</a></td><td>" + order.logisticsNum + "</td><td>" + order.logistics + "</td><td>" + order.transCost + "</td><td>" + order.desc + "</td><td>" + formatUnixTime(order.upDate) + "</td><td><button>详情</button></td></tr>");
                     }
                 } else {
                     alert("未知错误");
@@ -36,6 +44,15 @@
             });
         }
     </script>
+    <style>
+        .table_state {
+            width: 36px;
+        }
+
+        .table_last_date {
+            width: 150px;
+        }
+    </style>
 </head>
 <div th:replace="/nav.html::commonNav('order','order_list')"></div>
 <form onsubmit="return false">
@@ -54,6 +71,6 @@
     </div>
     <button onclick="listOrder()">搜索</button>
 </form>
-<table id="orderList">
+<table id="orderList" border="1">
 </table>
 </html>
