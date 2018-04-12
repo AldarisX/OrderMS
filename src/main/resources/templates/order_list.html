@@ -36,7 +36,7 @@
                             items += item.itemType + "&nbsp;" + item.manufactor + "&nbsp;" + item.name + "(" + LwebJson.jsonToString(item.exData, item.exDataStr, ",") + ")" + "&nbsp;数量:" + item.count + "&nbsp;单价:" + item.price;
                             items += "</br>";
                         }
-                        $("#orderList").append("<tr><td>" + order.orderNum + "</td><td><a class='link' onclick='userNameClick(this)'>" + order.userName + "</a></td><td><a class='link' onclick='phoneClick(this)'>" + order.phone + "</a></td><td>" + items + "</td><td>" + order.address + "</td><td><a class='link' onclick='stateChange(" + order.id + ")'>" + order.orderState + "</a></td><td>" + order.logisticsNum + "</td><td>" + order.logistics + "</td><td>" + order.transCost + "</td><td>" + order.desc + "</td><td>" + formatUnixTime(order.upDate) + "</td><td><button>详情</button></td></tr>");
+                        $("#orderList").append("<tr><td>" + order.orderNum + "</td><td><a class='link' onclick='userNameClick(this)'>" + order.userName + "</a></td><td><a class='link' onclick='phoneClick(this)'>" + order.phone + "</a></td><td>" + items + "</td><td>" + order.address + "</td><td><a class='link' onclick='stateChange(" + order.id + ")'>" + order.orderState + "</a></td><td>" + order.logisticsNum + "</td><td>" + order.logistics + "</td><td>" + order.transCost + "</td><td>" + order.desc + "</td><td>" + formatUnixTime(order.upDate) + "</td><td><button onclick='orderDetail(" + order.id + ")'>详情</button></td></tr>");
                     }
                 } else {
                     layer.msg(data.msg, {icon: 5});
@@ -57,6 +57,10 @@
         function phoneClick(el) {
             $(":text[name=phone]").val($(el).text());
             listOrder();
+        }
+
+        function orderDetail(id) {
+            window.open("/order/detail.html?id=" + id);
         }
 
         function stateChange(id) {

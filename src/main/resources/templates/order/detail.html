@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:replace="/head.html::commonHead('订单详情')"></script>
+    <script th:src="@{/js/lweb-json.js}"></script>
+    <script th:src="@{/js/lweb-tool-format.js}"></script>
+    <script th:inline="javascript" type="text/javascript">
+        $(document).ready(function () {
+            let id = getQueryString("id");
+            $.post("/api/order.json?action=getOrderById", {
+                id: id
+            }, function (data) {
+                if (data.result) {
+                    let order = data.data;
+                    $("#sysId").text("系统ID:" + order.id);
+                    $("#orderNum").text("订单编号:" + order.orderNum);
+                    $("#stateNow").text("当前状态:" + order.orderState);
+                    $("#userName").text("买家姓名:" + order.userName);
+                    $("#userWW").text("买家旺旺:" + order.userWW);
+                    $("#tel").text("买家电话:" + order.tel);
+                    $("#phone").text("买家手机:" + order.phone);
+                    $("#address").text("买家地址:" + order.address);
+                    let itemList = "<p>物品列表:</p>";
+                    let count = 0;
+                    let price = 0;
+                    for (let i = 0; i < order.itemStatisList.length; i++) {
+                        let item = order.itemStatisList[i];
+                        count += item.count;
+                        let itemPrice = item.price * item.count;
+                        price += itemPrice;
+                        itemList += "<p>" + item.itemType + "&nbsp;" + item.manufactor + "&nbsp;" + item.name + "(" + LwebJson.jsonToString(item.exData, item.exDataStr, ",") + ")" + "&nbsp;数量:" + item.count + "&nbsp;单价:" + item.price + "&nbsp;总价:" + itemPrice + "</p>"
+                    }
+                    itemList += "<p>物品总数:" + count + "&nbsp;总价:" + price + "</p>";
+                    $("#itemList").append(itemList);
+                    if (order.logisticsType === 0) {
+                        $("#logType").text("面单类型:电子");
+                    } else {
+                        $("#logType").text("面单类型:手工");
+                    }
+                    $("#logistics").text("物流:" + order.logistics);
+                    $("#logisticsNum").text("单号:" + order.logisticsNum);
+                    $("#transCost").text("运费:" + order.transCost);
+                    $("#desc").text("备注:" + order.desc);
+                    $("#insDate").text("创建时间:" + formatUnixTime(order.insDate));
+                    $("#upDate").text("更新时间:" + formatUnixTime(order.upDate));
+                } else {
+                    parent.layer.msg(data.msg, {icon: 5});
+                }
+            });
+        });
+
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+    </script>
+    <style>
+        body {
+            font-size: 15px;
+        }
+
+        p {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .left_block {
+            float: left;
+            margin-right: 20px;
+        }
+
+        .right_block {
+            float: left;
+            width: 49%;
+        }
+    </style>
+</head>
+<body>
+<div class="left_block">
+    <p th:id="sysId"></p>
+    <p th:id="orderNum"></p>
+    <p th:id="stateNow"></p>
+    <p th:id="userName"></p>
+    <p th:id="userWW"></p>
+    <p th:id="tel"></p>
+    <p th:id="phone"></p>
+    <p th:id="address"></p>
+    <p th:id="logType"></p>
+    <p th:id="logistics"></p>
+    <p th:id="logisticsNum"></p>
+    <p th:id="transCost"></p>
+    <p th:id="desc"></p>
+    <p th:id="insDate"></p>
+    <p th:id="upDate"></p>
+</div>
+<div class="right_block">
+    <div th:id="itemList"></div>
+</div>
+</body>
+</html>
