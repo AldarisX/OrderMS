@@ -1,0 +1,60 @@
+<head>
+    <script src='/js/jquery-3.3.1.min.js'></script>
+    <script>
+        let id;
+        $(document).ready(function () {
+            id = getQueryString("id");
+            $.post("/api/order.json?action=getOrderById", {
+                id: id
+            }, function (data) {
+                if (data.result) {
+                    let order = data.data;
+                    $("#orderNum").text("订单编号:" + order.orderNum);
+                    $("#stateNow").text("当前状态:" + order.orderState);
+                } else {
+                    parent.layer.msg(data.msg, {icon: 5});
+                }
+            })
+        });
+
+        function stateChangeClick() {
+            let state = $("#orderState").val();
+            if (state >= 0) {
+                $.post("/api/order.json?action=updateState", {
+                    id: id,
+                    state: state
+                }, function (data) {
+                    if (data.result) {
+                        parent.listOrder();
+                        parent.layer.closeAll();
+                    } else {
+                        parent.layer.msg(data.msg, {icon: 5});
+                    }
+                });
+            } else {
+                parent.layer.msg("选择的状态不正确", {icon: 5});
+            }
+        }
+
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+    </script>
+</head>
+<body>
+<p id="orderNum"></p>
+<p id="stateNow"></p>
+<p>
+    修改到:<select id="orderState">
+    <option disabled selected value="-99"></option>
+    <option value="0">排单</option>
+    <option value="1">出库</option>
+    <option value="2">完成</option>
+    <option value="3">关闭</option>
+</select>
+</p>
+<button onclick="stateChangeClick()">确定</button>
+</body>

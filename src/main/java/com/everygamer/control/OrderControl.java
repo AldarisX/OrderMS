@@ -49,7 +49,7 @@ public class OrderControl {
         OrderItem order = orderService.getOrderById(id);
         if (order != null) {
             result.accumulate("result", true);
-            result.accumulate("data", JSONObject.fromObject(order));
+            result.accumulate("data", JSONObject.fromObject(order, getOrderStateConfig()));
         } else {
             result.accumulate("result", false);
             result.accumulate("msg", "找不到此订单");
