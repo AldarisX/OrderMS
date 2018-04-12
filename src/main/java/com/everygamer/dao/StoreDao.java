@@ -14,5 +14,7 @@ public interface StoreDao {
 
     List<String> listName(@Param("type") Integer type, @Param("name") String name, @Param("exData") String exData);
 
+    List<String> listModel(@Param("type") Integer type, @Param("model") String name, @Param("exData") String exData);
+
     List<BaseItem> getTopStore(@Param("type") Integer type, @Param("count") int count);
 }

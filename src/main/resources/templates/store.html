@@ -15,7 +15,14 @@
             loadData();
 
             $(":text[name=itemName]").autocomplete({
-                source: "/api/itemStore.json?action=listName"
+                    source: "/api/itemStore.json?action=listName",
+                    minLength: 2
+                }
+            );
+
+            $(":text[name=itemModel]").autocomplete({
+                source: "/api/itemStore.json?action=listModel",
+                minLength: 2
             });
         });
 

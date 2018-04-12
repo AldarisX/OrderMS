@@ -182,6 +182,10 @@ public class StoreService {
         return storeDao.listName(type, name, exData);
     }
 
+    public List<String> listModel(Integer type, String name, String exData) {
+        return storeDao.listModel(type, name, exData);
+    }
+
     /**
      * 库存检索
      *

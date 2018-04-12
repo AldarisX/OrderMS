@@ -124,18 +124,37 @@
     <select id="listName" resultType="java.lang.String">
         SELECT
         item.name
-        FROM item_list_statis AS item, item_type, manufactor AS manu
-        WHERE item.item_type=item_type.id AND item.manufactor=manu.id
-        <if test="type!=null">
-            AND item.item_type=#{type}
-        </if>
-        <if test="name!=null">
-            AND item.name ILIKE #{name}
-        </if>
-        <if test="exData!=null">
-            AND item.ex_data @> #{exData}::jsonb
-        </if>
+        FROM item_list_statis AS item
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="type!=null">
+                AND item.item_type=#{type}
+            </if>
+            <if test="name!=null">
+                AND item.name ILIKE #{name}
+            </if>
+            <if test="exData!=null">
+                AND item.ex_data @> #{exData}::jsonb
+            </if>
+        </trim>
         GROUP BY item.name,item.up_date
         ORDER BY item.up_date DESC,item.name LIMIT 5
+    </select>
+    <select id="listModel" resultType="java.lang.String">
+        SELECT
+        item.model
+        FROM item_list_statis AS item
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="type!=null">
+                AND item.item_type=#{type}
+            </if>
+            <if test="model!=null">
+                AND item.model ILIKE #{model}
+            </if>
+            <if test="exData!=null">
+                AND item.ex_data @> #{exData}::jsonb
+            </if>
+        </trim>
+        GROUP BY item.model,item.up_date
+        ORDER BY item.up_date DESC,item.model LIMIT 5
     </select>
 </mapper>
