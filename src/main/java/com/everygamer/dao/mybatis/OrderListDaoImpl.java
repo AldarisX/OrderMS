@@ -21,10 +21,19 @@ public class OrderListDaoImpl implements OrderListDao {
     @Override
     public int addOrder(OrderItem orderItem) {
         int cRows = dao.addOrder(orderItem);
-        if (cRows <= 0) {
+        if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: addOrder");
         }
         return 1;
+    }
+
+    @Override
+    public int updateState(int id, Integer state) {
+        int cRows = dao.updateState(id, state);
+        if (cRows != 1) {
+            throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: updateState");
+        }
+        return cRows;
     }
 
     @Override

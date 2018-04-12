@@ -13,4 +13,6 @@ public interface OrderListDao {
     OrderItem getOrderById(int id);
 
     int addOrder(OrderItem orderItem);
+
+    int updateState(@Param("id") int id, @Param("state") Integer state);
 }

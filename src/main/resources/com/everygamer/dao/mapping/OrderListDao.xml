@@ -29,6 +29,11 @@
                              #{logistics}, #{logisticsNum}, #{transCost}, #{desc}, #{orderState}, UNIX_TIMESTAMP(),
                 UNIX_TIMESTAMP())
     </insert>
+    <update id="updateState">
+        UPDATE order_list
+        SET order_state = #{state}
+        WHERE id = #{id}
+    </update>
     <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
         SELECT *
         FROM order_list

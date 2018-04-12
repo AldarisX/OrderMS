@@ -77,4 +77,21 @@ public class OrderControl {
         }
         return result.toString();
     }
+
+    @ResponseBody
+    @RequestMapping(params = "action=updateState")
+    public String updateState(Integer id, Integer state) {
+        JSONObject result = new JSONObject();
+
+        OrderState orderState = OrderState.getEnum(state);
+        if (orderState != null) {
+            orderService.updateState(id, orderState);
+            result.accumulate("result", true);
+        } else {
+            result.accumulate("result", false);
+            result.accumulate("msg", "不存在这个状态");
+        }
+
+        return result.toString();
+    }
 }

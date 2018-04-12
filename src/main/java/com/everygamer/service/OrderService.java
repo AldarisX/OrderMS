@@ -2,6 +2,7 @@ package com.everygamer.service;
 
 import com.everygamer.bean.ItemType;
 import com.everygamer.bean.OrderItem;
+import com.everygamer.bean.OrderState;
 import com.everygamer.dao.ItemTypeDao;
 import com.everygamer.dao.OrderListDao;
 import com.github.pagehelper.PageHelper;
@@ -53,6 +54,11 @@ public class OrderService {
 
         String desc = "来自订单" + order.getId();
         storeService.itemOut(order.getId(), JSONArray.fromObject(order.getItemStatisList()), desc);
+        return cRows;
+    }
+
+    public int updateState(Integer id, OrderState state) {
+        int cRows = orderListDao.updateState(id, state.getId());
         return cRows;
     }
 }
