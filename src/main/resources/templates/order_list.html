@@ -36,12 +36,26 @@
                             items += item.itemType + "&nbsp;" + item.manufactor + "&nbsp;" + item.name + "(" + LwebJson.jsonToString(item.exData, item.exDataStr, ",") + ")" + "&nbsp;数量:" + item.count + "&nbsp;单价:" + item.price;
                             items += "</br>";
                         }
-                        $("#orderList").append("<tr><td>" + order.orderNum + "</td><td><a class='link'>" + order.userName + "</a></td><td><a class='link'>" + order.phone + "</a></td><td>" + items + "</td><td>" + order.address + "</td><td><a class='link'>" + order.orderState + "</a></td><td>" + order.logisticsNum + "</td><td>" + order.logistics + "</td><td>" + order.transCost + "</td><td>" + order.desc + "</td><td>" + formatUnixTime(order.upDate) + "</td><td><button>详情</button></td></tr>");
+                        $("#orderList").append("<tr><td>" + order.orderNum + "</td><td><a class='link' onclick='userNameClick(this)'>" + order.userName + "</a></td><td><a class='link' onclick='phoneClick(this)'>" + order.phone + "</a></td><td>" + items + "</td><td>" + order.address + "</td><td><a class='link' onclick='stateChange(" + order.id + ")'>" + order.orderState + "</a></td><td>" + order.logisticsNum + "</td><td>" + order.logistics + "</td><td>" + order.transCost + "</td><td>" + order.desc + "</td><td>" + formatUnixTime(order.upDate) + "</td><td><button>详情</button></td></tr>");
                     }
                 } else {
                     alert("未知错误");
                 }
             });
+        }
+
+        function userNameClick(el) {
+            $(":text[name=userName]").val($(el).text());
+            listOrder();
+        }
+
+        function phoneClick(el) {
+            $(":text[name=phone]").val($(el).text());
+            listOrder();
+        }
+
+        function stateChange(id) {
+
         }
     </script>
     <style>
@@ -50,7 +64,7 @@
         }
 
         .table_last_date {
-            width: 150px;
+            width: 100px;
         }
     </style>
 </head>
