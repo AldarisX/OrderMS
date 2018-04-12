@@ -42,6 +42,24 @@ public class OrderControl {
     }
 
     @ResponseBody
+    @RequestMapping(params = "action=getOrderById")
+    public String getOrderById(Integer id) {
+        JSONObject result = new JSONObject();
+
+        OrderItem order = orderService.getOrderById(id);
+        if (order != null) {
+            result.accumulate("result", true);
+            result.accumulate("data", JSONObject.fromObject(order));
+        } else {
+            result.accumulate("result", false);
+            result.accumulate("msg", "找不到此订单");
+        }
+
+
+        return result.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(params = "action=listOrder")
     public String listOrder(String userName, String phone, Integer state, Integer startTime, Integer endTime, Integer page, Integer pageSize) {
         page = page == null ? 1 : page;

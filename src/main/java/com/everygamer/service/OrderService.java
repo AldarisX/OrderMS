@@ -27,6 +27,10 @@ public class OrderService {
     @Autowired
     private StoreService storeService;
 
+    public OrderItem getOrderById(Integer id) {
+        return orderListDao.getOrderById(id);
+    }
+
     public PageInfo<OrderItem> listOrders(String userName, String phone, Integer state, Integer startTime, Integer endTime, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         List<OrderItem> datas = orderListDao.listOrder(userName, phone, state, startTime, endTime);

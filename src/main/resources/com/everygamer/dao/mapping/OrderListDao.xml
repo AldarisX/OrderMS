@@ -35,9 +35,27 @@
         WHERE id = #{id}
     </update>
     <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
-        SELECT *
-        FROM order_list
-        WHERE id = #{param1} AND is_alive = 1
+        SELECT
+            iorder.id,
+            iorder.order_num,
+            iorder.user_name,
+            iorder.userww,
+            iorder.tel,
+            iorder.phone,
+            iorder.address,
+            iorder.item_statis_list,
+            iorder.logistics_type,
+            log.name
+                AS
+                logistics,
+            iorder.logistics_num,
+            iorder.trans_cost,
+            iorder."desc",
+            iorder.order_state,
+            iorder.ins_date,
+            iorder.up_date
+        FROM order_list AS iorder, logistics AS log
+        WHERE iorder.id = #{param1} AND iorder.is_alive = 1 AND log.id = iorder.logistics
     </select>
     <select id="listOrder" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
         SELECT
