@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script th:replace="/head.html::commonHead('入库')"></script>
+    <div th:replace="/head.html::commonHead('入库')"></div>
+    <script th:src="@{/js/jquery-ui.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" media="all"/>
     <script th:inline="javascript" type="text/javascript">
         let itemTypeData;
 
@@ -11,6 +13,10 @@
                 pageLoad();
             });
             loadData();
+
+            $(":text[name=itemName]").autocomplete({
+                source: "/api/itemStore.json?action=listName"
+            });
         });
 
         function loadData() {
@@ -83,6 +89,22 @@
             });
             return false;
         }
+
+        // function itemNameChange() {
+        //     const itemName = $(":text[name=itemName]").val();
+        //     const itemType = $("#itemTypeList").val();
+        //     const exData = getExData("#exData input");
+        //
+        //     $.post("/api/itemStore.json", {
+        //         name: itemName,
+        //         itemType: itemType,
+        //         exData: exData
+        //     }, function (data) {
+        //         if (data.result) {
+        //
+        //         }
+        //     })
+        // }
     </script>
     <style>
         #itemList td {

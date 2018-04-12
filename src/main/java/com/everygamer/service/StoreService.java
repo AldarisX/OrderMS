@@ -178,6 +178,10 @@ public class StoreService {
         }
     }
 
+    public List<String> listName(Integer type, String name, String exData) {
+        return storeDao.listName(type, name, exData);
+    }
+
     /**
      * 库存检索
      *

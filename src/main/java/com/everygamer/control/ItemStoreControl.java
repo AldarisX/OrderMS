@@ -72,6 +72,14 @@ public class ItemStoreControl extends BaseControl {
     }
 
     @ResponseBody
+    @RequestMapping(params = "action=listName")
+    public String listName(String term) {
+        JSONArray result = JSONArray.fromObject(storeService.listName(null, term, null));
+
+        return result.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(params = "action=addItem")
     public String addItemToStore(String name, Integer itemType, Integer manu, String model, Integer num, BigDecimal price, String exData, String desc) {
         JSONObject result = new JSONObject();

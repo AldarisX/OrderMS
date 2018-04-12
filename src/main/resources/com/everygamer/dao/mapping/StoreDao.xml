@@ -121,4 +121,20 @@
         ORDER BY statis.count DESC
         LIMIT #{param2};
     </select>
+    <select id="listName" resultType="java.lang.String">
+        SELECT
+        item.name
+        FROM item_list AS item, item_type, manufactor AS manu
+        WHERE item.item_type=item_type.id AND item.manufactor=manu.id
+        <if test="type!=null">
+            AND item.item_type=#{type}
+        </if>
+        <if test="name!=null">
+            AND item.name ILIKE #{name}
+        </if>
+        <if test="exData!=null">
+            AND item.ex_data @> #{exData}::jsonb
+        </if>
+        ORDER BY item.ins_date DESC LIMIT 10
+    </select>
 </mapper>

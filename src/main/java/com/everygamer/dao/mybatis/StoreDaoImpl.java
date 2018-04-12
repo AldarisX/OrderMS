@@ -35,6 +35,14 @@ public class StoreDaoImpl implements StoreDao {
     }
 
     @Override
+    public List<String> listName(Integer type, String name, String exData) {
+        if (name != null) {
+            name = "%" + name.replaceAll(" ", "%") + "%";
+        }
+        return dao.listName(type, name, exData);
+    }
+
+    @Override
     public List<BaseItem> getTopStore(Integer type, int count) {
         return dao.getTopStore(type, count);
     }
