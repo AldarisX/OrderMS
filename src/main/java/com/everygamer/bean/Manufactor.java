@@ -1,67 +1,28 @@
 package com.everygamer.bean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Manufactor {
+    @Getter
+    @Setter
     private int id;
+    @Getter
+    @Setter
     private String name;
+    @Getter
+    @Setter
     private String itemType;
+    @Getter
+    @Setter
     private int isAlive;
+    @Getter
+    @Setter
     private String insDate;
+    @Getter
+    @Setter
     private String delDate;
+    @Getter
+    @Setter
     private String upDate;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(String itemType) {
-        this.itemType = itemType;
-    }
-
-    public int getIsAlive() {
-        return isAlive;
-    }
-
-    public void setIsAlive(int isAlive) {
-        this.isAlive = isAlive;
-    }
-
-    public String getInsDate() {
-        return insDate;
-    }
-
-    public void setInsDate(String insDate) {
-        this.insDate = insDate;
-    }
-
-    public String getDelDate() {
-        return delDate;
-    }
-
-    public void setDelDate(String delDate) {
-        this.delDate = delDate;
-    }
-
-    public String getUpDate() {
-        return upDate;
-    }
-
-    public void setUpDate(String upDate) {
-        this.upDate = upDate;
-    }
 }

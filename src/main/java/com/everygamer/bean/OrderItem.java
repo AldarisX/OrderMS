@@ -1,166 +1,61 @@
 package com.everygamer.bean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class OrderItem {
+    @Getter
+    @Setter
     private int id;
+    @Getter
+    @Setter
     private String orderNum;
+    @Getter
+    @Setter
     private String userName;
+    @Getter
+    @Setter
     private String userWW;
+    @Getter
+    @Setter
     private String tel;
+    @Getter
+    @Setter
     private String phone;
+    @Getter
+    @Setter
     private String address;
+    @Getter
+    @Setter
     private String itemStatisList;
+    @Getter
+    @Setter
     private int logisticsType;
+    @Getter
+    @Setter
     private String logistics;
+    @Getter
+    @Setter
     private String logisticsNum;
+    @Getter
+    @Setter
     private double transCost;
+    @Getter
+    @Setter
     private String desc;
+    @Getter
+    @Setter
     private OrderState orderState;
+    @Getter
+    @Setter
     private int isAlive;
+    @Getter
+    @Setter
     private String insDate;
+    @Getter
+    @Setter
     private String upDate;
+    @Getter
+    @Setter
     private String delDate;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getOrderNum() {
-        return orderNum;
-    }
-
-    public void setOrderNum(String orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserWW() {
-        return userWW;
-    }
-
-    public void setUserWW(String userWW) {
-        this.userWW = userWW;
-    }
-
-    public String getTel() {
-        return tel;
-    }
-
-    public void setTel(String tel) {
-        this.tel = tel;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getItemStatisList() {
-        return itemStatisList;
-    }
-
-    public void setItemStatisList(String itemStatisList) {
-        this.itemStatisList = itemStatisList;
-    }
-
-    public int getLogisticsType() {
-        return logisticsType;
-    }
-
-    public void setLogisticsType(int logisticsType) {
-        this.logisticsType = logisticsType;
-    }
-
-    public String getLogistics() {
-        return logistics;
-    }
-
-    public void setLogistics(String logistics) {
-        this.logistics = logistics;
-    }
-
-    public String getLogisticsNum() {
-        return logisticsNum;
-    }
-
-    public void setLogisticsNum(String logisticsNum) {
-        this.logisticsNum = logisticsNum;
-    }
-
-    public double getTransCost() {
-        return transCost;
-    }
-
-    public void setTransCost(double transCost) {
-        this.transCost = transCost;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
-
-    public OrderState getOrderState() {
-        return orderState;
-    }
-
-    public void setOrderState(OrderState orderState) {
-        this.orderState = orderState;
-    }
-
-    public int getIsAlive() {
-        return isAlive;
-    }
-
-    public void setIsAlive(int isAlive) {
-        this.isAlive = isAlive;
-    }
-
-    public String getInsDate() {
-        return insDate;
-    }
-
-    public void setInsDate(String insDate) {
-        this.insDate = insDate;
-    }
-
-    public String getUpDate() {
-        return upDate;
-    }
-
-    public void setUpDate(String upDate) {
-        this.upDate = upDate;
-    }
-
-    public String getDelDate() {
-        return delDate;
-    }
-
-    public void setDelDate(String delDate) {
-        this.delDate = delDate;
-    }
 }

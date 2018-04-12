@@ -13,7 +13,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 @SpringBootApplication
 @EnableJdbcHttpSession
 @ServletComponentScan
-//@MapperScan(basePackages = {"com.everygamer.dao"})
 public class OrderMsApplication {
 
     public static void main(String[] args) {
@@ -27,21 +26,4 @@ public class OrderMsApplication {
         sessionRepository.setDefaultMaxInactiveInterval(1800);
         return sessionRepository;
     }
-
-
-//    @Bean
-//    @ConditionalOnMissingBean
-//    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
-//        SqlSessionFactoryBean factory = new SqlSessionFactoryBean();
-//        factory.setDataSource(dataSource);
-//        factory.setVfs(SpringBootVFS.class);
-//        ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver(getClass().getClassLoader());
-//        factory.setMapperLocations(resourceResolver.getResources("classpath*:/com/everygamer/dao/mapping/*.xml"));
-//
-//        factory.setTypeAliasesPackage("com.everygamer.bean");
-//        factory.setTypeHandlersPackage("com.everygamer.dao.mybatis.handler");
-//        factory.setTypeHandlers(new TypeHandler[]{new StateEnumHandler()});
-//        factory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
-//        return factory.getObject();
-//    }
 }
