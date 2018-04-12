@@ -2,6 +2,7 @@ body {
     height: 100%;
     background-color: #FFF;
     overflow-y: scroll;
+    font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
 }
 
 ul {
