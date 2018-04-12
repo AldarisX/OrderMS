@@ -1,5 +1,6 @@
 package com.everygamer.site;
 
+import com.everygamer.logger.SystemLog;
 import com.everygamer.site.expection.SiteLoginExpection;
 import com.everygamer.util.RSAUtils;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import java.security.PrivateKey;
 
 public class SiteLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
+    @SystemLog(description = "尝试登陆")
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String inCode = request.getParameter("vcode");
         String serCode = (String) request.getSession().getAttribute("vCode");

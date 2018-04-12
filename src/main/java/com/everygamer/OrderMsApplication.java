@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
@@ -12,6 +14,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @SpringBootApplication
 @EnableJdbcHttpSession
+@EnableAspectJAutoProxy
+@ComponentScan(basePackageClasses = OrderMsApplication.class)
 @ServletComponentScan
 public class OrderMsApplication {
 
