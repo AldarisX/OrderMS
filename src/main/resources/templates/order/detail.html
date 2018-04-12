@@ -12,15 +12,15 @@
             }, function (data) {
                 if (data.result) {
                     let order = data.data;
-                    $("#sysId").text("系统ID:" + order.id);
-                    $("#orderNum").text("订单编号:" + order.orderNum);
-                    $("#stateNow").text("当前状态:" + order.orderState);
-                    $("#userName").text("买家姓名:" + order.userName);
-                    $("#userWW").text("买家旺旺:" + order.userWW);
-                    $("#tel").text("买家电话:" + order.tel);
-                    $("#phone").text("买家手机:" + order.phone);
-                    $("#address").text("买家地址:" + order.address);
-                    let itemList = "<p>物品列表:</p>";
+                    $("#sysId").text(order.id);
+                    $("#orderNum").text(order.orderNum);
+                    $("#stateNow").text(order.orderState);
+                    $("#userName").text(order.userName);
+                    $("#userWW").text(order.userWW);
+                    $("#tel").text(order.tel);
+                    $("#phone").text(order.phone);
+                    $("#address").text(order.address);
+                    let itemList = "";
                     let count = 0;
                     let price = 0;
                     for (let i = 0; i < order.itemStatisList.length; i++) {
@@ -28,21 +28,21 @@
                         count += item.count;
                         let itemPrice = item.price * item.count;
                         price += itemPrice;
-                        itemList += "<p>" + item.itemType + "&nbsp;" + item.manufactor + "&nbsp;" + item.name + "(" + LwebJson.jsonToString(item.exData, item.exDataStr, ",") + ")" + "&nbsp;数量:" + item.count + "&nbsp;单价:" + item.price + "&nbsp;总价:" + itemPrice + "</p>"
+                        itemList += item.itemType + "&nbsp;" + item.manufactor + "&nbsp;" + item.name + "(" + LwebJson.jsonToString(item.exData, item.exDataStr, ",") + ")" + "&nbsp;数量:" + item.count + "&nbsp;单价:" + item.price + "&nbsp;总价:" + itemPrice + "</br>"
                     }
-                    itemList += "<p>物品总数:" + count + "&nbsp;总价:" + price + "</p>";
+                    itemList += "物品总数:" + count + "&nbsp;总价:" + price + "";
                     $("#itemList").append(itemList);
                     if (order.logisticsType === 0) {
-                        $("#logType").text("面单类型:电子");
+                        $("#logType").text("电子");
                     } else {
-                        $("#logType").text("面单类型:手工");
+                        $("#logType").text("手工");
                     }
-                    $("#logistics").text("物流:" + order.logistics);
-                    $("#logisticsNum").text("单号:" + order.logisticsNum);
-                    $("#transCost").text("运费:" + order.transCost);
-                    $("#desc").text("备注:" + order.desc);
-                    $("#insDate").text("创建时间:" + formatUnixTime(order.insDate));
-                    $("#upDate").text("更新时间:" + formatUnixTime(order.upDate));
+                    $("#logistics").text(order.logistics);
+                    $("#logisticsNum").text(order.logisticsNum);
+                    $("#transCost").text(order.transCost);
+                    $("#desc").text(order.desc);
+                    $("#insDate").text(formatUnixTime(order.insDate));
+                    $("#upDate").text(formatUnixTime(order.upDate));
                 } else {
                     parent.layer.msg(data.msg, {icon: 5});
                 }
@@ -65,38 +65,94 @@
             margin-top: 0.5em;
             margin-bottom: 0.5em;
         }
-
-        .left_block {
-            float: left;
-            margin-right: 20px;
-        }
-
-        .right_block {
-            float: left;
-            width: 49%;
-        }
     </style>
 </head>
 <body>
-<div class="left_block">
-    <p th:id="sysId"></p>
-    <p th:id="orderNum"></p>
-    <p th:id="stateNow"></p>
-    <p th:id="userName"></p>
-    <p th:id="userWW"></p>
-    <p th:id="tel"></p>
-    <p th:id="phone"></p>
-    <p th:id="address"></p>
-    <p th:id="logType"></p>
-    <p th:id="logistics"></p>
-    <p th:id="logisticsNum"></p>
-    <p th:id="transCost"></p>
-    <p th:id="desc"></p>
-    <p th:id="insDate"></p>
-    <p th:id="upDate"></p>
-</div>
-<div class="right_block">
-    <div th:id="itemList"></div>
-</div>
+<table border="1">
+    <tr>
+        <td>系统ID:</td>
+        <td><span th:id="sysId"></span></td>
+    </tr>
+    <tr>
+        <td>订单编号:</td>
+        <td><span th:id="orderNum"></span></td>
+    </tr>
+    <tr>
+        <td>当前状态:</td>
+        <td><span th:id="stateNow"></span></td>
+    </tr>
+    <tr>
+        <td>买家姓名:</td>
+        <td><span th:id="userName"></span></td>
+    </tr>
+    <tr>
+        <td>买家旺旺:</td>
+        <td><span th:id="userWW"></span></td>
+    </tr>
+    <tr>
+        <td>买家电话:</td>
+        <td><span th:id="tel"></span></td>
+    </tr>
+    <tr>
+        <td>买家手机:</td>
+        <td><span th:id="phone"></span></td>
+    </tr>
+    <tr>
+        <td>买家地址:</td>
+        <td><span th:id="address"></span></td>
+    </tr>
+    <tr>
+        <td>物品列表</td>
+        <td th:id="itemList"></td>
+    </tr>
+    <tr>
+        <td>面单类型:</td>
+        <td><span th:id="logType"></span></td>
+    </tr>
+    <tr>
+        <td>物流:</td>
+        <td><span th:id="logistics"></span></td>
+    </tr>
+    <tr>
+        <td>单号:</td>
+        <td><span th:id="logisticsNum"></span></td>
+    </tr>
+    <tr>
+        <td>运费:</td>
+        <td><span th:id="transCost"></span></td>
+    </tr>
+    <tr>
+        <td>备注:</td>
+        <td><span th:id="desc"></span></td>
+    </tr>
+    <tr>
+        <td>创建时间:</td>
+        <td><span th:id="insDate"></span></td>
+    </tr>
+    <tr>
+        <td>更新时间:</td>
+        <td><span th:id="upDate"></span></td>
+    </tr>
+</table>
+<!--<div class="left_block">-->
+<!--<p th:id="sysId"></p>-->
+<!--<p th:id="orderNum"></p>-->
+<!--<p th:id="stateNow"></p>-->
+<!--<p th:id="userName"></p>-->
+<!--<p th:id="userWW"></p>-->
+<!--<p th:id="tel"></p>-->
+<!--<p th:id="phone"></p>-->
+<!--<p th:id="address"></p>-->
+<!--<p th:id="logType"></p>-->
+<!--<p th:id="logistics"></p>-->
+<!--<p th:id="logisticsNum"></p>-->
+<!--<p th:id="transCost"></p>-->
+<!--<p th:id="desc"></p>-->
+<!--<p th:id="insDate"></p>-->
+<!--<p th:id="upDate"></p>-->
+<!--</div>-->
+<!--<div class="right_block">-->
+<!--<div th:id="itemList"></div>-->
+<!--</div>-->
 </body>
 </html>
