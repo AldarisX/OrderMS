@@ -69,6 +69,6 @@
         <if test="phone!=null">
             AND iorder.phone ILIKE #{phone}
         </if>
-        ORDER BY iorder.ins_date
+        ORDER BY iorder.ins_date DESC
     </select>
 </mapper>
