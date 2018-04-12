@@ -136,6 +136,6 @@
             AND item.ex_data @> #{exData}::jsonb
         </if>
         GROUP BY item.name,item.up_date
-        ORDER BY item.up_date DESC,item.name LIMIT 10
+        ORDER BY item.up_date DESC,item.name LIMIT 5
     </select>
 </mapper>
