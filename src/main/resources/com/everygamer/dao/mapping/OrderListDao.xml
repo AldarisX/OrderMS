@@ -31,7 +31,7 @@
     </insert>
     <update id="updateState">
         UPDATE order_list
-        SET order_state = #{state}
+        SET order_state = #{state}, up_date = UNIX_TIMESTAMP()
         WHERE id = #{id}
     </update>
     <select id="getOrderById" resultType="com.everygamer.bean.OrderItem" resultMap="OrderItem">
