@@ -47,7 +47,7 @@
         const manu = $("#searchManu").val();
         const kw = $("#searchKW").val();
         const pageSize = $("#searchPageSize").val();
-        let sExData = getExData("#searchExData input");
+        let sExData = LwebJson.getExData("#searchExData .exBlock");
 
         $.post("/api/itemStore.json?action=search", {
             type: type,
@@ -135,10 +135,7 @@
                 if (data.result) {
                     $("#searchExData").empty();
                     nowExData = data.exData;
-                    for (let i = 0; i < nowExData.length; i++) {
-                        const exItem = nowExData[i];
-                        $("#searchExData").append("<label>" + exItem.desc + ":<input name='" + exItem.name + "' type='" + exItem.type + "' /></label>");
-                    }
+                    LwebJson.getInputBox(nowExData, "#searchExData");
                 } else {
                     alert(data.msg);
                 }
@@ -174,14 +171,6 @@
 
     function searchPageSizeChange() {
         nowPage = 1;
-    }
-
-    function getExData(el) {
-        const exData = {};
-        $(el).each(function (index, el) {
-            exData[$(el).attr("name")] = LwebJson.getVal(el, $(el).attr("type"));
-        });
-        return exData;
     }
 </script>
 <div>

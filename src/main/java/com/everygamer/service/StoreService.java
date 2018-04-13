@@ -65,7 +65,7 @@ public class StoreService {
         if (item != null) {
             itemListStatisDao.updateStatis(item.getId(), num, price);
         } else {
-            itemListStatisDao.addStatis(name, itemType, manu, num, price, exData);
+            itemListStatisDao.addStatis(name, itemType, manu, model, num, price, exData);
         }
         return cRows;
     }

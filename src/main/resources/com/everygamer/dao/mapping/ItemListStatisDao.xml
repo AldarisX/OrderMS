@@ -14,9 +14,9 @@
     </resultMap>
 
     <insert id="addStatis">
-        INSERT INTO item_list_statis ("name", item_type, manufactor, "count", price, ex_data, up_date)
+        INSERT INTO item_list_statis ("name", item_type, manufactor, model, "count", price, ex_data, up_date)
         VALUES
-            (#{param1}, #{param2}, #{param3}, #{param4}, #{param5} * #{param4}, #{param6}, UNIX_TIMESTAMP())
+            (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param5} * #{param6}, #{param7}, UNIX_TIMESTAMP())
     </insert>
     <update id="updateStatis">
         UPDATE item_list_statis

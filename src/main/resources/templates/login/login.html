@@ -14,7 +14,6 @@
                 , shade: 0.01
             });
             $.post("/api/user.json?action=getRSA", function (result) {
-                console.log(result);
                 if (result.result) {
                     //加密
                     let encrypt = new JSEncrypt();

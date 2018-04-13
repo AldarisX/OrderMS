@@ -54,7 +54,7 @@
             const type = $("#searchType").val();
             const manu = $("#searchManu").find("option:selected").text();
             const pageSize = $("#searchPageSize").val();
-            let sExData = getExData("#searchExDataBox input");
+            let sExData = LwebJson.getExData("#searchExDataBox .exBlock", false);
             let startTime = toUnixTime($("#startDate").val());
             let endTime = toUnixTime($("#endDate").val());
             if (!showExData) {
@@ -148,14 +148,6 @@
             }
         }
 
-        function getExData(el) {
-            const exData = {};
-            $(el).each(function (index, el) {
-                exData[$(el).attr("name")] = LwebJson.getVal(el, $(el).attr("type"));
-            });
-            return exData;
-        }
-
         /**
          * 当搜索类型改变时
          */
@@ -205,10 +197,7 @@
             $("#searchExDataBox").empty();
             if ($("#search_isExData").is(':checked')) {
                 showExData = true;
-                for (let i = 0; i < nowExData.length; i++) {
-                    const exItem = nowExData[i];
-                    $("#searchExDataBox").append("<label>" + exItem.desc + ":<input name='" + exItem.name + "' type='" + exItem.type + "' /></label>");
-                }
+                LwebJson.getInputBox(nowExData, "#searchExDataBox");
                 $("#searchExDataBox").css("display", "block");
             } else {
                 showExData = false;

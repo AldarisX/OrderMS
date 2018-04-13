@@ -123,7 +123,7 @@
     </select>
     <select id="listName" resultType="java.lang.String">
         SELECT
-        item.name
+        DISTINCT item.name
         FROM item_list_statis AS item
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="type!=null">
@@ -136,12 +136,11 @@
                 AND item.ex_data @> #{exData}::jsonb
             </if>
         </trim>
-        GROUP BY item.name,item.up_date
-        ORDER BY item.up_date DESC,item.name LIMIT 5
+        ORDER BY item.name LIMIT 5
     </select>
     <select id="listModel" resultType="java.lang.String">
         SELECT
-        item.model
+        DISTINCT item.model
         FROM item_list_statis AS item
         <trim prefix="WHERE" prefixOverrides="AND">
             <if test="type!=null">
@@ -154,7 +153,6 @@
                 AND item.ex_data @> #{exData}::jsonb
             </if>
         </trim>
-        GROUP BY item.model,item.up_date
-        ORDER BY item.up_date DESC,item.model LIMIT 5
+        ORDER BY item.model LIMIT 5
     </select>
 </mapper>

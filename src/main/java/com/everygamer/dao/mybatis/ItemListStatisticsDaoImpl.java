@@ -28,8 +28,8 @@ public class ItemListStatisticsDaoImpl implements ItemListStatisDao {
     }
 
     @Override
-    public int addStatis(String name, Integer itemType, Integer manu, Integer num, BigDecimal price, String exData) {
-        int cRows = dao.addStatis(name, itemType, manu, num, price, exData);
+    public int addStatis(String name, Integer itemType, Integer manu, String model, Integer num, BigDecimal price, String exData) {
+        int cRows = dao.addStatis(name, itemType, manu, model, num, price, exData);
         if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: addStatis");
         }

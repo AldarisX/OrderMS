@@ -15,7 +15,6 @@
                 itemTypeData = data.data;
                 for (let i = 0; i < data.data.length; i++) {
                     const itemType = data.data[i];
-                    $("#itemTypeList").append("<option value='" + itemType.id + "'>" + itemType.name + "</option>");
                     $("#searchType").append("<option value='" + itemType.id + "'>" + itemType.name + "</option>");
                 }
             } else {
@@ -35,7 +34,7 @@
         const type = $("#searchType").val();
         const manu = $("#searchManu").val();
         const pageSize = $("#searchPageSize").val();
-        let sExData = getExData("#searchExDataBox input");
+        let sExData = LwebJson.getExData("#searchExDataBox .exBlock");
         if (!showExData) {
             sExData = "";
         }
@@ -107,25 +106,11 @@
         }
     }
 
-    function getExData(el) {
-        const exData = {};
-        $(el).each(function (index, el) {
-            let val = LwebJson.getVal(el, $(el).attr("type"));
-            if (val !== undefined) {
-                exData[$(el).attr("name")] = LwebJson.getVal(el, $(el).attr("type"));
-            }
-        });
-        return exData;
-    }
-
     function search_isExDataChange() {
         $("#searchExDataBox").empty();
         if ($("#search_isExData").is(':checked')) {
             showExData = true;
-            for (let i = 0; i < nowExData.length; i++) {
-                const exItem = nowExData[i];
-                $("#searchExDataBox").append("<label>" + exItem.desc + ":<input name='" + exItem.name + "' type='" + exItem.type + "' /></label>");
-            }
+            LwebJson.getInputBox(nowExData, "#searchExDataBox");
             $("#searchExDataBox").css("display", "block");
         } else {
             showExData = false;

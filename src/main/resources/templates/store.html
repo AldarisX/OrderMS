@@ -32,6 +32,18 @@
             document.getElementById("manuList").selectedIndex = -1;
             $("#itemTypeList").empty();
             $("#itemTypeList").append("<option selected='selected' disabled='disabled' value='selected'></option>");
+
+            $.post("/api/itemType.json?action=getAll", function (data) {
+                if (data.result) {
+                    itemTypeData = data.data;
+                    for (let i = 0; i < data.data.length; i++) {
+                        const itemType = data.data[i];
+                        $("#itemTypeList").append("<option value='" + itemType.id + "'>" + itemType.name + "</option>");
+                    }
+                } else {
+                    alert(data.msg);
+                }
+            });
         }
 
         function loadManuList() {
@@ -39,10 +51,7 @@
 
             $("#exData").empty();
             const exData = itemTypeData[$("#itemTypeList").get(0).selectedIndex - 1].exData;
-            for (let i = 0; i < exData.length; i++) {
-                const exItem = exData[i];
-                $("#exData").append("<label>" + exItem.desc + ":<input name='" + exItem.name + "' type='" + exItem.type + "' /></label>");
-            }
+            LwebJson.getInputBox(exData, "#exData");
 
             $("#manuList").empty();
             $("#manuList").append("<option selected='selected' disabled='disabled' value='selected'></option>");
@@ -71,11 +80,11 @@
             const manu = $("#manuList").val();
             const itemNum = $("[name=itemNum]").val();
             const itemPrice = $("[name=itemPrice]").val();
-            const exData = getExData("#exData input");
+            const exData = LwebJson.getExData("#exData .exBlock");
             const desc = $("#desc").val();
 
-            if (itemName === "" || itemType == null || manu == null || itemNum === "" || itemPrice === "") {
-                alert("请认真填写数据");
+            if (itemName === "" || itemModel === "" || itemType == null || manu == null || itemNum === "" || itemPrice === "" || exData == null) {
+                layer.msg("请将数据填写完整", {icon: 5});
                 return false;
             }
 
@@ -98,22 +107,6 @@
             });
             return false;
         }
-
-        // function itemNameChange() {
-        //     const itemName = $(":text[name=itemName]").val();
-        //     const itemType = $("#itemTypeList").val();
-        //     const exData = getExData("#exData input");
-        //
-        //     $.post("/api/itemStore.json", {
-        //         name: itemName,
-        //         itemType: itemType,
-        //         exData: exData
-        //     }, function (data) {
-        //         if (data.result) {
-        //
-        //         }
-        //     })
-        // }
     </script>
     <style>
         #itemList td {
