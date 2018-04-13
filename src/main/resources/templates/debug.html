@@ -3,7 +3,6 @@
 <head>
     <script th:replace="/head.html::commonHead('DEBUG')"></script>
     <script th:inline="javascript" type="text/javascript">
-
     </script>
 </head>
 <body>
@@ -15,5 +14,6 @@
 <p th:text="'用户名: '+${userName}"></p>
 <p th:text="'用户目录: '+${userHome}"></p>
 <p th:text="'当前工作目录: '+${userDir}"></p>
+<button th:text="退出系统" onclick="window.location.href='/api/debug.json?action=sysExit'"></button>
 </body>
 </html>

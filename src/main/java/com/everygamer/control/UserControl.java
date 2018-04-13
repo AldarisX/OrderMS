@@ -6,6 +6,7 @@ import com.everygamer.util.MD5Tool;
 import com.everygamer.util.RSAUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +40,7 @@ public class UserControl {
 
     @ResponseBody
     @RequestMapping(params = "action=addUser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addUser(String uname, String passwd, HttpSession session) {
         PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
         passwd = RSAUtils.decryptBase64(priKey, passwd);
@@ -88,6 +90,7 @@ public class UserControl {
 
     @ResponseBody
     @RequestMapping(params = "action=setPasswd")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String setPasswd(int id, String passwd, HttpSession session) {
         PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
         passwd = RSAUtils.decryptBase64(priKey, passwd);
@@ -103,6 +106,7 @@ public class UserControl {
 
     @ResponseBody
     @RequestMapping(params = "action=delUser")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delUser(int id) {
         JSONObject result = new JSONObject();
 
