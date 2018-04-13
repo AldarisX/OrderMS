@@ -21,15 +21,10 @@
     </update>
 
     <select id="getAllManufactor" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
-        SELECT
-            manufactor.id,
-            manufactor.name,
-            item_type.name AS item_type,
-            manufactor.ins_date
+        SELECT manufactor.name
         FROM manufactor
-            LEFT JOIN item_type ON manufactor.item_type = item_type.id
         WHERE manufactor.is_alive = 1
-        GROUP BY manufactor.name, manufactor.id, item_type.name
+        GROUP BY manufactor.name;
     </select>
     <select id="getAllManufactorByItemType" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT

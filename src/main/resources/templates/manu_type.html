@@ -15,12 +15,12 @@
             $("#manuInfo").empty();
 
             $("#manuTypeList").empty();
-            $("#manuTypeList").append("<tr><td>ID</td><td>厂商</td><td>添加时间</td></tr>");
+            $("#manuTypeList").append("<tr><td>厂商</td></tr>");
             $.post("/api/manu.json?action=getAll", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         const manu = data.data[i];
-                        $("<tr><td>" + manu.id + "</td><td><a class='link' onclick='loadManuInfo(\"" + manu.name + "\")'>" + manu.name + "</a></td><td>" + formatUnixTime(manu.insDate) + "</td></tr>").appendTo("#manuTypeList");
+                        $("<tr><td><a class='link' onclick='loadManuInfo(\"" + manu.name + "\")'>" + manu.name + "</a></td></tr>").appendTo("#manuTypeList");
                     }
                 } else {
                     alert(data.msg);
@@ -46,10 +46,10 @@
                 if (data.result) {
                     $("#manuInfo").empty();
                     $("#manuInfo").append("<caption>" + name + "</caption>");
-                    $("#manuInfo").append("<tr><td>类型</td><td>添加时间</td><td>操作</td></tr>");
+                    $("#manuInfo").append("<tr><td>ID</td><td>类型</td><td>添加时间</td><td>操作</td></tr>");
                     for (let i = 0; i < data.data.length; i++) {
                         const manu = data.data[i];
-                        $("#manuInfo").append("<tr><td>" + manu.itemType + "</td><td>" + formatUnixTime(manu.insDate) + "</td><td><button onclick='delManuType(" + manu.id + ")'>删除</button></td></tr>");
+                        $("#manuInfo").append("<tr><td>" + manu.id + "</td><td>" + manu.itemType + "</td><td>" + formatUnixTime(manu.insDate) + "</td><td><button onclick='delManuType(" + manu.id + ")'>删除</button></td></tr>");
                     }
                 } else {
                     alert(data.msg);
