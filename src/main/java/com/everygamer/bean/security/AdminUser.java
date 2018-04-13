@@ -1,5 +1,7 @@
 package com.everygamer.bean.security;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,28 +15,20 @@ import java.util.List;
 public class AdminUser implements UserDetails {
     @Id
     @GeneratedValue
+    @Getter
+    @Setter
     private Integer id;
+    @Getter
+    @Setter
     private String username;
+    @Getter
+    @Setter
     private String password;
 
     @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @Getter
+    @Setter
     private List<AdminRole> roles;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public List<AdminRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<AdminRole> roles) {
-        this.roles = roles;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -44,24 +38,6 @@ public class AdminUser implements UserDetails {
             auths.add(new SimpleGrantedAuthority(role.getName()));
         }
         return auths;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override
