@@ -154,8 +154,6 @@
         function searchTypeChange() {
             nowPage = 1;
             $("#searchBtn").removeAttr("disabled");
-            $("#search_isExData").prop("checked", false);
-            search_isExDataChange();
 
             const itemTypeSel = $("#searchType").val();
             if (itemTypeSel === "") {
@@ -185,6 +183,8 @@
                             if (data.exData.length > 0) {
                                 $("#searchExData").css("display", "block");
                             }
+                            $("#search_isExData").prop("checked", true);
+                            search_isExDataChange();
                         } else {
                             alert(data.msg);
                         }
