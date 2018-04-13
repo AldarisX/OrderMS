@@ -16,13 +16,15 @@
 
             $(":text[name=itemName]").autocomplete({
                     source: "/api/itemStore.json?action=listName",
-                    minLength: 2
+                minLength: 2,
+                cache: true
                 }
             );
 
             $(":text[name=itemModel]").autocomplete({
                 source: "/api/itemStore.json?action=listModel",
-                minLength: 2
+                minLength: 2,
+                cache: true
             });
         });
 
