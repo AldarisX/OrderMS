@@ -30,6 +30,7 @@
                     }, function (data) {
                         if (data.result) {
                             layer.msg('添加成功', {icon: 6});
+                            $("#addUserForm")[0].reset();
                         } else {
                             layer.msg(data.msg, {icon: 5});
                         }
@@ -114,7 +115,7 @@
 </head>
 <body>
 <div th:replace="/nav.html::commonNav('sys','edit_user')"></div>
-<form onsubmit="return false">
+<form th:id="addUserForm" onsubmit="return false">
     <h4>添加用户</h4>
     <label>用户名:<input type="text" name="uname"/></label><br/>
     <label>密码:<input type="password" name="passwd"/></label><br/>

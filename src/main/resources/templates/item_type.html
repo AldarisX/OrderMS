@@ -12,6 +12,9 @@
         });
 
         function loadData() {
+            $("#keysBox").empty();
+            $(":input[name=inIndex]").removeAttr("checked", "");
+            $(":input[name=isExData]").removeAttr("checked", "");
             $("#itemTypeList").empty();
             $("#itemTypeList").append("<tr><td>ID</td><td>物品类型</td><td>添加时间</td><td>是否在主页显示</td><td>额外数据</td><td>操作</td></tr>");
             $.post("/api/itemType.json?action=getAll", function (data) {
@@ -99,6 +102,7 @@
                 }, function (data) {
                     if (data.result) {
                         loadData();
+                        $("#itemTypeForm")[0].reset();
                         alert(data.msg);
                     } else {
                         alert(data.msg);
@@ -139,14 +143,13 @@
 
         function delKey(event) {
             let keyName = $(event).parent().find(".keyName").val();
-            $(event).parent().remove();
             parent.layer.confirm('确定删除属性' + keyName + '?', {
                 btn: ['确定', '取消'],
                 icon: 3
             }, function () {
                 if (isEdit) {
-                    const itemType = $(":text[name=itemType]").val();
                     let exData = LwebJson.getExStruct("#keysBox", ".mui-textfield");
+                    $(event).parent().remove();
                     $.post("/api/itemType.json?action=delItemTypeKey", {
                         id: editItem,
                         key: keyName,
@@ -173,7 +176,7 @@
 <body>
 <div th:replace="/nav.html::commonNav('sys','item_type')"></div>
 <div>
-    <form action="/api/itemType.json?action=addItemType" method="post" onsubmit="return false">
+    <form th:id="itemTypeForm" action="/api/itemType.json?action=addItemType" method="post" onsubmit="return false">
         <label>物品类型:<input type="text" name="itemType" placeholder="CPU...硬盘...显示器"/></label><br/>
         <label>在主页显示:<input type="checkbox" name="inIndex"/></label>
         <div id="isExData">
@@ -181,19 +184,6 @@
         </div>
         <div id="exData" style="display: none">
             <div id="keysBox">
-                <div class="mui-textfield">
-                    <label>属性:<input type="text" class="keyName" name="key" placeholder="无法修改,英文, 不要重复"/></label>
-                    <label>类型:<select class="keyType" onchange='LwebJson.typeChange(this)'>
-                        <option value="text">字符串</option>
-                        <option value="number">数值</option>
-                        <option value="checkbox" selected>布尔值</option>
-                        <option value='option'>选项</option>
-                    </select></label>
-                    <label>说明:<input type="text" class="keyDesc" name="value" placeholder="字段描述"></label>
-                    <div class='exData'></div>
-                    <label>必须:<input type='checkbox' class='keyMust'/></label>
-                    <button onclick="delKey(this)">删除</button>
-                </div>
             </div>
             <button id="btn_addKey" type="button" onclick="addKey()">添加字段</button>
             <br>

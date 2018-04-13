@@ -31,6 +31,7 @@
                 if (data.result) {
                     layer.msg("添加成功", {icon: 6});
                     loadData();
+                    $("#logForm")[0].reset();
                 } else {
                     layer.msg(data.msg, {icon: 5});
                 }
@@ -61,7 +62,7 @@
 </head>
 <div th:replace="/nav.html::commonNav('sys','logistics')"></div>
 <div>
-    <form onsubmit="return false">
+    <form th:id="logForm" onsubmit="return false">
         <label>物流名称:<input th:type="text" th:name="logisticsName" th:placeholder="顺丰...韵达...申通"/></label><br/>
         <button onclick="addLogistics()">添加</button>
     </form>

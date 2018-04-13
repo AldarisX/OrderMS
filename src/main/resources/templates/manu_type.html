@@ -84,6 +84,7 @@
                         if (data.result) {
                             loadData();
                             alert("添加成功");
+                            $("#manuForm")[0].reset();
                         } else {
                             alert(data.msg);
                         }
@@ -99,7 +100,7 @@
 <body>
 <div th:replace="/nav.html::commonNav('sys','manu_type')"></div>
 <div>
-    <form method="post" onsubmit="return postManuType()">
+    <form th:id="manuForm" method="post" onsubmit="return postManuType()">
         <label>厂商:<input type="text" name="manuName" placeholder="ASUS...技嘉..." required/></label>
         <label>制造:<select id="itemTypeList">
         </select></label>

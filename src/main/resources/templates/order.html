@@ -61,6 +61,7 @@
                     layer.msg("操作成功", {icon: 6});
                     clearItem();
                     loadStore();
+                    $("#orderForm")[0].reset();
                 } else {
                     layer.msg(data.msg, {icon: 5});
                 }
