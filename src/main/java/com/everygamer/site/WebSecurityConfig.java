@@ -78,8 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 response.setContentType("application/json;charset=UTF-8");
                 JSONObject result = new JSONObject();
                 result.accumulate("result", false);
-//                result.accumulate("msg", exception.getMessage());
-                result.accumulate("msg", "用户名或密码错误");
+                result.accumulate("msg", exception.getMessage());
                 response.getWriter().print(result.toString());
             }
         });
