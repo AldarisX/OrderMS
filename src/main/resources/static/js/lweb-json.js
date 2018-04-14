@@ -107,9 +107,14 @@ LwebJson.getInputBox = function (structure, target) {
 LwebJson.getExDataBox = function (structure, field) {
     let result = "";
     for (let i = 0; i < structure.length; i++) {
-        result += "<div class='" + field + "'>" +
-            "<label>属性:<input type='text' class='keyName' name='key' disabled value='" + structure[i].name + "' required='required'></label>" +
-            "<label> 类型:<select id='exSel-" + i + "' class='keyType' onchange='LwebJson.typeChange(this)'>";
+        result += "<div class='" + field + "'>";
+        if (structure[i].must) {
+            result += "<label>必须:<input type='checkbox' class='keyMust' checked /></label>";
+        } else {
+            result += "<label>必须:<input type='checkbox' class='keyMust' /></label>";
+        }
+        result += "<label>属性:<input type='text' class='keyName' name='key' disabled value='" + structure[i].name + "' required='required'></label>";
+        result += "<label> 类型:<select id='exSel-" + i + "' class='keyType' onchange='LwebJson.typeChange(this)'>";
         switch (structure[i].type) {
             case typeEnmu.boolean:
                 result += "<option value='text'>字符串</option>" +
@@ -157,11 +162,6 @@ LwebJson.getExDataBox = function (structure, field) {
                     "<button onclick='LwebJson.typeOptionRemove(this)'>移除</button>" +
                     "</div>";
                 break;
-        }
-        if (structure[i].must) {
-            result += "<label>必须:<input type='checkbox' class='keyMust' checked /></label>";
-        } else {
-            result += "<label>必须:<input type='checkbox' class='keyMust' /></label>";
         }
         result += " <button onclick='delKey(this)'>删除</button>" +
             "</div>";
