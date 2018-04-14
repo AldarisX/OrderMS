@@ -1,0 +1,6 @@
+#生成证书
+keytool -genkey -alias <别名> -keypass <别名密码> -keyalg RSA -keysize 1024 -validity 9125 -keystore <loc> -storepass <储存密码>
+keytool -genkey -alias orderms -keypass "orderms" -keyalg RSA -keysize 2048 -validity 9125 -keystore "d:\orderms.jks" -storepass "aldaris"
+
+#转化成标准的证书
+keytool -alias orderms -exportcert -keystore "d:\orderms.jks" -file "d:\orderms.cer"
