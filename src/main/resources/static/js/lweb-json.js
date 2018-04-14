@@ -215,7 +215,7 @@ LwebJson.addExStruct = function (target, field) {
         "<label>必须:<input type='checkbox' class='keyMust' /></label>" +
         "<label>优先级:<input type='number' class='keyOrder' value='10' /></label>" +
         "<label>属性:<input type='text' class='keyName' name='key' required='required'" +
-        " placeholder='英文, 不要重复'></label>" +
+        " placeholder='英文, 不重'></label>" +
         "<label> 类型:<select class='keyType'  onchange='LwebJson.typeChange(this)'>" +
         "<option value='text'>字符串</option>" +
         "<option value='number'>数值</option>" +

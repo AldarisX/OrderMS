@@ -1,2 +1,2 @@
-java -server -Xmx512M -jar OrderMS.jar
+java -server -Xmx512M -jar OrderMS.jar -o start
 pause

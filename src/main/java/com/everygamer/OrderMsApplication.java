@@ -1,5 +1,6 @@
 package com.everygamer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -12,6 +13,7 @@ import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.transaction.PlatformTransactionManager;
 
+@Slf4j
 @SpringBootApplication
 @EnableJdbcHttpSession
 @EnableAspectJAutoProxy
@@ -20,7 +22,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 public class OrderMsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderMsApplication.class, args);
+        //判断是否有参数
+        if (args.length > 0) {
+
+
+            SpringApplication.run(OrderMsApplication.class, args);
+        } else {
+            log.error("请随便输入参数，确保不是双击启动");
+        }
     }
 
     //将session保存到数据库
