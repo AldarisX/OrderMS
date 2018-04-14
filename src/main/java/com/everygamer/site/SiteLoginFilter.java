@@ -18,7 +18,7 @@ public class SiteLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String inCode = request.getParameter("vcode");
         String serCode = (String) request.getSession().getAttribute("vCode");
-        if (!serCode.toLowerCase().equals(inCode.toLowerCase())) {
+        if (serCode == null || !serCode.toLowerCase().equals(inCode.toLowerCase())) {
             throw new SiteLoginExpection("验证码错误");
         }
         return super.attemptAuthentication(request, response);
