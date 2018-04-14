@@ -27,7 +27,7 @@
                         vcode: vcode
                     }, function (data) {
                         if (data.result) {
-                            location.href = data.url;
+                            location.reload();
                         } else {
                             layer.msg(data.msg, {icon: 5});
                         }

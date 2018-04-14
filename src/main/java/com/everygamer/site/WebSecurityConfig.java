@@ -51,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint() {
         LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login/getLogin");
+        loginUrlAuthenticationEntryPoint.setUseForward(true);
         return loginUrlAuthenticationEntryPoint;
     }
 
@@ -77,7 +78,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 response.setContentType("application/json;charset=UTF-8");
                 JSONObject result = new JSONObject();
                 result.accumulate("result", false);
-                result.accumulate("msg", exception.getMessage());
+//                result.accumulate("msg", exception.getMessage());
+                result.accumulate("msg", "用户名或密码错误");
                 response.getWriter().print(result.toString());
             }
         });
