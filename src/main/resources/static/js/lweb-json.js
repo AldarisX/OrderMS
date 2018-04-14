@@ -23,6 +23,13 @@ LwebJson.getSelectIndex = function (type) {
     }
 };
 
+/**
+ * 将数据格式化成字符串
+ * @param json 数据
+ * @param structure 数据结构
+ * @param division 分隔符
+ * @returns {string} 字符串
+ */
 LwebJson.jsonToString = function (json, structure, division) {
     let text = "";
     if (structure != null) {
@@ -45,9 +52,14 @@ LwebJson.jsonToString = function (json, structure, division) {
 };
 
 LwebJson.getExData = function (el) {
-    LwebJson.getExDataBox(el, true)
+    LwebJson.getExData(el, true)
 };
 
+/**
+ * 获取数据结构
+ * @param el 数据结构的表单
+ * @param must 是否必须按照必须条件
+ */
 LwebJson.getExData = function (el, must) {
     let exData = {};
     $(el).each(function (index, el) {
@@ -63,6 +75,11 @@ LwebJson.getExData = function (el, must) {
     return exData;
 };
 
+/**
+ * 将数据结构格式化成选项
+ * @param structure 结构
+ * @param target 目标
+ */
 LwebJson.getInputBox = function (structure, target) {
     for (let i = 0; i < structure.length; i++) {
         const exItem = structure[i];
@@ -81,6 +98,12 @@ LwebJson.getInputBox = function (structure, target) {
     }
 };
 
+/**
+ * 生成编辑数据结构的表单
+ * @param structure 数据结构
+ * @param field 字段class
+ * @returns {string} 数据结构的表单
+ */
 LwebJson.getExDataBox = function (structure, field) {
     let result = "";
     for (let i = 0; i < structure.length; i++) {
@@ -146,6 +169,10 @@ LwebJson.getExDataBox = function (structure, field) {
     return result;
 };
 
+/**
+ * 当编辑数据结构中的数据类型改变时
+ * @param el 元素
+ */
 LwebJson.typeChange = function (el) {
     let exBlock = $(el).parent().parent().find(".exData");
     exBlock.empty();
@@ -158,6 +185,10 @@ LwebJson.typeChange = function (el) {
     exBlock.append(exContent);
 };
 
+/**
+ * 数据类型-选项的添加方法
+ * @param el  元素
+ */
 LwebJson.typeOptionAdd = function (el) {
     let exOption = $(el).parent().find(".exOption");
     let exOptionText = $(el).parent().find(".exOptionText").val();
@@ -166,11 +197,21 @@ LwebJson.typeOptionAdd = function (el) {
     exOption.get(0).selectedIndex = size;
 };
 
+/**
+ * 数据类型-选项的移除方法
+ * @param el  元素
+ */
 LwebJson.typeOptionRemove = function (el) {
     let exOption = $(el).parent().find(".exOption");
     $(exOption).find("option[value='" + exOption.val() + "']").remove();
 };
 
+/**
+ * 获取编辑数据结构的数据结构数据
+ * @param box 表单
+ * @param field  元素class
+ * @returns {Array} 数据结构
+ */
 LwebJson.getExStruct = function (box, field) {
     const keyList = [];
     $(box).find(field).each(function (index, el) {
@@ -197,6 +238,12 @@ LwebJson.getExStruct = function (box, field) {
     return keyList;
 };
 
+/**
+ * 获取数据的值
+ * @param el 元素
+ * @param type 数据类型
+ * @returns {*} 数据值
+ */
 LwebJson.getVal = function (el, type) {
     switch (type) {
         case typeEnmu.int:
