@@ -1,5 +1,6 @@
 package com.everygamer;
 
+import com.everygamer.init.SysCheckUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,8 +25,7 @@ public class OrderMsApplication {
     public static void main(String[] args) {
         //判断是否有参数
         if (args.length > 0) {
-
-
+            new SysCheckUtil().init();
             SpringApplication.run(OrderMsApplication.class, args);
         } else {
             log.error("请随便输入参数，确保不是双击启动");

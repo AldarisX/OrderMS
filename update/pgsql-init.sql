@@ -1,17 +1,18 @@
 CREATE FUNCTION unix_timestamp()
-  RETURNS integer AS $$
-SELECT (date_part('epoch', now())) :: integer;
+  RETURNS INTEGER AS $$
+SELECT (date_part('epoch', now())) :: INTEGER;
 $$
 LANGUAGE SQL
 IMMUTABLE;
 
-CREATE FUNCTION from_unixtime(int)
-  RETURNS timestamp AS $$
-SELECT to_timestamp($1) :: timestamp;
+CREATE FUNCTION from_unixtime(INT)
+  RETURNS TIMESTAMP AS $$
+SELECT to_timestamp($1) :: TIMESTAMP;
 $$
 LANGUAGE SQL
 IMMUTABLE;
 
+--库存
 CREATE TABLE item_list
 (
   id         SERIAL         NOT NULL
@@ -32,9 +33,11 @@ CREATE TABLE item_list
   up_date    INTEGER
 );
 
+--库存索引
 CREATE INDEX item_list_index
   ON item_list (ins_date DESC);
 
+--库存统计
 CREATE TABLE item_list_statis
 (
   id         SERIAL         NOT NULL
@@ -50,6 +53,7 @@ CREATE TABLE item_list_statis
   up_date    INTEGER
 );
 
+--出库
 CREATE TABLE item_out
 (
   id        SERIAL         NOT NULL
@@ -66,6 +70,7 @@ CREATE TABLE item_out
   del_date  INTEGER
 );
 
+--出库统计
 CREATE TABLE item_out_statis
 (
   id               SERIAL         NOT NULL
@@ -80,6 +85,7 @@ CREATE TABLE item_out_statis
   del_date         INTEGER
 );
 
+--物品类型
 CREATE TABLE item_type
 (
   id       SERIAL       NOT NULL
@@ -94,6 +100,7 @@ CREATE TABLE item_type
   in_index SMALLINT DEFAULT 1
 );
 
+--厂商
 CREATE TABLE manufactor
 (
   id        SERIAL       NOT NULL
@@ -107,6 +114,7 @@ CREATE TABLE manufactor
   up_date   INTEGER
 );
 
+--订单
 CREATE TABLE order_list
 (
   id               SERIAL             NOT NULL
@@ -131,19 +139,30 @@ CREATE TABLE order_list
   del_date         INTEGER
 );
 
+--物流
 CREATE TABLE logistics
 (
   id       SERIAL             NOT NULL
     CONSTRAINT logistics_pkey
     PRIMARY KEY,
-  name     text               NOT NULL,
+  name     TEXT               NOT NULL,
   is_alive SMALLINT DEFAULT 1 NOT NULL,
   ins_date INTEGER            NOT NULL,
   del_date INTEGER,
   up_date  INTEGER
 );
 
+--网站设置
+CREATE TABLE site_config
+(
+  id    SERIAL NOT NULL
+    CONSTRAINT site_config_pkey
+    PRIMARY KEY,
+  name  TEXT   NOT NULL,
+  value TEXT   NOT NULL
+);
 
+--user
 CREATE TABLE admin_role
 (
   id     SERIAL NOT NULL
