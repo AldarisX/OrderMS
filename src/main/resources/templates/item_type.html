@@ -124,23 +124,6 @@
             }
         }
 
-        function addKey() {
-            $("#keysBox").append("<div class='mui-textfield'>" +
-                "<label>属性:<input type='text' class='keyName' name='key' required='required'" +
-                " placeholder='无法修改,英文, 不要重复'></label>" +
-                "<label> 类型:<select class='keyType'  onchange='LwebJson.typeChange(this)'>" +
-                "<option value='text'>字符串</option>" +
-                "<option value='number'>数值</option>" +
-                "<option value='checkbox' selected>布尔值</option>" +
-                "<option value='option'>选项</option>" +
-                "</select></label>" +
-                "<label> 说明:<input type='text' class='keyDesc' name='value' required='required' placeholder='字段描述'></label>" +
-                "<div class='exData'></div>" +
-                "<label>必须:<input type='checkbox' class='keyMust' /></label>" +
-                " <button onclick='delKey(this)'>删除</button>" +
-                "</div>");
-        }
-
         function delKey(event) {
             let keyName = $(event).parent().find(".keyName").val();
             parent.layer.confirm('确定删除属性' + keyName + '?', {
@@ -201,7 +184,8 @@
         <div id="exData" style="display: none">
             <div id="keysBox">
             </div>
-            <button id="btn_addKey" type="button" onclick="addKey()">添加字段</button>
+            <button id="btn_addKey" type="button" onclick="LwebJson.addExStruct('#keysBox','mui-textfield')">添加字段
+            </button>
             <br>
         </div>
         <button onclick="postItemType()">保存</button>

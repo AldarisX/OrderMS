@@ -85,7 +85,7 @@ LwebJson.getInputBox = function (structure, target) {
         const exItem = structure[i];
         switch (exItem.type) {
             case typeEnmu.option:
-                let optionHtml = "<option></option>";
+                let optionHtml = "";
                 for (let j = 0; j < exItem.values.length; j++) {
                     optionHtml += "<option value='" + exItem.values[j] + "'>" + exItem.values[j] + "</option>";
                 }
@@ -113,6 +113,7 @@ LwebJson.getExDataBox = function (structure, field) {
         } else {
             result += "<label>必须:<input type='checkbox' class='keyMust' /></label>";
         }
+        result += "<label>优先级:<input type='number' class='keyOrder' value='" + structure[i].order + "' /></label>";
         result += "<label>属性:<input type='text' class='keyName' name='key' disabled value='" + structure[i].name + "' required='required'></label>";
         result += "<label> 类型:<select id='exSel-" + i + "' class='keyType' onchange='LwebJson.typeChange(this)'>";
         switch (structure[i].type) {
@@ -145,7 +146,7 @@ LwebJson.getExDataBox = function (structure, field) {
                     "</div>";
                 break;
             case typeEnmu.option:
-                let optionHtml = "<option value=''></option>";
+                let optionHtml = "";
                 for (let j = 0; j < structure[i].values.length; j++) {
                     optionHtml += "<option value='" + structure[i].values[j] + "'>" + structure[i].values[j] + "</option>";
                 }
@@ -156,10 +157,18 @@ LwebJson.getExDataBox = function (structure, field) {
                     "</select></label>" +
                     "<label> 说明:<input type='text' class='keyDesc' name='value' value='" + structure[i].desc + "' required='required' placeholder='字段描述'></label>" +
                     "<div class='exData'>" +
-                    "<lable>选项:<input class='exOptionText' type='text'/></lable>" +
-                    "<label>示例:<select class='exOption'>" + optionHtml + "</select></label>" +
-                    "<button onclick='LwebJson.typeOptionAdd(this)'>添加</button>" +
+                    "<lable> 选项:<input class='exOptionText' type='text'/></lable>" +
+                    "<label> 排序:<select class='exDataOrder'>";
+                if (structure[i].valOrder === "ASC") {
+                    result += "<option>无</option><option value='ASC' selected>升序</option><option value='DESC'>降序</option>";
+                } else if (structure[i].valOrder === "DESC") {
+                    result += "<option>无</option><option value='ASC'>升序</option><option value='DESC' selected>降序</option>";
+                } else {
+                    result += "<option selected>无</option><option value='ASC'>升序</option><option value='DESC'>降序</option>";
+                }
+                result += "</select></label><button onclick='LwebJson.typeOptionAdd(this)'>添加</button>" +
                     "<button onclick='LwebJson.typeOptionRemove(this)'>移除</button>" +
+                    "<label> 示例:<select class='exOption'>" + optionHtml + "</select></label>" +
                     "</div>";
                 break;
         }
@@ -179,7 +188,11 @@ LwebJson.typeChange = function (el) {
     let exContent = "";
     switch ($(el).val()) {
         case typeEnmu.option:
-            exContent = "<lable>选项:<input class='exOptionText' type='text'/></lable><label>示例:<select class='exOption'></select></label><button onclick='LwebJson.typeOptionAdd(this)'>添加</button><button onclick='LwebJson.typeOptionRemove(this)'>移除</button>";
+            exContent = "<lable> 选项:<input class='exOptionText' type='text'/></lable>" +
+                "<label> 排序:<select class='exDataOrder'><option>无</option><option value='ASC'>升序</option><option value='DESC'>降序</option></select></label>" +
+                "<button onclick='LwebJson.typeOptionAdd(this)'>添加</button>" +
+                "<button onclick='LwebJson.typeOptionRemove(this)'>移除</button>" +
+                "<label> 示例:<select class='exOption'></select></label>";
             break;
     }
     exBlock.append(exContent);
@@ -195,6 +208,24 @@ LwebJson.typeOptionAdd = function (el) {
     let size = $(exOption).find("option").length;
     exOption.append("<option value='" + exOptionText + "'>" + exOptionText + "</option>");
     exOption.get(0).selectedIndex = size;
+};
+
+LwebJson.addExStruct = function (target, field) {
+    $(target).append("<div class='" + field + "'>" +
+        "<label>必须:<input type='checkbox' class='keyMust' /></label>" +
+        "<label>优先级:<input type='number' class='keyOrder' value='10' /></label>" +
+        "<label>属性:<input type='text' class='keyName' name='key' required='required'" +
+        " placeholder='英文, 不要重复'></label>" +
+        "<label> 类型:<select class='keyType'  onchange='LwebJson.typeChange(this)'>" +
+        "<option value='text'>字符串</option>" +
+        "<option value='number'>数值</option>" +
+        "<option value='checkbox' selected>布尔值</option>" +
+        "<option value='option'>选项</option>" +
+        "</select></label>" +
+        "<label> 说明:<input type='text' class='keyDesc' name='value' required='required' placeholder='字段描述'></label>" +
+        "<div class='exData'></div>" +
+        " <button onclick='delKey(this)'>删除</button>" +
+        "</div>");
 };
 
 /**
@@ -219,22 +250,32 @@ LwebJson.getExStruct = function (box, field) {
         const name = $(el).find(".keyName").val();
         if (name !== "") {
             keyObj.name = name;
+            keyObj.order = $(el).find(".keyOrder").val();
             keyObj.type = $(el).find(".keyType").val();
             keyObj.desc = $(el).find(".keyDesc").val();
             keyObj.must = $(el).find(".keyMust").is(':checked');
             switch (keyObj.type) {
                 case typeEnmu.option:
+                    keyObj.valOrder = $(el).find(".exDataOrder").val();
                     let exOptions = [];
                     let exOption = $(el).find(".exOption");
                     $(exOption).find("option").each(function () {
                         exOptions.push($(this).val());
                     });
+                    //对选项排序
+                    if (keyObj.valOrder === "ASC") {
+                        exOptions.sort();
+                    } else if (keyObj.valOrder === "DESC") {
+                        exOptions.sort().reverse();
+                    }
                     keyObj.values = exOptions;
                     break;
             }
             keyList.push(keyObj);
         }
     });
+    //排序
+    LwebJson.sortObject(keyList, "ASC", "order");
     return keyList;
 };
 
@@ -256,5 +297,27 @@ LwebJson.getVal = function (el, type) {
             return $(el).is(':checked');
         default:
             return $(el).val();
+    }
+};
+
+/**
+ * 排序 数据结构
+ * @param obj 目标json
+ * @param order 排序方式
+ * @param field 目标属性
+ */
+LwebJson.sortObject = function (obj, order, field) {
+    if (order !== null) {
+        let asc = function (x, y) {
+            return (x[field] > y[field]) ? 1 : -1
+        };
+        let desc = function (x, y) {
+            return (x[field] < y[field]) ? 1 : -1
+        };
+        let targetOrder = asc;
+        if (order === "DESC") {
+            targetOrder = desc;
+        }
+        return obj.sort(targetOrder);
     }
 };
