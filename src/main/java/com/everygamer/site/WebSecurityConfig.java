@@ -51,7 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint() {
         LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login/getLogin");
-        loginUrlAuthenticationEntryPoint.setUseForward(true);
+        //是否使用forward显示登陆页面
+        loginUrlAuthenticationEntryPoint.setUseForward(false);
         return loginUrlAuthenticationEntryPoint;
     }
 
@@ -68,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 JSONObject result = new JSONObject();
                 result.accumulate("result", true);
                 result.accumulate("url", "/index.html");
+//                System.out.println(request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST"));
                 response.getWriter().print(result.toString());
             }
         });
@@ -112,7 +114,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         httpServletResponse.setContentType("application/json;charset=UTF-8");
                         JSONObject result = new JSONObject();
                         result.accumulate("result", true);
-                        result.accumulate("url", "/");
+                        result.accumulate("url", "/?logout");
                         httpServletResponse.getWriter().print(result.toString());
                     }
                 })
