@@ -21,7 +21,7 @@ public class ServerStartUP implements ApplicationRunner {
             int delRSACount = rsaCount / 2;
             log.info("清理了" + rsaService.deleteRSA(delRSACount) + "条RSA记录");
             log.info("开始生成RSA");
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 rsaService.addRSA();
             }
             log.info("RSA生成完成");

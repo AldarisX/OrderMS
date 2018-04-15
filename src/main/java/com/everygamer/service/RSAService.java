@@ -33,7 +33,7 @@ public class RSAService {
                     }
                 }
             }
-        }, 1000, 1000);
+        }, 1000, 500);
     }
 
     public void addRSA() {

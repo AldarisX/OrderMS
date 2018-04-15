@@ -22,7 +22,7 @@ public class RSAUtils {
             Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
             SecureRandom random = new SecureRandom();
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
-            generator.initialize(1024, random);
+            generator.initialize(2048, random);
             return generator.generateKeyPair();
         } catch (Exception e) {
             throw new RuntimeException(e);
