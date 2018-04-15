@@ -32,13 +32,6 @@ public class UserControl {
     }
 
     @ResponseBody
-    @RequestMapping(params = "action=logout")
-    public void logout(HttpSession session) {
-        session.setAttribute("isLogin", false);
-        session.invalidate();
-    }
-
-    @ResponseBody
     @RequestMapping(params = "action=addUser")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addUser(String uname, String passwd, HttpSession session) {
