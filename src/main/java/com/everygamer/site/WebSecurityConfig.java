@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint() {
         LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login/getLogin");
         //是否使用forward显示登陆页面
-        loginUrlAuthenticationEntryPoint.setUseForward(false);
+        loginUrlAuthenticationEntryPoint.setUseForward(true);
         return loginUrlAuthenticationEntryPoint;
     }
 
