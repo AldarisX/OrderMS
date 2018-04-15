@@ -85,7 +85,7 @@ LwebJson.getInputBox = function (structure, target) {
         const exItem = structure[i];
         switch (exItem.type) {
             case typeEnmu.option:
-                let optionHtml = "";
+                let optionHtml = "<option></option>";
                 for (let j = 0; j < exItem.values.length; j++) {
                     optionHtml += "<option value='" + exItem.values[j] + "'>" + exItem.values[j] + "</option>";
                 }
