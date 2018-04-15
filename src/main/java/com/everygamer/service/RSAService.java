@@ -7,10 +7,8 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Service("RSAService")
 public class RSAService {
@@ -18,22 +16,17 @@ public class RSAService {
     private RSARepository rsaRepository;
     private Integer reqCount = 0;
 
-    public RSAService() {
-        Timer rsaAddTime = new Timer();
-        rsaAddTime.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                synchronized (reqCount) {
-                    if (reqCount > 10) {
-                        if (getCount() >= 1000) {
-                            deleteRSA(getCount() / 2);
-                        }
-                        addRSA();
-                        reqCount = 0;
-                    }
+    @Scheduled(cron = "0/1 * * * * ?")
+    public void rsaCheck() {
+        synchronized (reqCount) {
+            if (reqCount > 10) {
+                if (getCount() >= 1000) {
+                    deleteRSA(getCount() / 2);
                 }
+                addRSA();
+                reqCount = 0;
             }
-        }, 1000, 500);
+        }
     }
 
     public void addRSA() {
