@@ -16,7 +16,7 @@ IMMUTABLE;
 CREATE TABLE item_list
 (
   id         SERIAL         NOT NULL
-    CONSTRAINT item_list_pkey
+    CONSTRAINT item_list_pk
     PRIMARY KEY,
   name       TEXT           NOT NULL,
   item_type  INTEGER        NOT NULL,
@@ -41,7 +41,7 @@ CREATE INDEX item_list_index
 CREATE TABLE item_list_statis
 (
   id         SERIAL         NOT NULL
-    CONSTRAINT item_list_statis_pkey
+    CONSTRAINT item_list_statis_pk
     PRIMARY KEY,
   name       TEXT           NOT NULL,
   item_type  INTEGER        NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE item_list_statis
 CREATE TABLE item_out
 (
   id        SERIAL         NOT NULL
-    CONSTRAINT item_out_pkey
+    CONSTRAINT item_out_pk
     PRIMARY KEY,
   order_id  INTEGER        NOT NULL DEFAULT -1,
   item_list JSONB,
@@ -74,7 +74,7 @@ CREATE TABLE item_out
 CREATE TABLE item_out_statis
 (
   id               SERIAL         NOT NULL
-    CONSTRAINT item_out_statis_pkey
+    CONSTRAINT item_out_statis_pk
     PRIMARY KEY,
   item_list_statis INTEGER        NOT NULL,
   count            INTEGER        NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE item_out_statis
 CREATE TABLE item_type
 (
   id       SERIAL       NOT NULL
-    CONSTRAINT item_type_pkey
+    CONSTRAINT item_type_pk
     PRIMARY KEY,
   name     VARCHAR(128) NOT NULL,
   ex_data  JSONB,
@@ -104,7 +104,7 @@ CREATE TABLE item_type
 CREATE TABLE manufactor
 (
   id        SERIAL       NOT NULL
-    CONSTRAINT manufactor_pkey
+    CONSTRAINT manufactor_pk
     PRIMARY KEY,
   name      VARCHAR(128) NOT NULL,
   item_type INTEGER      NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE manufactor
 CREATE TABLE order_list
 (
   id               SERIAL             NOT NULL
-    CONSTRAINT order_list_pkey
+    CONSTRAINT order_list_pk
     PRIMARY KEY,
   order_num        TEXT               NOT NULL,
   user_name        TEXT               NOT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE order_list
 CREATE TABLE logistics
 (
   id       SERIAL             NOT NULL
-    CONSTRAINT logistics_pkey
+    CONSTRAINT logistics_pk
     PRIMARY KEY,
   name     TEXT               NOT NULL,
   is_alive SMALLINT DEFAULT 1 NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE logistics
 CREATE TABLE site_config
 (
   id    SERIAL NOT NULL
-    CONSTRAINT site_config_pkey
+    CONSTRAINT site_config_pk
     PRIMARY KEY,
   name  TEXT   NOT NULL,
   value TEXT   NOT NULL
@@ -166,7 +166,7 @@ CREATE TABLE site_config
 CREATE TABLE admin_role
 (
   id     SERIAL NOT NULL
-    CONSTRAINT admin_role_pkey
+    CONSTRAINT admin_role_pk
     PRIMARY KEY,
   name   TEXT,
   "desc" TEXT
@@ -175,7 +175,7 @@ CREATE TABLE admin_role
 CREATE TABLE admin_user
 (
   id       SERIAL NOT NULL
-    CONSTRAINT admin_user_pkey
+    CONSTRAINT admin_user_pk
     PRIMARY KEY,
   username TEXT,
   password TEXT
@@ -184,10 +184,10 @@ CREATE TABLE admin_user
 CREATE TABLE admin_user_roles
 (
   admin_user_id SERIAL NOT NULL
-    CONSTRAINT fkm49lam8hlsew02rh5vjob0kik
+    CONSTRAINT admin_user_fk
     REFERENCES admin_user,
   roles_id      BIGINT NOT NULL
-    CONSTRAINT fk34r04g3hvb6bh89nh93db9qi8
+    CONSTRAINT admin_role_fk
     REFERENCES admin_role
 );
 
@@ -219,6 +219,16 @@ CREATE UNLOGGED TABLE IF NOT EXISTS spring_session_attributes
   attribute_bytes BYTEA        NOT NULL,
   CONSTRAINT spring_session_attributes_pk
   PRIMARY KEY (session_id, attribute_name)
+);
+
+--rsa公钥 密钥表
+CREATE UNLOGGED TABLE IF NOT EXISTS rsa_list
+(
+  id     SERIAL NOT NULL
+    CONSTRAINT rsa_list_pk
+    PRIMARY KEY,
+  pubKey BYTEA  NOT NULL,
+  priKey BYTEA  NOT NULL
 );
 
 -- 初始admin用户 密码123456

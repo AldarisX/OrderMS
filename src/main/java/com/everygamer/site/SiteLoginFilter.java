@@ -1,8 +1,10 @@
 package com.everygamer.site;
 
 import com.everygamer.logger.SystemLog;
+import com.everygamer.service.RSAService;
 import com.everygamer.site.expection.SiteLoginExpection;
 import com.everygamer.util.RSAUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -13,6 +15,9 @@ import javax.servlet.http.HttpSession;
 import java.security.PrivateKey;
 
 public class SiteLoginFilter extends UsernamePasswordAuthenticationFilter {
+    @Autowired
+    RSAService rsaService;
+
     @Override
     @SystemLog(description = "尝试登陆")
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -27,7 +32,7 @@ public class SiteLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected String obtainPassword(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
+        PrivateKey priKey = rsaService.getRSAById((Long) session.getAttribute("rsa")).getPriKey();
         return RSAUtils.decryptBase64(priKey, request.getParameter("password"));
     }
 }

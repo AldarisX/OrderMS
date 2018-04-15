@@ -1,6 +1,8 @@
 package com.everygamer.control;
 
+import com.everygamer.bean.RSAList;
 import com.everygamer.bean.security.AdminUser;
+import com.everygamer.service.RSAService;
 import com.everygamer.service.UserService;
 import com.everygamer.util.MD5Tool;
 import com.everygamer.util.RSAUtils;
@@ -19,15 +21,17 @@ import java.security.PrivateKey;
 public class UserControl {
     @Autowired
     private UserService userService;
+    @Autowired
+    RSAService rsaService;
 
     @ResponseBody
     @RequestMapping(params = "action=getRSA")
     public String getRSA(HttpSession session) {
         JSONObject result = new JSONObject();
-        RSAUtils.generateRSA();
-        session.setAttribute("priKey", RSAUtils.getPriKey());
+        RSAList rsa = rsaService.getRandRSA();
+        session.setAttribute("rsa", rsa.getId());
         result.accumulate("result", true);
-        result.accumulate("puk", RSAUtils.getPubKeyString());
+        result.accumulate("puk", rsa.getPubKeyString());
         return result.toString();
     }
 
@@ -35,7 +39,7 @@ public class UserControl {
     @RequestMapping(params = "action=addUser")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String addUser(String uname, String passwd, HttpSession session) {
-        PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
+        PrivateKey priKey = rsaService.getRSAById((Long) session.getAttribute("rsa")).getPriKey();
         passwd = RSAUtils.decryptBase64(priKey, passwd);
         passwd = MD5Tool.StringToMd5(passwd);
         JSONObject result = new JSONObject();
@@ -85,7 +89,7 @@ public class UserControl {
     @RequestMapping(params = "action=setPasswd")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String setPasswd(int id, String passwd, HttpSession session) {
-        PrivateKey priKey = (PrivateKey) session.getAttribute("priKey");
+        PrivateKey priKey = rsaService.getRSAById((Long) session.getAttribute("rsa")).getPriKey();
         passwd = RSAUtils.decryptBase64(priKey, passwd);
         passwd = MD5Tool.StringToMd5(passwd);
 
