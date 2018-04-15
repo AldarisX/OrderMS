@@ -112,7 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         httpServletResponse.setContentType("application/json;charset=UTF-8");
                         JSONObject result = new JSONObject();
                         result.accumulate("result", true);
-                        result.accumulate("url", "/login/getLogin?logout");
+                        result.accumulate("url", "/");
                         httpServletResponse.getWriter().print(result.toString());
                     }
                 })
