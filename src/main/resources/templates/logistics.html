@@ -4,18 +4,20 @@
     <script th:replace="/head.html::commonHead('物流管理')"></script>
     <script th:src="@{/js/lweb-tool-format.js}"></script>
     <script th:inline="javascript" type="text/javascript">
+        let isEdit = false;
+
         $(document).ready(function () {
             loadData();
         });
 
         function loadData() {
             $("#logisticsList").empty();
-            $("#logisticsList").append("<tr><td>ID</td><td>名称</td><td>添加时间</td><td>操作</td></tr>");
+            $("#logisticsList").append("<tr><td>ID</td><td>名称</td><td>优先级</td><td>添加时间</td><td>操作</td></tr>");
             $.post("/api/logistics.json?action=getAllLogistics", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         let logistics = data.data[i];
-                        $("#logisticsList").append("<tr><td>" + logistics.id + "</td><td>" + logistics.name + "</td><td>" + formatUnixTime(logistics.insDate) + "</td><td><button onclick='delLogistics(" + logistics.id + ")'>删除</button></td></tr>")
+                        $("#logisticsList").append("<tr><td>" + logistics.id + "</td><td>" + logistics.name + "</td><td>" + logistics.order + "</td><td>" + formatUnixTime(logistics.insDate) + "</td><td><button onclick='editLog(" + logistics.id + ")'>编辑</button><button onclick='delLogistics(" + logistics.id + ")'>删除</button></td></tr>")
                     }
                 } else {
                     layer.msg(data.msg, {icon: 5});
@@ -23,15 +25,42 @@
             })
         }
 
-        function addLogistics() {
+        function postLogistics() {
             const logisticsName = $(":text[name=logisticsName]").val();
-            $.post("/api/logistics.json?action=addLogistics", {
-                name: logisticsName
+            const logOrder = $(".logOrder").val();
+            if (isNaN(logOrder) || logOrder === "") {
+                parent.layer.msg("必须输入优先级", {icon: 5});
+                return;
+            }
+
+            let action = "addLogistics";
+            if (isEdit) {
+                action = "updateLogistics";
+            }
+            $.post("/api/logistics.json?action=" + action, {
+                name: logisticsName,
+                order: logOrder
             }, function (data) {
                 if (data.result) {
                     layer.msg("添加成功", {icon: 6});
                     loadData();
                     $("#logForm")[0].reset();
+                } else {
+                    layer.msg(data.msg, {icon: 5});
+                }
+            })
+        }
+
+        function editLog(id) {
+            $.post("/api/logistics.json?action=getLogisticsById", {
+                id: id
+            }, function (data) {
+                if (data.result) {
+                    isEdit = true;
+                    editLogId = id;
+                    let log = data.data;
+                    $(":text[name=logisticsName]").val(log.name);
+                    $(".logOrder").val(log.order);
                 } else {
                     layer.msg(data.msg, {icon: 5});
                 }
@@ -63,8 +92,10 @@
 <div th:replace="/nav.html::commonNav('sys','logistics')"></div>
 <div>
     <form th:id="logForm" onsubmit="return false">
-        <label>物流名称:<input th:type="text" th:name="logisticsName" th:placeholder="顺丰...韵达...申通"/></label><br/>
-        <button onclick="addLogistics()">添加</button>
+        <label>物流名称:<input th:type="text" th:name="logisticsName" th:placeholder="顺丰...韵达...申通"/></label><label>优先级:
+        <input th:class="logOrder" th:type="number" th:name="oder" th:value="10"/>
+    </label><br/>
+        <button onclick="postLogistics()">保存</button>
     </form>
     <table th:id="logisticsList" border="1">
     </table>

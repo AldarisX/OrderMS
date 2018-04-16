@@ -12,6 +12,9 @@ public class Logistics {
     private String name;
     @Getter
     @Setter
+    private int order;
+    @Getter
+    @Setter
     private int isAlive;
     @Getter
     @Setter

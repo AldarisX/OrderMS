@@ -5,6 +5,7 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="itemType" column="item_type"/>
+        <result property="order" column="iorder"/>
         <result property="isAlive" column="is_alive"/>
         <result property="insDate" column="ins_date"/>
         <result property="delDate" column="del_date"/>
@@ -12,48 +13,73 @@
     </resultMap>
 
     <insert id="addManufactor">
-        INSERT INTO manufactor ("name", item_type, ins_date) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
+        INSERT INTO manufactor ("name", item_type, iorder, ins_date)
+        VALUES (#{param1}, #{param2}, #{param3}, UNIX_TIMESTAMP())
     </insert>
     <update id="delManufactor">
         UPDATE manufactor
         SET is_alive = 0, del_date = UNIX_TIMESTAMP()
         WHERE id = #{param1}
     </update>
+    <update id="setManuOrder">
+        UPDATE manufactor
+        SET iorder = #{param2}, up_date = UNIX_TIMESTAMP()
+        WHERE name = #{param1}
+    </update>
 
     <select id="getAllManufactor" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
-        SELECT manufactor.name
+        SELECT
+            manufactor.name,
+            manufactor.iorder
         FROM manufactor
         WHERE manufactor.is_alive = 1
-        GROUP BY manufactor.name;
+        GROUP BY manufactor.name, manufactor.iorder
+        ORDER BY manufactor.iorder
     </select>
     <select id="getAllManufactorByItemType" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT
             manufactor.id,
             manufactor.name,
             item_type.name AS item_type,
+            manufactor.iorder,
             manufactor.ins_date
         FROM manufactor
             LEFT JOIN item_type ON manufactor.item_type = item_type.id
         WHERE item_type = #{param1} AND manufactor.is_alive = 1
+        ORDER BY iorder
     </select>
     <select id="getAllManufactorByName" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT
             manufactor.id,
             manufactor.name,
             item_type.name      AS item_type,
+            manufactor.iorder,
             manufactor.ins_date AS ins_date
         FROM manufactor
             LEFT JOIN item_type ON manufactor.item_type = item_type.id
-        WHERE manufactor.name = #{param} AND manufactor.is_alive = 1
+        WHERE manufactor.name ILIKE #{param1} AND manufactor.is_alive = 1
+        ORDER BY manufactor.iorder
     </select>
     <select id="getManufactor" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
         SELECT
             manufactor.id,
             manufactor.name,
             item_type.name      AS item_type,
+            manufactor.iorder,
             manufactor.ins_date AS ins_date
         FROM manufactor
             LEFT JOIN item_type ON manufactor.item_type = item_type.id
         WHERE manufactor.name = #{param1} AND manufactor.item_type = #{param2} AND manufactor.is_alive = 1
+    </select>
+    <select id="getManuById" resultType="com.everygamer.bean.Manufactor" resultMap="Manu">
+        SELECT
+            manufactor.id,
+            manufactor.name,
+            item_type.name      AS item_type,
+            manufactor.iorder,
+            manufactor.ins_date AS ins_date
+        FROM manufactor
+            LEFT JOIN item_type ON manufactor.item_type = item_type.id
+        WHERE manufactor.id = #{param1}
     </select>
 </mapper>

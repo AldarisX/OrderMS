@@ -47,7 +47,7 @@ public class ItemTypeControl extends BaseControl {
 
     @ResponseBody
     @RequestMapping(params = "action=addItemType", produces = "application/json;charset=UTF-8")
-    public String addItemType(String name, String exData) {
+    public String addItemType(String name, int order, String exData) {
         JSONObject result = new JSONObject();
 
         if ("\"\"".equals(exData)) {
@@ -56,7 +56,7 @@ public class ItemTypeControl extends BaseControl {
 
         ItemType itemType = itemTypeService.getItemTypeByName(name);
         if (itemType == null) {
-            int cRows = itemTypeService.addItemType(name, exData);
+            int cRows = itemTypeService.addItemType(name, order, exData);
             if (cRows == 1) {
                 result.accumulate("result", true);
                 result.accumulate("msg", "添加成功");
@@ -86,7 +86,7 @@ public class ItemTypeControl extends BaseControl {
 
     @ResponseBody
     @RequestMapping(params = "action=updateItemType", produces = "application/json;charset=UTF-8")
-    public String updateItemType(Integer id, String name, boolean inIndex, String exData) {
+    public String updateItemType(Integer id, String name, boolean inIndex, int order, String exData) {
         JSONObject result = new JSONObject();
 
         //先判断exData的格式，格式不对就返回错误
@@ -104,7 +104,7 @@ public class ItemTypeControl extends BaseControl {
             }
 
             try {
-                int cRows = itemTypeService.updateItemType(id, name, showInIndex, exDataJson);
+                int cRows = itemTypeService.updateItemType(id, name, showInIndex, order, exDataJson);
                 result.accumulate("result", true);
                 result.accumulate("msg", "共修改了" + cRows + "条进货记录");
             } catch (DBUpdateException e) {

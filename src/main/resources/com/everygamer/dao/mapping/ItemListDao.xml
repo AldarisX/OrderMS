@@ -26,7 +26,7 @@
     </insert>
     <update id="mergeExData">
         UPDATE item_list
-        SET ex_data = jsonb_set(ex_data, #{param2}, '${param3}', TRUE), up_date = UNIX_TIMESTAMP()
+        SET ex_data = jsonb_set(ex_data, #{param2}, '${param3}' :: JSONB, TRUE), up_date = UNIX_TIMESTAMP()
         WHERE item_type = #{param1}
     </update>
     <update id="deleteExDataKey">
@@ -85,7 +85,7 @@
         FROM item_list
         LEFT JOIN item_type ON item_list.item_type = item_type.id
         WHERE item_list.name = #{param1} AND item_list.item_type = #{param2} AND item_list.manufactor = #{param3} AND
-        item_list.ex_data = #{param4}::jsonb AND item_list.remain > 0 AND item_list.is_alive = 1 AND item_list.id NOT
+        item_list.ex_data = #{param4}::JSONB AND item_list.remain > 0 AND item_list.is_alive = 1 AND item_list.id NOT
         IN(0
         <foreach collection="param5" index="index" item="item">
             , #{item}

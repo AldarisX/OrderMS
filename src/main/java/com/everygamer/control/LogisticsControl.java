@@ -28,6 +28,23 @@ public class LogisticsControl {
     }
 
     @ResponseBody
+    @RequestMapping(params = "action=getLogisticsById")
+    public String getLogisticsById(int id) {
+        JSONObject result = new JSONObject();
+
+        Logistics log = logisticsService.getLogisticsById(id);
+        if (log != null) {
+            result.accumulate("result", true);
+            result.accumulate("data", JSONObject.fromObject(log));
+        } else {
+            result.accumulate("result", false);
+            result.accumulate("msg", "找不到这个物流!id:" + id);
+        }
+
+        return result.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(params = "action=addLogistics")
     public String addLogistics(String name) {
         JSONObject result = new JSONObject();

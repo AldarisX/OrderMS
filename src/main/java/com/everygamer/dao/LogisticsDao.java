@@ -9,6 +9,8 @@ import java.util.List;
 public interface LogisticsDao {
     Logistics getLogisticsByName(String name);
 
+    Logistics getLogisticsById(int id);
+
     List<Logistics> getAllLogistics();
 
     int addLogistics(String name);

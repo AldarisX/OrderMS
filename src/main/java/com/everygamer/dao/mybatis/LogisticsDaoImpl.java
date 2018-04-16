@@ -19,6 +19,11 @@ public class LogisticsDaoImpl implements LogisticsDao {
     }
 
     @Override
+    public Logistics getLogisticsById(int id) {
+        return dao.getLogisticsById(id);
+    }
+
+    @Override
     public List<Logistics> getAllLogistics() {
         return dao.getAllLogistics();
     }

@@ -15,6 +15,9 @@ public class Manufactor {
     private String itemType;
     @Getter
     @Setter
+    private int order;
+    @Getter
+    @Setter
     private int isAlive;
     @Getter
     @Setter

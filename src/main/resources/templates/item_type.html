@@ -16,7 +16,7 @@
             $(":input[name=inIndex]").removeAttr("checked", "");
             $(":input[name=isExData]").removeAttr("checked", "");
             $("#itemTypeList").empty();
-            $("#itemTypeList").append("<tr><td>ID</td><td>物品类型</td><td>添加时间</td><td>是否在主页显示</td><td>额外数据</td><td>操作</td></tr>");
+            $("#itemTypeList").append("<tr><td>ID</td><td>物品类型</td><td>优先级</td><td>是否在主页显示</td><td>额外数据</td><td>最后修改时间</td><td>操作</td></tr>");
             $.post("/api/itemType.json?action=getAll", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
@@ -31,10 +31,10 @@
                         for (let j = 0; j < itemType.exData.length; j++) {
                             exData += itemType.exData[j].desc + "<br>";
                         }
-                        $("<tr><td>" + itemType.id + "</td><td>" + itemType.name + "</td><td>" + formatUnixTime(itemType.insDate) + "</td><td>" + inIndex + "</td><td>" + exData + "</td><td><button onclick='editItemType(" + itemType.id + ")'>编辑</button><button onclick='delItemType(" + itemType.id + ")'>删除</button></td></tr>").appendTo("#itemTypeList");
+                        $("<tr><td>" + itemType.id + "</td><td>" + itemType.name + "</td><td>" + itemType.order + "</td><td>" + inIndex + "</td><td>" + exData + "</td><td>" + formatUnixTime(itemType.upDate) + "</td><td><button onclick='editItemType(" + itemType.id + ")'>编辑</button><button onclick='delItemType(" + itemType.id + ")'>删除</button></td></tr>").appendTo("#itemTypeList");
                     }
                 } else {
-                    alert(data.msg);
+                    layer.msg(data.msg, {icon: 5});
                 }
             });
         }
@@ -49,6 +49,7 @@
                     $("select[id^='exSel-']").parent().parent().remove();
 
                     $(":text[name=itemType]").val(data.data.name);
+                    $(".itemTypeOrder").val(data.data.order);
                     if (data.data.inIndex === 1) {
                         $(":input[name=inIndex]").attr("checked", "");
                     } else {
@@ -64,7 +65,7 @@
                         $("#exData").css("display", "none");
                     }
                 } else {
-                    alert(data.msg);
+                    layer.msg(data.msg, {icon: 5});
                 }
             })
         }
@@ -77,7 +78,7 @@
                     if (data.result) {
                         loadData();
                     } else {
-                        alert(data.msg);
+                        layer.msg(data.msg, {icon: 5});
                     }
                 });
             }
@@ -85,6 +86,7 @@
 
         function postItemType() {
             const itemType = $(":text[name=itemType]").val();
+            let order = $(".itemTypeOrder").val();
             let exData = LwebJson.getExStruct("#keysBox", ".mui-textfield");
             if (!$("#isExData").find(":checkbox[name=isExData]").is(':checked')) {
                 exData = "";
@@ -92,20 +94,21 @@
             let action = "addItemType";
             if (isEdit) {
                 action = "updateItemType&id=" + editItem;
-                alert("请耐心等待");
+                layer.confirm("请耐心等待", {icon: 6});
             }
             if (itemType.length > 0) {
                 $.post("/api/itemType.json?action=" + action, {
                     name: itemType,
+                    order: order,
                     inIndex: $(":checkbox[name=inIndex]").is(':checked'),
                     exData: JSON.stringify(exData)
                 }, function (data) {
                     if (data.result) {
                         loadData();
                         $("#itemTypeForm")[0].reset();
-                        alert(data.msg);
+                        layer.msg(data.msg, {icon: 1});
                     } else {
-                        alert(data.msg);
+                        layer.msg(data.msg, {icon: 1});
                     }
                 }).fail(function () {
                     layer.msg("更新时出错", {icon: 5});
@@ -130,21 +133,8 @@
                 btn: ['确定', '取消'],
                 icon: 3
             }, function () {
-                if (isEdit) {
-                    let exData = LwebJson.getExStruct("#keysBox", ".mui-textfield");
-                    $(event).parent().remove();
-                    $.post("/api/itemType.json?action=delItemTypeKey", {
-                        id: editItem,
-                        key: keyName,
-                        exData: JSON.stringify(exData)
-                    }, function (data) {
-                        layer.msg("删除完成", {icon: 6});
-                    }).fail(function () {
-                        layer.msg("删除属性时出错", {icon: 5});
-                    });
-                } else {
-                    layer.msg("删除完成", {icon: 6});
-                }
+                $(event).parent().remove();
+                layer.msg("删除完成", {icon: 6});
             }, function () {
                 parent.layer.closeAll();
             });
@@ -176,16 +166,16 @@
 <div th:replace="/nav.html::commonNav('sys','item_type')"></div>
 <div>
     <form th:id="itemTypeForm" action="/api/itemType.json?action=addItemType" method="post" onsubmit="return false">
-        <label>物品类型:<input type="text" name="itemType" placeholder="CPU...硬盘...显示器"/></label><br/>
-        <label>在主页显示:<input type="checkbox" name="inIndex"/></label>
+        <label>物品类型:<input th:type="text" th:name="itemType" placeholder="CPU...硬盘...显示器"/></label><label>优先级:<input
+            th:class="itemTypeOrder" th:type="number" th:name="order"/></label><br/>
+        <label>在主页显示:<input th:type="checkbox" th:name="inIndex"/></label>
         <div id="isExData">
-            <label>附加数据<input name="isExData" type="checkbox" onchange="isExDataChange()"/></label>
+            <label>附加数据<input th:name="isExData" th:type="checkbox" onchange="isExDataChange()"/></label>
         </div>
         <div id="exData" style="display: none">
             <div id="keysBox">
             </div>
-            <button id="btn_addKey" type="button" onclick="LwebJson.addExStruct('#keysBox','mui-textfield')">添加字段
-            </button>
+            <button id="btn_addKey" onclick="LwebJson.addExStruct('#keysBox','mui-textfield')">添加字段</button>
             <br>
         </div>
         <button onclick="postItemType()">保存</button>

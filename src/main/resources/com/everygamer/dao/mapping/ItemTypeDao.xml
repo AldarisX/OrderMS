@@ -5,6 +5,7 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>
         <result property="exData" column="ex_data"/>
+        <result property="order" column="iorder"/>
         <result property="isAlive" column="is_alive"/>
         <result property="inIndex" column="in_index"/>
         <result property="insDate" column="ins_date"/>
@@ -15,10 +16,11 @@
     <insert id="addItemType">
         <choose>
             <when test="param2!=null">
-                INSERT INTO item_type ("name", ex_data, ins_date) VALUES (#{param1}, #{param2}, UNIX_TIMESTAMP())
+                INSERT INTO item_type ("name", iorder,ex_data, ins_date) VALUES (#{param1},
+                #{param2},#{param3},UNIX_TIMESTAMP());
             </when>
             <otherwise>
-                INSERT INTO item_type ("name", ins_date) VALUES (#{param1}, UNIX_TIMESTAMP())
+                INSERT INTO item_type ("name", iorder,ins_date) VALUES (#{param1}, #{param3},UNIX_TIMESTAMP())
             </otherwise>
         </choose>
 
@@ -30,7 +32,8 @@
     </update>
     <update id="updateItemType">
         UPDATE item_type
-        SET "name" = #{param2}, in_index = #{param3}, ex_data = #{param4}, up_date = UNIX_TIMESTAMP()
+        SET "name"  = #{param2}, in_index = #{param3}, iorder = #{param4}, ex_data = #{param5},
+            up_date = UNIX_TIMESTAMP()
         WHERE id = #{param1}
     </update>
     <update id="updateItemTypeExData">
@@ -39,24 +42,15 @@
         WHERE id = #{param1}
     </update>
     <select id="getItemTypeById" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
-        SELECT
-            id,
-            "name",
-            in_index,
-            ins_date,
-            ex_data
+        SELECT *
         FROM item_type
         WHERE id = #{param1} AND is_alive = 1
     </select>
     <select id="getAllItemType" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
-        SELECT
-            id,
-            "name",
-            in_index,
-            ins_date,
-            ex_data
+        SELECT *
         FROM item_type
         WHERE is_alive = 1
+        ORDER BY iorder
     </select>
     <select id="isItemExist" resultType="java.lang.Boolean" resultMap="ItemType">
         SELECT count(id)
@@ -64,12 +58,7 @@
         WHERE "name" = #{param1} AND is_alive = 1
     </select>
     <select id="getItemTypeByName" resultType="com.everygamer.bean.ItemType" resultMap="ItemType">
-        SELECT
-            id,
-            "name",
-            in_index,
-            ins_date,
-            ex_data
+        SELECT *
         FROM item_type
         WHERE "name" = #{param1} AND is_alive = 1
     </select>

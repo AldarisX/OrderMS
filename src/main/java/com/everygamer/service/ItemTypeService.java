@@ -39,8 +39,8 @@ public class ItemTypeService {
         return itemTypeDao.getItemTypeByName(name);
     }
 
-    public int addItemType(String name, String exData) {
-        return itemTypeDao.addItemType(name, exData);
+    public int addItemType(String name, int order, String exData) {
+        return itemTypeDao.addItemType(name, order, exData);
     }
 
     public String getExData(int type) {
@@ -48,7 +48,7 @@ public class ItemTypeService {
     }
 
     @Transactional
-    public int updateItemType(Integer id, String name, int inIndex, JSONArray exData) throws DBUpdateException {
+    public int updateItemType(Integer id, String name, int inIndex, int order, JSONArray exData) throws DBUpdateException {
         JSONArray exDataJson;
         String exDataStr = null;
         if (exData == null) {
@@ -59,7 +59,7 @@ public class ItemTypeService {
         }
 
         String tempItemType = itemListDao.getExDataByType(id);
-        int cRows = itemTypeDao.updateItemType(id, name, inIndex, exDataStr);
+        int cRows = itemTypeDao.updateItemType(id, name, inIndex, order, exDataStr);
         int cRowsItemList = 0;
         if (tempItemType != null && !"{}".equals(tempItemType)) {
             HashMap<String, Object> exDataPatch = calcPatchExData(tempItemType, exDataJson);

@@ -15,6 +15,9 @@ public class ItemType {
     private String exData;
     @Getter
     @Setter
+    private int order;
+    @Getter
+    @Setter
     private int isAlive;
     @Getter
     @Setter

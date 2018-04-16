@@ -29,13 +29,23 @@ public class ManufactorImpl implements ManufactorDao {
     }
 
     @Override
+    public Manufactor getManuById(int id) {
+        return dao.getManuById(id);
+    }
+
+    @Override
     public Manufactor getManufactor(String name, int itemType) {
         return dao.getManufactor(name, itemType);
     }
 
     @Override
-    public int addManufactor(String name, int itemType) {
-        int cRows = dao.addManufactor(name, itemType);
+    public int setManuOrder(String name, int order) {
+        return dao.setManuOrder(name, order);
+    }
+
+    @Override
+    public int addManufactor(String name, int itemType, Integer order) {
+        int cRows = dao.addManufactor(name, itemType, order);
         if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: addManufactor");
         }

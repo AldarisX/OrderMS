@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/api/manu.json")
+@RequestMapping(value = "/api/manu.json", produces = "application/json;charset=UTF-8")
 public class ManuControl extends BaseControl {
     @Autowired
     private ManuService manuService;
 
     @ResponseBody
-    @RequestMapping(params = "action=getAll", produces = "application/json;charset=UTF-8")
+    @RequestMapping(params = "action=getAll")
     public String getAllManu() {
         JSONObject result = new JSONObject();
 
@@ -32,7 +32,7 @@ public class ManuControl extends BaseControl {
     }
 
     @ResponseBody
-    @RequestMapping(params = "action=getAllByItemType", produces = "application/json;charset=UTF-8")
+    @RequestMapping(params = "action=getAllByItemType")
     public String getAllManuByItemType(int itemType) {
         JSONObject result = new JSONObject();
 
@@ -45,7 +45,7 @@ public class ManuControl extends BaseControl {
     }
 
     @ResponseBody
-    @RequestMapping(params = "action=getManuInfo", produces = "application/json;charset=UTF-8")
+    @RequestMapping(params = "action=getManuInfo")
     public String getManuInfo(String name) {
         JSONObject result = new JSONObject();
 
@@ -57,13 +57,25 @@ public class ManuControl extends BaseControl {
     }
 
     @ResponseBody
-    @RequestMapping(params = "action=addManu", produces = "application/json;charset=UTF-8")
+    @RequestMapping(params = "action=getManuById")
+    public String getManuById(int id) {
+        JSONObject result = new JSONObject();
+
+        Manufactor manu = manuService.getManuById(id);
+        result.accumulate("result", true);
+        result.accumulate("data", JSONObject.fromObject(manu));
+
+        return result.toString();
+    }
+
+    @ResponseBody
+    @RequestMapping(params = "action=addManu")
     public String addMaun(String name, Integer itemTypeId) {
         JSONObject result = new JSONObject();
         Manufactor manu = manuService.getManu(name, itemTypeId);
         if (manu == null) {
             try {
-                int cRows = manuService.addManu(name, itemTypeId);
+                manuService.addManu(name, itemTypeId);
                 result.accumulate("result", true);
             } catch (DBUpdateException e) {
                 setResultFalse(result, e);
@@ -75,9 +87,17 @@ public class ManuControl extends BaseControl {
         return result.toString();
     }
 
+    @ResponseBody
+    @RequestMapping(params = "action=setManuOrder")
+    public String setManuOrder(String name, int order) {
+        JSONObject result = new JSONObject();
+        manuService.setManuOrder(name, order);
+        result.accumulate("result", true);
+        return result.toString();
+    }
 
     @ResponseBody
-    @RequestMapping(params = "action=delManu", produces = "application/json;charset=UTF-8")
+    @RequestMapping(params = "action=delManu")
     public String delItemType(int id) {
         JSONObject result = new JSONObject();
 

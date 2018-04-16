@@ -38,8 +38,8 @@ public class ItemTypeDaoImpl implements ItemTypeDao {
     }
 
     @Override
-    public int addItemType(String name, String exData) {
-        return dao.addItemType(name, exData);
+    public int addItemType(String name, int order, String exData) {
+        return dao.addItemType(name, order, exData);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class ItemTypeDaoImpl implements ItemTypeDao {
     }
 
     @Override
-    public int updateItemType(int id, String name, int inIndex, String exData) {
-        return dao.updateItemType(id, name, inIndex, exData);
+    public int updateItemType(int id, String name, int inIndex, int order, String exData) {
+        return dao.updateItemType(id, name, inIndex, order, exData);
     }
 
     @Override

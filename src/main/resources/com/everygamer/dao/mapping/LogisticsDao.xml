@@ -4,6 +4,7 @@
     <resultMap id="logistics" type="com.everygamer.bean.Logistics">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
+        <result property="order" column="iorder"/>
         <result property="isAlive" column="is_alive"/>
         <result property="insDate" column="ins_date"/>
         <result property="delDate" column="del_date"/>
@@ -14,7 +15,7 @@
     </insert>
     <update id="updateLogistics" parameterType="com.everygamer.bean.Logistics">
         UPDATE logistics
-        SET "name" = #{name}, up_date = #{upDate}
+        SET "name" = #{name}, iorder = #{order}, up_date = #{upDate}
         WHERE id = #{id}
     </update>
     <update id="delLogistics">
@@ -25,12 +26,18 @@
     <select id="getAllLogistics" resultType="com.everygamer.bean.Logistics" resultMap="logistics">
         SELECT *
         FROM logistics
-        WHERE is_alive = 1;
+        WHERE is_alive = 1
+        ORDER BY iorder
     </select>
-    <select id="getLogisticsByName" resultType="com.everygamer.bean.Logistics">
+    <select id="getLogisticsByName" resultType="com.everygamer.bean.Logistics" resultMap="logistics">
         SELECT *
         FROM logistics
-        WHERE "name" = #{param1} AND is_alive = 1;
+        WHERE "name" = #{param1} AND is_alive = 1
+    </select>
+    <select id="getLogisticsById" resultType="com.everygamer.bean.Logistics">
+        SELECT *
+        FROM logistics
+        WHERE id = #{param1}
     </select>
 
 </mapper>

@@ -17,11 +17,11 @@ public interface ItemTypeDao {
 
     List<ItemType> getAllItemType();
 
-    int addItemType(String name, String exData);
+    int addItemType(String name, int order, String exData);
 
     int updateItemTypeExData(int id, String exData);
 
-    int updateItemType(int id, String name, int inIndex, String exData);
+    int updateItemType(int id, String name, int inIndex, int order, String exData);
 
     int delItemType(int id);
 }

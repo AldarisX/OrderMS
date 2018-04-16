@@ -93,6 +93,7 @@ CREATE TABLE item_type
     PRIMARY KEY,
   name     VARCHAR(128) NOT NULL,
   ex_data  JSONB,
+  iorder   SMALLINT,
   is_alive SMALLINT DEFAULT 1,
   ins_date INTEGER,
   del_date INTEGER,
@@ -108,6 +109,7 @@ CREATE TABLE manufactor
     PRIMARY KEY,
   name      VARCHAR(128) NOT NULL,
   item_type INTEGER      NOT NULL,
+  iorder    SMALLINT,
   is_alive  SMALLINT DEFAULT 1,
   ins_date  INTEGER,
   del_date  INTEGER,
@@ -146,6 +148,7 @@ CREATE TABLE logistics
     CONSTRAINT logistics_pk
     PRIMARY KEY,
   name     TEXT               NOT NULL,
+  iorder   SMALLINT,
   is_alive SMALLINT DEFAULT 1 NOT NULL,
   ins_date INTEGER            NOT NULL,
   del_date INTEGER,

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='/js/jquery-3.3.1.min.js'></script>
+    <script>
+        let manu;
+
+        $(document).ready(function () {
+            manu = getQueryString("name");
+            $("#manuName").text(manu);
+        });
+
+        function changeOrder() {
+            let order = $(".manuOrder").val();
+            if (isNaN(order) || order === "") {
+                parent.layer.msg("必须输入优先级", {icon: 5});
+                return;
+            }
+
+            $.post("/api/manu.json?action=setManuOrder", {
+                name: manu,
+                order: order
+            }, function (data) {
+                if (data.result) {
+                    parent.layer.closeAll();
+                    parent.layer.msg("修改成功", {icon: 1});
+                    parent.loadData();
+                } else {
+                    parent.layer.msg(data.msg, {icon: 5})
+                }
+            })
+        }
+
+        function getQueryString(name) {
+            let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            let r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+    </script>
+</head>
+<body>
+<div>
+    <h3 id="manuName"></h3>
+    <form onsubmit="return false">
+        <label>优先级:<input type='number' class="manuOrder" name='order'/></label><br>
+        <button onclick="changeOrder()">确定</button>
+    </form>
+</div>
+</body>
+</html>

@@ -15,15 +15,15 @@
             $("#manuInfo").empty();
 
             $("#manuTypeList").empty();
-            $("#manuTypeList").append("<tr><td>厂商</td></tr>");
+            $("#manuTypeList").append("<tr><td>厂商</td><td>优先级</td></tr>");
             $.post("/api/manu.json?action=getAll", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         const manu = data.data[i];
-                        $("<tr><td><a class='link' onclick='loadManuInfo(\"" + manu.name + "\")'>" + manu.name + "</a></td></tr>").appendTo("#manuTypeList");
+                        $("<tr><td><a class='link' onclick='loadManuInfo(\"" + manu.name + "\")'>" + manu.name + "</a></td><td class='link' onclick='editManuOrder(\"" + manu.name + "\")'>" + manu.order + "</td></tr>").appendTo("#manuTypeList");
                     }
                 } else {
-                    alert(data.msg);
+                    layer.msg(data.msg, {icon: 5});
                 }
             });
 
@@ -34,7 +34,7 @@
                         $("#itemTypeList").append("<option value='" + itemType.id + "'>" + itemType.name + "</option>");
                     }
                 } else {
-                    alert(data.msg);
+                    layer.msg(data.msg, {icon: 5});
                 }
             });
         }
@@ -52,20 +52,38 @@
                         $("#manuInfo").append("<tr><td>" + manu.id + "</td><td>" + manu.itemType + "</td><td>" + formatUnixTime(manu.insDate) + "</td><td><button onclick='delManuType(" + manu.id + ")'>删除</button></td></tr>");
                     }
                 } else {
-                    alert(data.msg);
+                    layer.msg(data.msg, {icon: 5});
                 }
             });
         }
 
+        function editManuOrder(manu) {
+            layer.open({
+                type: 2,
+                title: "设置厂商优先级",
+                area: ['320px', '250px'],
+                content: "/static/order/change_manu_order.html?name=" + manu
+            });
+        }
+
         function delManuType(id) {
-            $.post("/api/manu.json?action=delManu", {
-                id: id
-            }, function (data) {
-                if (data.result) {
-                    loadData();
-                } else {
-                    alert(data.msg);
-                }
+            layer.confirm('确定删除?', {
+                btn: ['确定', '取消'],
+                icon: 3
+            }, function () {
+                $.post("/api/manu.json?action=delManu", {
+                    id: id
+                }, function (data) {
+                    if (data.result) {
+                        layer.closeAll();
+                        layer.msg("删除完成", {icon: 1});
+                        loadData();
+                    } else {
+                        layer.msg(data.msg, {icon: 5});
+                    }
+                });
+            }, function () {
+
             });
         }
 
@@ -83,10 +101,10 @@
                     }, function (data) {
                         if (data.result) {
                             loadData();
-                            alert("添加成功");
+                            layer.msg("添加成功", {icon: 6});
                             $("#manuForm")[0].reset();
                         } else {
-                            alert(data.msg);
+                            layer.msg(data.msg, {icon: 5});
                         }
                     }
                 )

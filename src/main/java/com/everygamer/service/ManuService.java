@@ -28,13 +28,27 @@ public class ManuService {
         return manuDao.getAllManufactorByName(name);
     }
 
+    public Manufactor getManuById(int id) {
+        return manuDao.getManuById(id);
+    }
+
     public Manufactor getManu(String name, Integer itemTypeId) {
         return manuDao.getManufactor(name, itemTypeId);
     }
 
     @Transactional
+    public int setManuOrder(String name, int order) {
+        return manuDao.setManuOrder(name, order);
+    }
+
+    @Transactional
     public int addManu(String name, Integer itemTypeId) throws DBUpdateException {
-        return manuDao.addManufactor(name, itemTypeId);
+        Integer order = null;
+        List<Manufactor> manu = manuDao.getAllManufactorByName(name);
+        if (manu.size() > 0) {
+            order = manu.get(0).getOrder();
+        }
+        return manuDao.addManufactor(name, itemTypeId, order);
     }
 
     @Transactional

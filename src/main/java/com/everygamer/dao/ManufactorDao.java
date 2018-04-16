@@ -13,9 +13,13 @@ public interface ManufactorDao {
 
     List<Manufactor> getAllManufactorByName(String name);
 
+    Manufactor getManuById(int id);
+
     Manufactor getManufactor(String name, int itemType);
 
-    int addManufactor(String name, int itemType);
+    int setManuOrder(String name, int order);
+
+    int addManufactor(String name, int itemType, Integer order);
 
     int delManufactor(int id);
 }

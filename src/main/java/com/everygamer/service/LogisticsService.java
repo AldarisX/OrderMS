@@ -19,6 +19,10 @@ public class LogisticsService {
         return logisticsDao.getAllLogistics();
     }
 
+    public Logistics getLogisticsById(int id) {
+        return logisticsDao.getLogisticsById(id);
+    }
+
     @Transactional
     public int addLogistics(String name) {
         Logistics eLog = logisticsDao.getLogisticsByName(name);
@@ -33,6 +37,7 @@ public class LogisticsService {
     public int updateLogistics(Logistics logistics) {
         Logistics eLog = logisticsDao.getLogisticsByName(logistics.getName());
         if (eLog != null) {
+            logistics.setId(eLog.getId());
             return logisticsDao.updateLogistics(logistics);
         } else {
             return 0;
