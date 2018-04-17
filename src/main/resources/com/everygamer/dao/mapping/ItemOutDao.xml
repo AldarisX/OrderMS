@@ -15,8 +15,8 @@
     </resultMap>
 
     <insert id="itemOut" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO item_out (order_id, item_list, "count", price, "desc", ins_date)
-        VALUES (#{param1}, #{param2}, #{param3}, #{param4}, #{param5}, UNIX_TIMESTAMP())
+        INSERT INTO item_out (order_id, item_list, "desc", ins_date)
+        VALUES (#{param1}, #{param2}, #{param3}, UNIX_TIMESTAMP())
     </insert>
     <select id="getItemByOrder" resultType="com.everygamer.bean.OutItem" resultMap="OutItem">
         SELECT *

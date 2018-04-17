@@ -91,6 +91,8 @@ public class StoreService {
 
     @Transactional
     public synchronized void itemOut(int orderId, JSONArray items, String desc) throws DBUpdateException, DataCheckExpection {
+        //记到数据库中的 从进货记录中被选择的物品
+        JSONArray tarItems = new JSONArray();
         //遍历选择的物品
         for (int i = 0; i < items.size(); i++) {
             JSONObject item = items.getJSONObject(i);
@@ -129,8 +131,6 @@ public class StoreService {
                     }
                 }
 
-                //记到数据库中的 被选择的物品
-                JSONArray tarItems = new JSONArray();
                 //遍历被选择的物品(选择了多个 不含最后一个的情况)
                 for (int j = 0; j < selectItems.size() - 1; j++) {
                     BaseItem tarItem = selectItems.get(j);
@@ -141,7 +141,9 @@ public class StoreService {
                     //出库的物品记录
                     JSONObject tarItemJson = new JSONObject();
                     tarItemJson.accumulate("id", tarItem.getId());
+                    tarItemJson.accumulate("statisId", itemStatis.getId());
                     tarItemJson.accumulate("count", tarItem.getCount());
+                    tarItemJson.accumulate("price", tarItem.getPrice());
                     tarItems.add(tarItemJson);
                 }
                 //被选择的物品(第一个 或者最后一个的情况)
@@ -161,21 +163,24 @@ public class StoreService {
                     }
                     JSONObject tarItemJson = new JSONObject();
                     tarItemJson.accumulate("id", tarItem.getId());
+                    tarItemJson.accumulate("statisId", itemStatis.getId());
                     tarItemJson.accumulate("count", countDiff);
+                    tarItemJson.accumulate("price", tarItem.getPrice());
                     tarItems.add(tarItemJson);
-                }
-                //添加到出库记录
-                itemOutDao.itemOut(orderId, tarItems.toString(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")), desc);
-                BaseItem itemOutStatis = itemOutStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
-                //更新出库统计
-                if (itemOutStatis != null) {
-                    itemOutStatisDao.updateStatis(itemOutStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
-                } else {
-                    BaseItem itemListStatis = itemListStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
-                    itemOutStatisDao.addStatis(itemListStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+
+                    BaseItem itemOutStatis = itemOutStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
+                    //更新出库统计
+                    if (itemOutStatis != null) {
+                        itemOutStatisDao.updateStatis(itemOutStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+                    } else {
+                        BaseItem itemListStatis = itemListStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
+                        itemOutStatisDao.addStatis(itemListStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+                    }
                 }
             }
         }
+        //添加到出库记录
+        itemOutDao.itemOut(orderId, tarItems.toString(), desc);
     }
 
     public List<String> listName(Integer type, String name, String exData) {

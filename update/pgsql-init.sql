@@ -79,7 +79,6 @@ CREATE TABLE item_out_statis
   item_list_statis INTEGER        NOT NULL,
   count            INTEGER        NOT NULL,
   price            NUMERIC(32, 5) NOT NULL,
-  is_alive         SMALLINT DEFAULT 1,
   ins_date         INTEGER,
   up_date          INTEGER,
   del_date         INTEGER
