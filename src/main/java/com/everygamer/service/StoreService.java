@@ -167,15 +167,14 @@ public class StoreService {
                     tarItemJson.accumulate("count", countDiff);
                     tarItemJson.accumulate("price", tarItem.getPrice());
                     tarItems.add(tarItemJson);
-
-                    BaseItem itemOutStatis = itemOutStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
-                    //更新出库统计
-                    if (itemOutStatis != null) {
-                        itemOutStatisDao.updateStatis(itemOutStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
-                    } else {
-                        BaseItem itemListStatis = itemListStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
-                        itemOutStatisDao.addStatis(itemListStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
-                    }
+                }
+                BaseItem itemOutStatis = itemOutStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
+                //更新出库统计
+                if (itemOutStatis != null) {
+                    itemOutStatisDao.updateStatis(itemOutStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
+                } else {
+                    BaseItem itemListStatis = itemListStatisDao.isExist(item.getString("name"), itemType.getId(), manu.getId(), item.getString("exData"));
+                    itemOutStatisDao.addStatis(itemListStatis.getId(), item.getInt("count"), BigDecimal.valueOf(item.getDouble("price")));
                 }
             }
         }
