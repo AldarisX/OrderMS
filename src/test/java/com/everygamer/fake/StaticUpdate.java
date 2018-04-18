@@ -1,6 +1,7 @@
 package com.everygamer.fake;
 
 import com.everygamer.bean.BaseItem;
+import lombok.Cleanup;
 
 import java.sql.*;
 
@@ -12,14 +13,20 @@ public class StaticUpdate {
                 Connection conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/orderms?stringtype=unspecified", "aldaris", "0000")
         ) {
             conn.setAutoCommit(false);
-            PreparedStatement pst = conn.prepareStatement("select name,item_type,manufactor,model,sum(count) as count,sum(count*price) as price,ex_data,max(ins_date) as up_date from item_list where remain>0 group by name,item_type,manufactor,model,ex_data", ResultSet.TYPE_FORWARD_ONLY, ResultSet.FETCH_FORWARD);
-            pst.setFetchSize(50);
+            @Cleanup
+            PreparedStatement pst = conn.prepareStatement("SELECT name,item_type,manufactor,model,sum(count) AS count,sum(count*price) AS price,ex_data,max(ins_date) AS up_date FROM item_list WHERE remain>0 GROUP BY name,item_type,manufactor,model,ex_data", ResultSet.TYPE_FORWARD_ONLY, ResultSet.FETCH_FORWARD);
+            pst.setFetchSize(100);
 //            pst.setMaxRows(100);
-
+            @Cleanup
             ResultSet rs = pst.executeQuery();
+            int checkCount = 0;
             while (rs.next()) {
                 BaseItem item = packItem(rs);
                 checkStatis(item);
+                checkCount++;
+                if (checkCount % 100 == 0) {
+                    System.out.println(checkCount);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,13 +51,14 @@ public class StaticUpdate {
                 Connection conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/orderms?stringtype=unspecified", "aldaris", "0000")
         ) {
 //            System.out.println(item.toString());
-            PreparedStatement pst = conn.prepareStatement("select * from item_list_statis where name=? and item_type=? and manufactor=? and model=? and ex_data=?");
+            @Cleanup
+            PreparedStatement pst = conn.prepareStatement("SELECT * FROM item_list_statis WHERE name=? AND item_type=? AND manufactor=? AND model=? AND ex_data=?");
             pst.setString(1, item.getName());
             pst.setInt(2, Integer.parseInt(item.getItemType()));
             pst.setInt(3, Integer.parseInt(item.getManufactor()));
             pst.setString(4, item.getModel());
             pst.setString(5, item.getExData());
-
+            @Cleanup
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 updateStatis(rs.getInt("id"), item);
@@ -67,6 +75,7 @@ public class StaticUpdate {
                 Connection conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/orderms?stringtype=unspecified", "aldaris", "0000")
         ) {
             conn.setAutoCommit(false);
+            @Cleanup
             PreparedStatement pst = conn.prepareStatement("INSERT INTO item_list_statis (name,item_type,manufactor,model,count,price,ex_data,up_date) VALUES (?,?,?,?,?,?,?,?)");
             pst.setString(1, item.getName());
             pst.setInt(2, Integer.parseInt(item.getItemType()));
@@ -96,6 +105,7 @@ public class StaticUpdate {
                 Connection conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/orderms?stringtype=unspecified", "aldaris", "0000")
         ) {
             conn.setAutoCommit(false);
+            @Cleanup
             PreparedStatement pst = conn.prepareStatement("UPDATE item_list_statis SET count=?,price=? WHERE id=?");
             pst.setInt(1, item.getCount());
             pst.setBigDecimal(2, item.getPrice());

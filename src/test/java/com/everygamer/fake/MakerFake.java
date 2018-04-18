@@ -50,7 +50,7 @@ public class MakerFake {
     private void config() throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/orderms?stringtype=unspecified", "aldaris", "0000");
         Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery("select max(ins_date) from item_list");
+        ResultSet rs = st.executeQuery("SELECT max(ins_date) FROM item_list");
         if (rs.next()) {
             fakeDate.set(Calendar.MILLISECOND, rs.getInt(1) * 1000);
         } else {
@@ -184,7 +184,7 @@ public class MakerFake {
                     int manu = manuList.get(getRD(0, manuList.size()));
 
                     JSONObject exData = JSONObject.fromObject(exDataList.get(getRD(0, exDataList.size())).toString());
-                    exData.accumulate("mem", getRD(2, 8));
+                    exData.accumulate("mem", getRD(1, 6) * 2);
                     String sql = "INSERT INTO item_list (name, item_type, manufactor, model, count, remain, price, ex_data, ins_date) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement pst = conn.prepareStatement(sql);
