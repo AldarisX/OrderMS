@@ -233,9 +233,9 @@ public class StoreService {
     private HashMap<String, Object> getJsonSQL(String jsonString) {
         HashMap<String, Object> jsonData = new HashMap<>();
         JSONObject exDataJson = JSONObject.fromObject(jsonString);
-        Iterator<String> keys = exDataJson.keys();
+        Iterator keys = exDataJson.keys();
         while (keys.hasNext()) {
-            String key = keys.next();
+            String key = (String) keys.next();
             jsonData.put(key, exDataJson.get(key));
         }
         return jsonData;

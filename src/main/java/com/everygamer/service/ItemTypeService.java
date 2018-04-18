@@ -86,7 +86,7 @@ public class ItemTypeService {
         return itemTypeDao.delItemType(id);
     }
 
-    private HashMap<String, Object> calcPatchExData(String existData, JSONArray exDataList) {
+    private HashMap calcPatchExData(String existData, JSONArray exDataList) {
         JSONObject existExData = JSONObject.fromObject(existData);
         HashMap exData = new HashMap();
         if (existData != null) {

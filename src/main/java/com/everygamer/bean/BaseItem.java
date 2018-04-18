@@ -1,10 +1,12 @@
 package com.everygamer.bean;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Data
 public class BaseItem {
     @Getter
     @Setter

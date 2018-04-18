@@ -5,6 +5,7 @@ import com.everygamer.bean.security.AdminUser;
 import com.everygamer.dao.security.AdminRoleRepository;
 import com.everygamer.dao.security.AdminUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Service("UserService")
 public class UserService {
     @Autowired
+    @Qualifier("AdminUserRepository")
     AdminUserRepository userRepository;
     @Autowired
     AdminRoleRepository roleRepository;

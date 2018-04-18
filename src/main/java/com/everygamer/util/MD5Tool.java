@@ -12,12 +12,12 @@ public class MD5Tool {
                 md5.update(psw.getBytes("UTF-8"));
                 byte[] encryption = md5.digest();
 
-                StringBuffer strBuf = new StringBuffer();
-                for (int i = 0; i < encryption.length; i++) {
-                    if (Integer.toHexString(0xff & encryption[i]).length() == 1) {
-                        strBuf.append("0").append(Integer.toHexString(0xff & encryption[i]));
+                StringBuilder strBuf = new StringBuilder();
+                for (byte anEncryption : encryption) {
+                    if (Integer.toHexString(0xff & anEncryption).length() == 1) {
+                        strBuf.append("0").append(Integer.toHexString(0xff & anEncryption));
                     } else {
-                        strBuf.append(Integer.toHexString(0xff & encryption[i]));
+                        strBuf.append(Integer.toHexString(0xff & anEncryption));
                     }
                 }
 

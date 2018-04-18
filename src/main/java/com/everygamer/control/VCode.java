@@ -37,7 +37,7 @@ public class VCode extends HttpServlet {
         graphics.fillRect(0, 0, IMG_HEIGHT, IMG_WIDTH); // 填充矩形区域
 
 
-        String captcha = ""; // 存放生成的验证码
+        StringBuilder captcha = new StringBuilder(); // 存放生成的验证码
         Random random = new Random();
         for (int i = 0; i < CODE_LEN; i++) { // 循环将每个验证码字符绘制到图片上
             int index = random.nextInt(codeChar.length);
@@ -45,10 +45,10 @@ public class VCode extends HttpServlet {
             graphics.setColor(new Color(random.nextInt(150), random.nextInt(200), random.nextInt(255)));
             // 将一个字符绘制到图片上，并制定位置（设置x,y坐标）
             graphics.drawString(codeChar[index] + "", (i * 20) + 15, 25);
-            captcha += codeChar[index];
+            captcha.append(codeChar[index]);
         }
         // 将生成的验证码code放入sessoin中
-        req.getSession().setAttribute("vCode", captcha);
+        req.getSession().setAttribute("vCode", captcha.toString());
         // 通过ImageIO将图片输出
         ImageIO.write(bi, "JPG", resp.getOutputStream());
     }

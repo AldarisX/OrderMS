@@ -2,12 +2,12 @@ package com.everygamer.logger;
 
 import java.lang.annotation.*;
 
-@Target({ElementType.PARAMETER, ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
 /**
  * 系统日志注解
  */
+@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface SystemLog {
     /**
      * 日志描述
