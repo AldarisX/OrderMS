@@ -35,6 +35,16 @@ public class StoreDaoImpl implements StoreDao {
     }
 
     @Override
+    public List<BaseItem> listItemOut(Integer type, String kw, String manu, String exData, Integer startTime, Integer endTime) {
+        if ("".equals(kw) || kw == null) {
+            kw = null;
+        } else {
+            kw = "%" + kw.replaceAll(" ", "%") + "%";
+        }
+        return dao.listItemOut(type, kw, manu, exData, startTime, endTime);
+    }
+
+    @Override
     public List<String> listName(Integer type, String name, String exData) {
         if (name != null) {
             name = "%" + name.replaceAll(" ", "%") + "%";

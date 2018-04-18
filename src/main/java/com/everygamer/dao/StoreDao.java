@@ -12,6 +12,8 @@ public interface StoreDao {
 
     List<BaseItem> listStore(@Param("type") Integer type, @Param("kw") String kw, @Param("manu") String manu, @Param("exData") String exData, @Param("startTime") Integer startTime, @Param("endTime") Integer endTime);
 
+    List<BaseItem> listItemOut(@Param("type") Integer type, @Param("kw") String kw, @Param("manu") String manu, @Param("exData") String exData, @Param("startTime") Integer startTime, @Param("endTime") Integer endTime);
+
     List<String> listName(@Param("type") Integer type, @Param("name") String name, @Param("exData") String exData);
 
     List<String> listModel(@Param("type") Integer type, @Param("model") String name, @Param("exData") String exData);

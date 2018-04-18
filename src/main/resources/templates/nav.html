@@ -18,6 +18,7 @@
         <li><a th:class="${child eq 'store'} ? 'selected':''" th:href="store.html">入库</a></li>
         <li><a th:class="${child eq 'store_list'} ? 'selected':''" th:href="store_list.html">入库记录</a></li>
         <li><a th:class="${child eq 'item_out'} ? 'selected':''" th:href="item_out.html">出库</a></li>
+        <li><a th:class="${child eq 'item_out_list'} ? 'selected':''" th:href="item_out_list.html">出库记录</a></li>
     </ul>
     <ul th:if="${page != 'home' && page eq 'order'}" th:id="sub_nav" th:class="headNav">
         <li><a th:class="${child eq 'order' ? 'selected':''}" th:href="order.html">添加订单</a></li>

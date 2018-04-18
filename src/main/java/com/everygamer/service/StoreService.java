@@ -201,17 +201,22 @@ public class StoreService {
      * @param pageSize 每页显示数量
      * @return
      */
-    public PageInfo<BaseItem> searchStore(Integer type, String kw, Integer manu, String exData, int page,
-                                          int pageSize) {
+    public PageInfo<BaseItem> searchStore(Integer type, String kw, Integer manu, String exData, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         List<BaseItem> items = storeDao.searchStore(type, kw, manu, exData);
         return new PageInfo<>(items);
     }
 
-    public PageInfo<BaseItem> listStore(Integer type, String kw, String manu, String exData, Integer
-            startTime, Integer endTime, int page, int pageSize) {
+    public PageInfo<BaseItem> listStore(Integer type, String kw, String manu, String exData, Integer startTime, Integer endTime, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         List<BaseItem> items = storeDao.listStore(type, kw, manu, exData, startTime, endTime);
+        return new PageInfo<>(items);
+    }
+
+
+    public PageInfo<BaseItem> listItemOut(Integer type, String kw, String manu, String exData, Integer startTime, Integer endTime, int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<BaseItem> items = storeDao.listItemOut(type, kw, manu, exData, startTime, endTime);
         return new PageInfo<>(items);
     }
 

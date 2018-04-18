@@ -1,0 +1,30 @@
+#方案一(耗时稍长,处理起来简单)
+SELECT item_out_data.id,item_out.order_id,array_to_json(array_agg(row_to_json(item_out_data))) AS ex_data,item_out.desc
+FROM(SELECT
+iout.id,iout.count,iout.price,
+item.name,item_type.name AS item_type,manu.name AS manufactor,item.model,item.ex_data,item.up_date
+FROM(SELECT
+iout.id,
+jsonb_array_elements(iout.item_list) -> 'statisId' AS static_id,
+jsonb_array_elements(iout.item_list) -> 'count' AS "count",
+jsonb_array_elements(iout.item_list) -> 'price' AS price
+FROM item_out AS iout) AS iout,item_list_statis AS item,item_type,manufactor AS manu
+WHERE iout.static_id = to_char(item.id, '99999')::jsonb AND item.item_type=item_type.id AND item.manufactor=manu.id
+ORDER BY item.up_date
+)AS item_out_data,item_out
+WHERE item_out_data.id=item_out.id
+GROUP BY item_out_data.id,item_out.order_id,item_out.desc
+
+
+#方案二(耗时稍短,处理起来稍微麻烦点)
+SELECT iout_data.id,iout_data.order_id, item.ex_data,iout_data.desc,iout_data.count,iout_data.price,
+item.name,item_type.name AS item_type,manu.name AS manufactor,item.model,item.up_date
+FROM(SELECT
+iout.id,iout.order_id,iout.desc,
+jsonb_array_elements(iout.item_list) -> 'statisId'AS static_id,
+jsonb_array_elements(iout.item_list) -> 'count' AS "count",
+jsonb_array_elements(iout.item_list) -> 'price' AS price
+FROM item_out AS iout) AS iout_data,item_list_statis AS item,item_type,manufactor AS manu
+WHERE iout_data.static_id = to_char(item.id, '99999')::jsonb AND item.item_type=item_type.id AND item.manufactor=manu.id
+
+##注 加索引后速度无所谓了(dbVer 0.0.4)

@@ -133,6 +133,33 @@ public class ItemStoreControl extends BaseControl {
     }
 
     @ResponseBody
+    @RequestMapping(params = "action=itemOutList")
+    public String listItemOut(Integer type, String kw, String manu, String exData, Integer startTime, Integer endTime, Integer page, Integer pageSize) {
+        page = page == null ? 1 : page;
+        pageSize = pageSize == null ? 50 : pageSize;
+
+        if ("".equals(manu)) {
+            manu = null;
+        }
+
+        JSONObject result = new JSONObject();
+
+        try {
+            JSONObject exDataJson = JSONObject.fromObject(exData);
+        } catch (JSONException e) {
+            exData = null;
+        }
+
+        PageInfo<BaseItem> pages = storeService.listItemOut(type, kw, manu, exData, startTime, endTime, page, pageSize);
+        result.accumulate("result", true);
+        result.accumulate("data", JSONArray.fromObject(pages.getList()));
+        result.accumulate("pages", pages.getPages());
+        result.accumulate("count", pages.getTotal());
+
+        return result.toString();
+    }
+
+    @ResponseBody
     @RequestMapping(params = "action=getTop")
     public String getTop(@RequestParam() Integer type, @RequestParam() Integer count) {
         JSONObject result = new JSONObject();
