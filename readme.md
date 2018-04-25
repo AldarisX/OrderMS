@@ -14,8 +14,8 @@ JDK环境:[JDK8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-do
 
  * 配置文件在config目录下
     
-    名称 | 功能 | 修改
-        ---|---|---
+    | 名称 | 功能 | 修改 |
+    |:--------|:---------|:-------|
     application-db.properties | 数据库连接 | 自定义
     application-server.properties | 服务器配置 | server.port
     application-dev.properties | 开发用的参数 | 自定义
