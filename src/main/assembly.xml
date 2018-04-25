@@ -43,7 +43,7 @@
         <fileSet>
             <directory>${basedir}/config</directory>
             <includes>
-                <include>application.properties</include>
+                <include>*.properties</include>
             </includes>
             <outputDirectory>${file.separator}config</outputDirectory>
         </fileSet>
