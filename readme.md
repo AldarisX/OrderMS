@@ -11,7 +11,9 @@
 [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 
 ####启动
+
 执行目录下的 run脚本
+
 * WIndows下执行run.cmd
 
 * Linux下执行run.sh或者run-log.sh(需要安装screen)
@@ -19,4 +21,5 @@
 *  初始账号 admin 密码123456
 
 ####详细API
+
 > 启动后访问 /swagger-ui.html (需要用admin权限访问)
