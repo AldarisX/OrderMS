@@ -1,6 +1,6 @@
-##进销存管理
+## 进销存管理
 
-####运行环境
+#### 运行环境
 
 > 最低单核2G,推荐双核4G
 
@@ -10,7 +10,7 @@
 
 [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
 
-####启动
+#### 启动
 
 执行目录下的 run脚本
 
@@ -20,6 +20,6 @@
 
 *  初始账号 admin 密码123456
 
-####详细API
+#### 详细API
 
 > 启动后访问 /swagger-ui.html (需要用admin权限访问)
