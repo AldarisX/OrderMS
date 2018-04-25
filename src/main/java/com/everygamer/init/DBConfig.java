@@ -41,15 +41,16 @@ public class DBConfig {
         try {
             //加载SpringBoot配置文件
             Properties prop = new Properties();
-            prop.load(new FileInputStream("config/application.properties"));
+            prop.load(new FileInputStream("config/application-db.properties"));
             dbDriver = prop.getProperty("spring.datasource.driver-class-name");
             dbUrl = prop.getProperty("spring.datasource.url");
             dbUser = prop.getProperty("spring.datasource.username");
             dbPasswd = prop.getProperty("spring.datasource.password");
+            prop.load(new FileInputStream("config/application-system.properties"));
             dbVer = prop.getProperty("site.config.db-ver");
 
         } catch (IOException e) {
-            log.error("配置文件(config/application.properties)不存在");
+            log.error("配置文件不存在");
         }
     }
 

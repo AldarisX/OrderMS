@@ -21,7 +21,7 @@ public class DBVerCheck implements SysCheck {
     public boolean check() {
         try {
             if (canUpdate()) {
-                log.info("发现数据库更新,请立即备份数据库,输入YES进行更新,否则退出");
+                log.info("发现数据库更新(" + dbConfig.getDbVer() + "),请立即备份数据库,输入YES进行更新,否则退出");
                 Scanner sc = new Scanner(System.in);
                 String uIn = sc.next();
                 if (!uIn.equals("YES")) {
