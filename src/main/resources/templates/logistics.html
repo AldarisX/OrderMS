@@ -13,7 +13,7 @@
         function loadData() {
             $("#logisticsList").empty();
             $("#logisticsList").append("<tr><td>ID</td><td>名称</td><td>优先级</td><td>添加时间</td><td>操作</td></tr>");
-            $.post("/api/logistics.json?action=getAllLogistics", function (data) {
+            $.get("/api/logistics/", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         let logistics = data.data[i];
@@ -33,11 +33,11 @@
                 return;
             }
 
-            let action = "addLogistics";
+            let action = "";
             if (isEdit) {
-                action = "updateLogistics";
+                action = "update";
             }
-            $.post("/api/logistics.json?action=" + action, {
+            $.post("/api/logistics/" + action, {
                 name: logisticsName,
                 order: logOrder
             }, function (data) {
@@ -52,9 +52,7 @@
         }
 
         function editLog(id) {
-            $.post("/api/logistics.json?action=getLogisticsById", {
-                id: id
-            }, function (data) {
+            $.get("/api/logistics/" + id, function (data) {
                 if (data.result) {
                     isEdit = true;
                     editLogId = id;
@@ -72,9 +70,7 @@
                 btn: ['确定', '取消'],
                 icon: 3
             }, function () {
-                $.post("/api/logistics.json?action=delLogistics", {
-                    id: id
-                }, function (data) {
+                $.get("/api/logistics/" + id + "/del", function (data) {
                     if (data.result) {
                         layer.msg("删除成功", {icon: 6});
                         loadData();

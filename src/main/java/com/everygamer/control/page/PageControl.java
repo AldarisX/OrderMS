@@ -4,9 +4,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Properties;
 
+@ApiIgnore
 @Controller
 public class PageControl {
     @RequestMapping(path = {"/", "/index.html", "/index"})

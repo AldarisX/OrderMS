@@ -13,7 +13,7 @@
                 icon: 16
                 , shade: 0.01
             });
-            $.post("/api/user.json?action=getRSA", function (result) {
+            $.get("/api/user/rsa", function (result) {
                 if (result.result) {
                     //加密
                     let encrypt = new JSEncrypt();

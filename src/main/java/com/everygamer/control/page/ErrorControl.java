@@ -5,10 +5,12 @@ import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+@ApiIgnore
 @Controller
 public class ErrorControl extends AbstractErrorController {
     private final static String errorPath = "/error";

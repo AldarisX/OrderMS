@@ -18,7 +18,7 @@
             endDate.setDate(endDate.getDate() + 1);
             $("#endDate").val(endDate.format("yyyy-MM-dd"));
 
-            $.post("/api/itemType.json?action=getAll", function (data) {
+            $.get("/api/itype/", function (data) {
                 if (data.result) {
                     $("#searchType").append("<option></option>");
                     itemTypeData = data.data;
@@ -31,7 +31,7 @@
                 }
             });
 
-            $.post("/api/manu.json?action=getAll", function (data) {
+            $.get("/api/manu/", function (data) {
                     if (data.result) {
                         $("#searchManu").empty();
                         $("#searchManu").append("<option selected='selected' value=''></option>");
@@ -67,7 +67,7 @@
                 endTime = "";
             }
 
-            $.post("/api/itemStore.json?action=listStore", {
+            $.post("/api/store/list", {
                 type: type,
                 kw: $("#searchKW").val(),
                 manu: manu,
@@ -111,15 +111,15 @@
         }
 
         function delItem(id) {
-            $.post("/api/itemStore.json?action=delItem", {
-                id: id
-            }, function (data) {
-                if (data.result) {
-
-                } else {
-                    alert(data.msg);
-                }
-            })
+            // $.post("/api/itemStore.json?action=delItem", {
+            //     id: id
+            // }, function (data) {
+            //     if (data.result) {
+            //
+            //     } else {
+            //         alert(data.msg);
+            //     }
+            // })
         }
 
         function jumpToPage() {
@@ -159,9 +159,7 @@
             if (itemTypeSel === "") {
                 $("#searchManu").empty();
             } else {
-                $.post("/api/manu.json?action=getAllByItemType", {
-                        itemType: itemTypeSel
-                    }, function (data) {
+                $.get("/api/manu/item_type/" + itemTypeSel, function (data) {
                         if (data.result) {
                             $("#searchManu").empty();
                             $("#searchManu").append("<option selected='selected' value=''></option>");
@@ -175,9 +173,7 @@
                     }
                 );
 
-                $.post("/api/itemType.json?action=getExData", {
-                        type: itemTypeSel
-                    }, function (data) {
+                $.get("/api/itype/" + itemTypeSel + "/exData", function (data) {
                         if (data.result) {
                             nowExData = data.exData;
                             if (data.exData.length > 0) {

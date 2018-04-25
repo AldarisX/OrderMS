@@ -24,10 +24,10 @@ public class LogisticsService {
     }
 
     @Transactional
-    public int addLogistics(String name) {
+    public int addLogistics(String name, Integer order) {
         Logistics eLog = logisticsDao.getLogisticsByName(name);
         if (eLog == null) {
-            return logisticsDao.addLogistics(name);
+            return logisticsDao.addLogistics(name, order);
         } else {
             return 0;
         }

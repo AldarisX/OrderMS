@@ -29,8 +29,8 @@ public class LogisticsDaoImpl implements LogisticsDao {
     }
 
     @Override
-    public int addLogistics(String name) {
-        int cRows = dao.addLogistics(name);
+    public int addLogistics(String name, Integer order) {
+        int cRows = dao.addLogistics(name, order);
         if (cRows != 1) {
             throw new DBUpdateException("操作失败(操作数不为1),引发类: " + this.getClass().getName() + " 方法: addLogistics");
         }

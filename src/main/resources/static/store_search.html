@@ -10,7 +10,7 @@
         $("#searchType").empty();
         $("#searchType").append("<option selected='selected' disabled='disabled' value='selected'></option>");
 
-        $.post("/api/itemType.json?action=getAll", function (data) {
+        $.get("/api/itype/", function (data) {
             if (data.result) {
                 itemTypeData = data.data;
                 for (let i = 0; i < data.data.length; i++) {
@@ -39,7 +39,7 @@
             sExData = "";
         }
 
-        $.post("/api/itemStore.json?action=search", {
+        $.post("/api/store/search", {
             type: type,
             kw: $("#searchKW").val(),
             manu: manu,
@@ -131,9 +131,7 @@
         $("#searchBtn").removeAttr("disabled");
         const itemTypeSel = $("#searchType").val();
 
-        $.post("/api/manu.json?action=getAllByItemType", {
-                itemType: itemTypeSel
-            }, function (data) {
+        $.get("/api/manu/item_type/" + itemTypeSel, function (data) {
                 if (data.result) {
                     $("#searchManu").empty();
                     $("#searchManu").append("<option selected='selected' value=''></option>");
@@ -147,9 +145,7 @@
             }
         );
 
-        $.post("/api/itemType.json?action=getExData", {
-                type: itemTypeSel
-            }, function (data) {
+        $.get("/api/itype/" + itemTypeSel + "/exData", function (data) {
                 if (data.result) {
                     nowExData = data.exData;
                     if (data.exData.length > 0) {

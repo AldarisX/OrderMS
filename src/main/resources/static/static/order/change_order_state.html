@@ -4,9 +4,7 @@
         let id;
         $(document).ready(function () {
             id = getQueryString("id");
-            $.post("/api/order.json?action=getOrderById", {
-                id: id
-            }, function (data) {
+            $.get("/api/order/" + id, function (data) {
                 if (data.result) {
                     let order = data.data;
                     $("#orderNum").text("订单编号:" + order.orderNum);
@@ -20,10 +18,7 @@
         function stateChangeClick() {
             let state = $("#orderState").val();
             if (state >= 0) {
-                $.post("/api/order.json?action=updateState", {
-                    id: id,
-                    state: state
-                }, function (data) {
+                $.post("/api/order/" + id + "/state/" + state, function (data) {
                     if (data.result) {
                         parent.listOrder();
                         parent.layer.closeAll();

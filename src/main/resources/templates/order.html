@@ -13,7 +13,7 @@
                 pageLoad();
             });
 
-            $.post("/api/logistics.json?action=getAllLogistics", function (data) {
+            $.get("/api/logistics/", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         let logistics = data.data[i];
@@ -43,7 +43,7 @@
             }
 
             layer.alert('请等待完成', {icon: 16});
-            $.post("/api/order.json?action=addOrder", {
+            $.post("/api/order/", {
                 orderNum: orderNum,
                 userName: userName,
                 userWW: userWW,

@@ -17,7 +17,7 @@
             $(":input[name=isExData]").removeAttr("checked", "");
             $("#itemTypeList").empty();
             $("#itemTypeList").append("<tr><td>ID</td><td>物品类型</td><td>优先级</td><td>是否在主页显示</td><td>额外数据</td><td>最后修改时间</td><td>操作</td></tr>");
-            $.post("/api/itemType.json?action=getAll", function (data) {
+            $.get("/api/itype/", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         const itemType = data.data[i];
@@ -42,9 +42,7 @@
         function editItemType(itemType) {
             isEdit = true;
             editItem = itemType;
-            $.post("/api/itemType.json?action=getItemTypeById", {
-                id: itemType
-            }, function (data) {
+            $.get("/api/itype/" + itemType, function (data) {
                 if (data.result) {
                     $("select[id^='exSel-']").parent().parent().remove();
 
@@ -72,9 +70,7 @@
 
         function delItemType(id) {
             if (confirm("确定删除？")) {
-                $.post("/api/itemType.json?action=delItemType", {
-                    id: id
-                }, function (data) {
+                $.get("/api/itype/" + id + "/del", function (data) {
                     if (data.result) {
                         loadData();
                     } else {
@@ -91,13 +87,13 @@
             if (!$("#isExData").find(":checkbox[name=isExData]").is(':checked')) {
                 exData = "";
             }
-            let action = "addItemType";
+            let action = "";
             if (isEdit) {
-                action = "updateItemType&id=" + editItem;
+                action = editItem + "/update";
                 layer.confirm("请耐心等待", {icon: 6});
             }
             if (itemType.length > 0) {
-                $.post("/api/itemType.json?action=" + action, {
+                $.post("/api/itype/" + action, {
                     name: itemType,
                     order: order,
                     inIndex: $(":checkbox[name=inIndex]").is(':checked'),

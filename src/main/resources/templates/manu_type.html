@@ -16,7 +16,7 @@
 
             $("#manuTypeList").empty();
             $("#manuTypeList").append("<tr><td>厂商</td><td>优先级</td></tr>");
-            $.post("/api/manu.json?action=getAll", function (data) {
+            $.get("/api/manu/", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         const manu = data.data[i];
@@ -27,7 +27,7 @@
                 }
             });
 
-            $.post("/api/itemType.json?action=getAll", function (data) {
+            $.get("/api/itype/", function (data) {
                 if (data.result) {
                     for (let i = 0; i < data.data.length; i++) {
                         const itemType = data.data[i];
@@ -40,9 +40,7 @@
         }
 
         function loadManuInfo(name) {
-            $.post("/api/manu.json?action=getManuInfo", {
-                name: name
-            }, function (data) {
+            $.get("/api/manu/" + name + "/info", function (data) {
                 if (data.result) {
                     $("#manuInfo").empty();
                     $("#manuInfo").append("<caption>" + name + "</caption>");
@@ -71,9 +69,7 @@
                 btn: ['确定', '取消'],
                 icon: 3
             }, function () {
-                $.post("/api/manu.json?action=delManu", {
-                    id: id
-                }, function (data) {
+                $.get("/api/manu/" + id + "/del", function (data) {
                     if (data.result) {
                         layer.closeAll();
                         layer.msg("删除完成", {icon: 1});
@@ -95,7 +91,7 @@
                 return false;
             }
             if (manuName.length > 0) {
-                $.post("/api/manu.json?action=addManu", {
+                $.post("/api/manu/", {
                         name: manuName,
                         itemTypeId: itemType
                     }, function (data) {

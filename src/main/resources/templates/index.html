@@ -6,7 +6,7 @@
     <script th:src="@{/js/lweb-json.js}"></script>
     <script th:inline="javascript" type="text/javascript">
         $(document).ready(function () {
-            $.post("/api/itemType.json?action=getAll", function (data) {
+            $.get("/api/itype/", function (data) {
                 if (data.result) {
                     let types = data.data;
                     for (let i = 0; i < types.length; i++) {
@@ -25,7 +25,7 @@
         });
 
         function loadStoreList(type) {
-            $.post("/api/itemStore.json?action=getTop", {
+            $.get("/api/store/top", {
                 type: type.id,
                 count: 3
             }, function (data) {

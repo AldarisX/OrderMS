@@ -15,14 +15,14 @@
             loadData();
 
             $(":text[name=itemName]").autocomplete({
-                    source: "/api/itemStore.json?action=listName",
+                source: "/api/store/search/name",
                 minLength: 2,
                 cache: true
                 }
             );
 
             $(":text[name=itemModel]").autocomplete({
-                source: "/api/itemStore.json?action=listModel",
+                source: "/api/store/search/model",
                 minLength: 2,
                 cache: true
             });
@@ -33,7 +33,7 @@
             $("#itemTypeList").empty();
             $("#itemTypeList").append("<option selected='selected' disabled='disabled' value='selected'></option>");
 
-            $.post("/api/itemType.json?action=getAll", function (data) {
+            $.get("/api/itype/", function (data) {
                 if (data.result) {
                     itemTypeData = data.data;
                     for (let i = 0; i < data.data.length; i++) {
@@ -55,9 +55,7 @@
 
             $("#manuList").empty();
             $("#manuList").append("<option selected='selected' disabled='disabled' value='selected'></option>");
-            $.post("/api/manu.json?action=getAllByItemType", {
-                    itemType: itemTypeSel
-                }, function (data) {
+            $.post("/api/manu/item_type/" + itemTypeSel, function (data) {
                     if (data.result) {
                         for (let i = 0; i < data.data.length; i++) {
                             const manu = data.data[i];
@@ -88,7 +86,7 @@
                 return false;
             }
 
-            $.post("/api/itemStore.json?action=addItem", {
+            $.post("/api/store/add", {
                 name: itemName,
                 itemType: itemType,
                 manu: manu,

@@ -11,7 +11,7 @@
     }
 
     function loadData() {
-        $.post("/api/itemType.json?action=getAll", function (data) {
+        $.get("/api/itype/", function (data) {
             if (data.result) {
                 $("#searchType").append("<option selected='selected' disabled='disabled' value='selected'></option>");
                 itemTypeData = data.data;
@@ -23,20 +23,6 @@
                 alert(data.msg);
             }
         });
-
-        $.post("/api/manu.json?action=getAll", function (data) {
-                if (data.result) {
-                    $("#searchManu").empty();
-                    $("#searchManu").append("<option selected='selected' value=''></option>");
-                    for (let i = 0; i < data.data.length; i++) {
-                        const manu = data.data[i];
-                        $("#searchManu").append("<option value='" + manu.id + "'>" + manu.name + "</option>");
-                    }
-                } else {
-                    alert(data.msg);
-                }
-            }
-        );
     }
 
     function loadStore() {
@@ -49,7 +35,7 @@
         const pageSize = $("#searchPageSize").val();
         let sExData = LwebJson.getExData("#searchExData .exBlock");
 
-        $.post("/api/itemStore.json?action=search", {
+        $.post("/api/store/search", {
             type: type,
             manu: manu,
             kw: kw,
@@ -112,9 +98,7 @@
         $("#search_isExData").prop("checked", false);
         const itemTypeSel = $("#searchType").val();
 
-        $.post("/api/manu.json?action=getAllByItemType", {
-                itemType: itemTypeSel
-            }, function (data) {
+        $.get("/api/manu/item_type/" + itemTypeSel, function (data) {
                 if (data.result) {
                     $("#btn_search").removeAttr("disabled");
                     $("#searchManu").empty();
@@ -129,9 +113,7 @@
             }
         );
 
-        $.post("/api/itemType.json?action=getExData", {
-                type: itemTypeSel
-            }, function (data) {
+        $.get("/api/itype/" + itemTypeSel + "/exData", function (data) {
                 if (data.result) {
                     $("#searchExData").empty();
                     nowExData = data.exData;

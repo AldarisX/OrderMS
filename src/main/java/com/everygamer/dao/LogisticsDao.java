@@ -13,7 +13,7 @@ public interface LogisticsDao {
 
     List<Logistics> getAllLogistics();
 
-    int addLogistics(String name);
+    int addLogistics(String name, Integer order);
 
     int updateLogistics(Logistics logistics);
 

@@ -3,24 +3,28 @@ package com.everygamer.control;
 import com.everygamer.bean.ItemType;
 import com.everygamer.dao.exception.DBUpdateException;
 import com.everygamer.service.ItemTypeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping(value = "/api/itemType.json", produces = "application/json;charset=UTF-8")
+@Api(description = "物品类型")
+@RestController
+@RequestMapping(value = "/api/itype", produces = "application/json;charset=UTF-8")
 public class ItemTypeControl extends BaseControl {
     @Autowired
     private ItemTypeService itemTypeService;
 
+    @ApiOperation(value = "查询全部物品类型", notes = "查询全部物品类型", consumes = "application/x-www-form-urlencoded")
     @ResponseBody
-    @RequestMapping(params = "action=getAll", produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getAllItemType() {
         JSONObject result = new JSONObject();
 
@@ -30,9 +34,13 @@ public class ItemTypeControl extends BaseControl {
         return result.toString();
     }
 
+    @ApiOperation(value = "查询物品类型", notes = "按ID查询物品类型", consumes = "application/x-www-form-urlencoded")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "物品类型ID", required = true, dataType = "Integer", paramType = "path")
+    })
     @ResponseBody
-    @RequestMapping(params = "action=getItemTypeById", produces = "application/json;charset=UTF-8")
-    public String getItemTypeById(Integer id) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String getItemTypeById(@PathVariable Integer id) {
         JSONObject result = new JSONObject();
         if (id > 0) {
             ItemType itemType = itemTypeService.getItemTypeById(id);
@@ -45,8 +53,14 @@ public class ItemTypeControl extends BaseControl {
         return result.toString();
     }
 
+    @ApiOperation(value = "添加物品类型", notes = "添加物品类型", consumes = "application/x-www-form-urlencoded")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "物品类型名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "order", value = "物品类型优先级", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "exData", value = "物品类型的附加数据", required = false, dataType = "JSONArray")
+    })
     @ResponseBody
-    @RequestMapping(params = "action=addItemType", produces = "application/json;charset=UTF-8")
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public String addItemType(String name, int order, String exData) {
         JSONObject result = new JSONObject();
 
@@ -71,9 +85,13 @@ public class ItemTypeControl extends BaseControl {
         return result.toString();
     }
 
+    @ApiOperation(value = "取得物品类型的附加数据", notes = "取得物品类型的附加数据", consumes = "application/x-www-form-urlencoded")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "type", value = "物品类型ID", required = true, dataType = "int", paramType = "path")
+    })
     @ResponseBody
-    @RequestMapping(params = "action=getExData", produces = "application/json;charset=UTF-8")
-    public String getExData(int type) {
+    @RequestMapping(value = "/{type}/exData", method = RequestMethod.GET)
+    public String getExData(@PathVariable int type) {
         JSONObject result = new JSONObject();
 
         String exData = itemTypeService.getExData(type);
@@ -84,9 +102,17 @@ public class ItemTypeControl extends BaseControl {
         return result.toString();
     }
 
+    @ApiOperation(value = "更新物品类型", notes = "更新物品类型", consumes = "application/x-www-form-urlencoded")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "物品类型ID", required = true, dataType = "Integer", paramType = "path"),
+            @ApiImplicitParam(name = "name", value = "物品类型名称", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "inIndex", value = "是否在主页显示", required = true, dataType = "boolean"),
+            @ApiImplicitParam(name = "order", value = "物品类型优先级", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "exData", value = "物品类型的附加数据", required = false, dataType = "JSONArray")
+    })
     @ResponseBody
-    @RequestMapping(params = "action=updateItemType", produces = "application/json;charset=UTF-8")
-    public String updateItemType(Integer id, String name, boolean inIndex, int order, String exData) {
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
+    public String updateItemType(@PathVariable Integer id, String name, boolean inIndex, int order, String exData) {
         JSONObject result = new JSONObject();
 
         //先判断exData的格式，格式不对就返回错误
@@ -118,19 +144,30 @@ public class ItemTypeControl extends BaseControl {
         return result.toString();
     }
 
+    @ApiOperation(value = "删除物品类型附加数据的key", notes = "删除物品类型附加数据的key", consumes = "application/x-www-form-urlencoded")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "物品类型ID", required = true, dataType = "Integer", paramType = "path"),
+            @ApiImplicitParam(name = "key", value = "key名", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "exData", value = "附加数据", required = true, dataType = "String")
+    })
     @ResponseBody
-    @RequestMapping(params = "action=delItemTypeKey", produces = "application/json;charset=UTF-8")
-    public String delExDataKey(Integer id, String key, String exData) {
+    @RequestMapping(value = "/{id}/exData/del", method = RequestMethod.POST)
+    public String delExDataKey(@PathVariable Integer id, String key, String exData) {
         JSONObject result = new JSONObject();
 
+        result.accumulate("result", true);
         itemTypeService.delExDataKey(id, key, JSONArray.fromObject(exData));
 
         return result.toString();
     }
 
+    @ApiOperation(value = "删除物品类型", notes = "删除物品类型", consumes = "application/x-www-form-urlencoded")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "物品类型ID", required = true, dataType = "Integer", paramType = "path"),
+    })
     @ResponseBody
-    @RequestMapping(params = "action=delItemType", produces = "application/json;charset=UTF-8")
-    public String delItemType(int id) {
+    @RequestMapping(value = "/{id}/del", method = RequestMethod.GET)
+    public String delItemType(@PathVariable int id) {
         JSONObject result = new JSONObject();
 
         try {

@@ -3,15 +3,15 @@
     let user;
     $(document).ready(function () {
         let uid = getQueryString("uid");
-        $.post("/api/user.json?action=getUser", {
-            id: uid
-        }, function (data) {
+        $.get("/api/user/" + uid, function (data) {
             if (data.result) {
                 user = data.data;
                 $("#userTitle").text("设置用户:" + user.username + "的密码");
             } else {
                 parent.layer.msg(data.msg, {icon: 5});
             }
+        }).fail(function () {
+            parent.layer.msg("获取用户信息失败", {icon: 5});
         });
     });
 
@@ -19,13 +19,12 @@
         let passwd = $('#passwd').val();
         let passwd2 = $('#passwd2').val();
         if (passwd === passwd2) {
-            $.post("/api/user.json?action=getRSA", function (result) {
+            $.get("/api/user/rsa", function (result) {
                 if (result.result) {
                     let encrypt = new parent.JSEncrypt();
                     encrypt.setPublicKey(result.puk);
                     passwd = encrypt.encrypt(passwd);
-                    $.post("/api/user.json?action=setPasswd", {
-                        id: user.id,
+                    $.post("/api/user/" + user.id + "/passwd/", {
                         passwd: passwd
                     }, function (data) {
                         if (data.result) {

@@ -17,10 +17,7 @@
                 return;
             }
 
-            $.post("/api/manu.json?action=setManuOrder", {
-                name: manu,
-                order: order
-            }, function (data) {
+            $.post("/api/manu/" + manu + "/" + order, function (data) {
                 if (data.result) {
                     parent.layer.closeAll();
                     parent.layer.msg("修改成功", {icon: 1});

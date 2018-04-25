@@ -17,14 +17,14 @@
                 layer.msg("两次密码不一致!!!", {icon: 5});
                 return;
             }
-            $.post("/api/user.json?action=getRSA", function (result) {
+            $.get("/api/user/rsa", function (result) {
                 if (result.result) {
                     //加密
                     let encrypt = new JSEncrypt();
                     encrypt.setPublicKey(result.puk);
                     passwd = encrypt.encrypt(passwd);
                     let uname = $(":text[name=uname]").val();
-                    $.post("/api/user.json?action=addUser", {
+                    $.post("/api/user/", {
                         uname: uname,
                         passwd: passwd,
                     }, function (data) {
@@ -50,7 +50,7 @@
         function listUser() {
             $("#userList table").empty();
             let kw = $("#search_uname").val();
-            $.post("/api/user.json?action=search", {
+            $.get("/api/user/search", {
                 kw: kw
             }, function (data) {
                 if (data.result) {
@@ -88,9 +88,7 @@
                 btn: ['确定', '取消'],
                 icon: 3
             }, function () {
-                $.post("/api/user.json?action=delUser", {
-                    id: uid
-                }, function (data) {
+                $.get("/api/user/" + uid + "/del", function (data) {
                     if (data.result) {
                         parent.layer.confirm('删除成功', {
                             btn: ['确定'],

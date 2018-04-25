@@ -44,7 +44,7 @@
         }
 
         function itemOut() {
-            $.post("/api/itemStore.json?action=itemOut", {
+            $.post("/api/sale/out", {
                 items: JSON.stringify(selectedItem)
             }, function (data) {
                 if (data.result) {

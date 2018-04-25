@@ -7,9 +7,7 @@
     <script th:inline="javascript" type="text/javascript">
         $(document).ready(function () {
             let id = getQueryString("id");
-            $.post("/api/order.json?action=getOrderById", {
-                id: id
-            }, function (data) {
+            $.get("/api/order/" + id, function (data) {
                 if (data.result) {
                     let order = data.data;
                     $("#sysId").text(order.id);
