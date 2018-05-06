@@ -1,0 +1,7 @@
+在/etc/init.d/中的after.local或者rc.local最下面添加下面的内容
+
+#启动pgsql
+runuser -l postgres -c "pg_ctl start -D /home/DB/pgsql"
+#启动OrderMS
+cd /root/OrderMS/
+nohup setsid java -server -Xmx512M -jar OrderMS.jar -o start > /dev/null > /dev/null 2>&1 &

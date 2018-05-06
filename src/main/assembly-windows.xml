@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <!-- 使用assembly拷贝依赖包 -->
+    <!--<dependencySets>-->
+    <!--<dependencySet>-->
+    <!--&lt;!&ndash; 是否包含自己（将项目生成的jar包也输出到lib目录） &ndash;&gt;-->
+    <!--<useProjectArtifact>false</useProjectArtifact>-->
+    <!--<outputDirectory>lib</outputDirectory>-->
+    <!--</dependencySet>-->
+    <!--</dependencySets>-->
+    <fileSets>
+        <!-- 从目标目录拷贝文件去压缩 -->
+        <fileSet>
+            <directory>target</directory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <outputDirectory>${file.separator}</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/lib</directory>
+            <outputDirectory>${file.separator}lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/config</directory>
+            <outputDirectory>${file.separator}config</outputDirectory>
+        </fileSet>
+
+        <!-- 压缩启动脚本 -->
+        <fileSet>
+            <directory>${basedir}/bootstrap/windows/</directory>
+            <outputDirectory>${file.separator}</outputDirectory>
+        </fileSet>
+        <!--压缩配置文件-->
+        <fileSet>
+            <directory>${basedir}/config</directory>
+            <includes>
+                <include>*.properties</include>
+            </includes>
+            <outputDirectory>${file.separator}config</outputDirectory>
+        </fileSet>
+        <!--sql文件-->
+        <fileSet>
+            <directory>${basedir}/update</directory>
+            <includes>
+                <include>*.sql</include>
+            </includes>
+            <outputDirectory>${file.separator}update</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

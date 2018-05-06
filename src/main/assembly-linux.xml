@@ -32,10 +32,9 @@
 
         <!-- 压缩启动脚本 -->
         <fileSet>
-            <directory>${basedir}/mvn</directory>
+            <directory>${basedir}/bootstrap/linux</directory>
             <includes>
-                <include>*.sh</include>
-                <include>*.cmd</include>
+                <include>*</include>
             </includes>
             <outputDirectory>${file.separator}</outputDirectory>
         </fileSet>
