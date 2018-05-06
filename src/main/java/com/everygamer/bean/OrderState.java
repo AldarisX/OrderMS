@@ -6,6 +6,9 @@ import java.util.Map;
 public enum OrderState {
     Create(0, "排单"), Outgoing(1, "出库"), Finish(2, "完成"), Closed(3, "关闭"), Unknow(-1, "未知");
 
+    int id;
+    String name;
+
     static Map<Integer, OrderState> enumMap = new HashMap<>();
 
     static {
@@ -13,9 +16,6 @@ public enum OrderState {
             enumMap.put(type.getId(), type);
         }
     }
-
-    int id;
-    String name;
 
     OrderState(int id, String name) {
         this.id = id;

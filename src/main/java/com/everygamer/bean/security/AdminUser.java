@@ -59,4 +59,19 @@ public class AdminUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return this.username;
+    }
+
+    @Override
+    public boolean equals(Object rhs) {
+        return rhs instanceof AdminUser && this.username.equals(((AdminUser) rhs).username);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.username.hashCode();
+    }
 }

@@ -17,7 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Slf4j
 @SpringBootApplication
 @EnableJdbcHttpSession
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 @ComponentScan(basePackageClasses = OrderMsApplication.class)
 @ServletComponentScan
 public class OrderMsApplication {

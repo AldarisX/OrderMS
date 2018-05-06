@@ -12,11 +12,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * OrderItem.State的处理器
+ * OrderState的处理器
  */
 @MappedJdbcTypes(JdbcType.INTEGER)
 @MappedTypes({OrderState.class})
-public class StateEnumHandler extends BaseTypeHandler<OrderState> {
+public class OrderStateEnumHandler extends BaseTypeHandler<OrderState> {
     /**
      * 用于定义设置参数时，该如何把Java类型的参数转换为对应的数据库类型
      */

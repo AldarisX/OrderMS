@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint() {
         LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login/getLogin");
-        //是否使用forward显示登陆页面
+        //使用forward显示登陆页面
         loginUrlAuthenticationEntryPoint.setUseForward(true);
         return loginUrlAuthenticationEntryPoint;
     }
@@ -69,7 +69,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 JSONObject result = new JSONObject();
                 result.accumulate("result", true);
                 result.accumulate("url", "/index.html");
-//                System.out.println(request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST"));
                 response.getWriter().print(result.toString());
             }
         });
@@ -89,10 +88,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.sessionManagement().maximumSessions(1);
+        //允许iFrame
         http.headers().cacheControl().disable().frameOptions().disable();
-        http.csrf().ignoringAntMatchers("/static/**", "/api/**", "/login/login.do")
-                .and()
-                .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
+        //允许csrf
+        http.csrf().ignoringAntMatchers("/static/**", "/api/**", "/login/login.do");
+        //开始配置各种权限
+        http.addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(loginUrlAuthenticationEntryPoint())
                 .and()
                 .authorizeRequests()
@@ -107,6 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().clearAuthentication(true)
                 .logoutUrl("/logout")
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+                //成功登出
                 .logoutSuccessHandler(new LogoutSuccessHandler() {
                     @Override
                     public void onLogoutSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
@@ -119,6 +122,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     }
                 })
                 .invalidateHttpSession(true);
+        //权限被拒绝时记日志
         http.exceptionHandling().accessDeniedHandler(new AccessDeniedHandler() {
             @Override
             public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {

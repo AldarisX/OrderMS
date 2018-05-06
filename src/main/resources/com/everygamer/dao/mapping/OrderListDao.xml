@@ -16,7 +16,7 @@
         <result property="transCost" column="trans_cost"/>
         <result property="desc" column="desc"/>
         <result property="orderState" column="order_state" javaType="com.everygamer.bean.OrderState"
-                typeHandler="com.everygamer.dao.mybatis.handler.StateEnumHandler" jdbcType="INTEGER"/>
+                typeHandler="com.everygamer.dao.mybatis.handler.OrderStateEnumHandler" jdbcType="INTEGER"/>
         <result property="isAlive" column="is_alive"/>
         <result property="insDate" column="ins_date"/>
         <result property="delDate" column="del_date"/>

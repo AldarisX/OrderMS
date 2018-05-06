@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 系统日志注解
  */
-@Target({ElementType.PARAMETER, ElementType.METHOD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface SystemLog {
@@ -15,7 +15,12 @@ public @interface SystemLog {
     String description() default "";
 
     /**
-     * 操作表类型
+     * 处理位置
      */
-    int tableType() default 0;
+    SystemLogOpType opType() default SystemLogOpType.AfterReturning;
+
+    /**
+     * 日志级别
+     */
+    DBLogLevel logLevel() default DBLogLevel.Info;
 }
