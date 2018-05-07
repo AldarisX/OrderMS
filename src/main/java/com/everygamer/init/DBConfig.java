@@ -23,6 +23,8 @@ public class DBConfig {
     @Getter
     private String dbPasswd;
     @Getter
+    private String dbName;
+    @Getter
     private String dbVer;
 
     private DBConfig() {
@@ -46,6 +48,7 @@ public class DBConfig {
             dbUrl = prop.getProperty("spring.datasource.url");
             dbUser = prop.getProperty("spring.datasource.username");
             dbPasswd = prop.getProperty("spring.datasource.password");
+            dbName = dbUrl.substring(dbUrl.lastIndexOf("/") + 1, dbUrl.indexOf("?"));
             prop.load(new FileInputStream("config/application-system.properties"));
             dbVer = prop.getProperty("site.config.db-ver");
 

@@ -226,11 +226,11 @@ CREATE UNLOGGED TABLE IF NOT EXISTS spring_session_attributes
 --rsa公钥 密钥表
 CREATE UNLOGGED TABLE IF NOT EXISTS rsa_list
 (
-  id     SERIAL NOT NULL
+  id      SERIAL NOT NULL
     CONSTRAINT rsa_list_pk
     PRIMARY KEY,
-  pubKey BYTEA  NOT NULL,
-  priKey BYTEA  NOT NULL
+  pub_key BYTEA  NOT NULL,
+  pri_key BYTEA  NOT NULL
 );
 
 -- 初始admin用户 密码123456

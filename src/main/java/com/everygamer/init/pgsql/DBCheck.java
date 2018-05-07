@@ -1,7 +1,9 @@
-package com.everygamer.init;
+package com.everygamer.init.pgsql;
 
+import com.everygamer.init.DBConfig;
+import com.everygamer.init.SysCheck;
 import lombok.Cleanup;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.FileInputStream;
@@ -13,26 +15,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-@Slf4j
+@Log4j2
 public class DBCheck implements SysCheck {
     private static DBConfig dbConfig = DBConfig.getInstance();
 
-    static {
-        try {
-            Class.forName(dbConfig.getDbDriver());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
-    public boolean check() {
-        try {
-            return checkDB();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
+    public boolean check() throws SQLException {
+        return checkDB();
     }
 
     private boolean checkDB() throws SQLException {
@@ -44,15 +33,15 @@ public class DBCheck implements SysCheck {
         ResultSet rs = st.executeQuery("SELECT datname FROM pg_database;");
         boolean hasDB = false;
         while (rs.next()) {
-            if (rs.getString("datname").equals("orderms")) {
+            if (rs.getString("datname").equals(dbConfig.getDbName())) {
                 hasDB = true;
             }
         }
         if (hasDB) {
-            log.info("发现数据库:orderms");
+            log.info("发现数据库:" + dbConfig.getDbName());
             return true;
         } else {
-            log.info("数据库不存在,准备建立数据库");
+            log.info("数据库" + dbConfig.getDbName() + "不存在,准备建立数据库");
             return createDB();
         }
     }
@@ -62,7 +51,7 @@ public class DBCheck implements SysCheck {
         Connection conn = dbConfig.getConn(dbConfig.getDbUrl().substring(0, dbConfig.getDbUrl().lastIndexOf("/") + 1) + "postgres");
         @Cleanup
         Statement st = conn.createStatement();
-        int cRows = st.executeUpdate("CREATE DATABASE orderms WITH ENCODING = 'UTF8' CONNECTION LIMIT = -1;");
+        int cRows = st.executeUpdate("CREATE DATABASE " + dbConfig.getDbName() + " WITH ENCODING = 'UTF8' CONNECTION LIMIT = -1;");
         if (cRows == 0) {
             log.info("数据库创建完成,准备初始化数据表");
             return initTables();

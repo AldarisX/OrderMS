@@ -4,7 +4,7 @@ CREATE UNLOGGED TABLE IF NOT EXISTS rsa_list
   id      SERIAL NOT NULL
     CONSTRAINT rsa_list_pk
     PRIMARY KEY,
-  pub_Key BYTEA  NOT NULL,
+  pub_key BYTEA  NOT NULL,
   pri_key BYTEA  NOT NULL
 );
 

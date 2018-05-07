@@ -1,7 +1,9 @@
-package com.everygamer.init;
+package com.everygamer.init.pgsql;
 
+import com.everygamer.init.DBConfig;
+import com.everygamer.init.SysCheck;
 import lombok.Cleanup;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
@@ -11,28 +13,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-@Slf4j
+@Log4j2
 public class DBVerCheck implements SysCheck {
     private DBConfig dbConfig = DBConfig.getInstance();
 
     private String dbVer;
 
     @Override
-    public boolean check() {
-        try {
-            if (canUpdate()) {
-                log.info("发现数据库更新(" + dbConfig.getDbVer() + "),请立即备份数据库,输入YES进行更新,否则退出");
-                Scanner sc = new Scanner(System.in);
-                String uIn = sc.next();
-                if (!uIn.equals("YES")) {
-                    log.info("取消更新");
-                    return false;
-                }
-                return updateDB();
+    public boolean check() throws SQLException {
+        if (canUpdate()) {
+            log.info("发现数据库更新(" + dbConfig.getDbVer() + "),请立即备份数据库,输入YES进行更新,否则退出");
+            Scanner sc = new Scanner(System.in);
+            String uIn = sc.next();
+            if (!uIn.equals("YES")) {
+                log.info("取消更新");
+                return false;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            return updateDB();
         }
         return true;
     }
@@ -79,7 +76,8 @@ public class DBVerCheck implements SysCheck {
             if (e instanceof FileNotFoundException) {
                 log.error("找不到数据库初始化文件(update/pgsql-init.sql)");
             } else {
-                e.printStackTrace();
+//                e.printStackTrace();
+                log.error("执行sql文件时出现错误");
             }
         }
     }

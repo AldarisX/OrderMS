@@ -1,7 +1,7 @@
 package com.everygamer;
 
 import com.everygamer.init.SysCheckUtil;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -14,7 +14,7 @@ import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.transaction.PlatformTransactionManager;
 
-@Slf4j
+@Log4j2
 @SpringBootApplication
 @EnableJdbcHttpSession
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -22,7 +22,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @ServletComponentScan
 public class OrderMsApplication {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //判断是否有参数
         if (args.length > 0) {
             new SysCheckUtil().init();
